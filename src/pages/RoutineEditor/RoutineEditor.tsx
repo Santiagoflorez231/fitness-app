@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import {
   IonBackButton,
   IonButton,
   IonButtons,
   IonContent,
+  IonFooter,
   IonHeader,
   IonIcon,
   IonInfiniteScroll,
@@ -27,13 +28,15 @@ import {
   IonToolbar,
   type ItemReorderEventDetail,
 } from '@ionic/react';
-import { addCircleOutline, addOutline, alertCircleOutline, removeCircleOutline } from 'ionicons/icons';
+import { addOutline, alertCircleOutline, removeOutline, reorderThreeOutline, trashOutline } from 'ionicons/icons';
 import { useExercises } from '../../hooks/useExercises';
 import ExerciseAvatar, { capitalize } from '../../components/ExerciseAvatar';
 import { normalize } from '../../utils/text';
+import { estimateSessionMinutes } from '../../data/routineTemplates';
 import { routinesRepo } from '../../db';
 import type { Exercise } from '../../types/exercise';
 import type { Routine, RoutineExercise } from '../../types/routine';
+import './RoutineEditor.css';
 
 const PICKER_PAGE_SIZE = 50;
 
@@ -41,9 +44,51 @@ const DEFAULT_TARGET_SETS = 3;
 const DEFAULT_TARGET_REPS = 10;
 const DEFAULT_REST_SECONDS = 90;
 
+/** Tiempo tras el cual el dígito saliente se desmonta (debe cubrir la animación CSS de 120ms). */
+const DIGIT_TRANSITION_MS = 130;
+
 interface RoutineEditorParams {
   id?: string;
 }
+
+interface AnimatedNumberProps {
+  value: string;
+}
+
+/**
+ * Cifra con transición de "odómetro": al cambiar `value`, el dígito anterior
+ * sube y se desvanece mientras el nuevo entra desde abajo (CSS puro,
+ * transform/opacity). Ver .editor-stepper-digit-in/out en RoutineEditor.css.
+ */
+const AnimatedNumber: React.FC<AnimatedNumberProps> = ({ value }) => {
+  const currentRef = useRef(value);
+  const [renderValue, setRenderValue] = useState(value);
+  const [outgoing, setOutgoing] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (currentRef.current === value) {
+      return;
+    }
+    setOutgoing(currentRef.current);
+    currentRef.current = value;
+    setRenderValue(value);
+    const timeoutId = window.setTimeout(() => setOutgoing(null), DIGIT_TRANSITION_MS);
+    return () => window.clearTimeout(timeoutId);
+  }, [value]);
+
+  return (
+    <span className="editor-stepper-track carga-num">
+      {outgoing !== null && (
+        <span key={`out-${outgoing}`} className="editor-stepper-digit editor-stepper-digit-out">
+          {outgoing}
+        </span>
+      )}
+      <span key={`in-${renderValue}`} className="editor-stepper-digit editor-stepper-digit-in">
+        {renderValue}
+      </span>
+    </span>
+  );
+};
 
 interface NumberStepperProps {
   label: string;
@@ -55,7 +100,7 @@ interface NumberStepperProps {
   onChange: (value: number) => void;
 }
 
-/** Stepper compacto (+/-) para valores numéricos acotados, pensado para móvil. */
+/** Stepper de 44px con cifra tabular animada al centro, pensado para móvil. */
 const NumberStepper: React.FC<NumberStepperProps> = ({
   label,
   value,
@@ -69,39 +114,28 @@ const NumberStepper: React.FC<NumberStepperProps> = ({
   const increase = () => onChange(Math.min(max, value + step));
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <span style={{ fontSize: '0.7rem', color: 'var(--ion-color-medium)' }}>{label}</span>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.125rem' }}>
-        <IonButton
-          fill="clear"
-          size="small"
-          style={{ margin: 0 }}
+    <div className="editor-stepper">
+      <span className="carga-overline editor-stepper-label">{label}</span>
+      <div className="editor-stepper-controls">
+        <button
+          type="button"
+          className="editor-stepper-btn"
           disabled={value <= min}
           aria-label={`Disminuir ${label}`}
           onClick={decrease}
         >
-          <IonIcon icon={removeCircleOutline} slot="icon-only" />
-        </IonButton>
-        <span
-          style={{
-            minWidth: '2.25rem',
-            textAlign: 'center',
-            fontVariantNumeric: 'tabular-nums',
-          }}
-        >
-          {value}
-          {suffix ?? ''}
-        </span>
-        <IonButton
-          fill="clear"
-          size="small"
-          style={{ margin: 0 }}
+          <IonIcon icon={removeOutline} />
+        </button>
+        <AnimatedNumber value={`${value}${suffix ?? ''}`} />
+        <button
+          type="button"
+          className="editor-stepper-btn"
           disabled={value >= max}
           aria-label={`Aumentar ${label}`}
           onClick={increase}
         >
-          <IonIcon icon={addCircleOutline} slot="icon-only" />
-        </IonButton>
+          <IonIcon icon={addOutline} />
+        </button>
       </div>
     </div>
   );
@@ -212,6 +246,9 @@ const RoutineEditor: React.FC = () => {
   const trimmedName = name.trim();
   const canSave = trimmedName.length > 0 && exercises.length > 0;
 
+  const totalSets = exercises.reduce((sum, exercise) => sum + exercise.targetSets, 0);
+  const estimatedMinutes = estimateSessionMinutes(exercises);
+
   const handleSave = async () => {
     if (!canSave) {
       return;
@@ -243,12 +280,7 @@ const RoutineEditor: React.FC = () => {
           <IonButtons slot="start">
             <IonBackButton defaultHref="/tabs/rutinas" />
           </IonButtons>
-          <IonTitle>{isEdit ? 'Editar rutina' : 'Nueva rutina'}</IonTitle>
-          <IonButtons slot="end">
-            <IonButton strong disabled={!canSave} onClick={handleSave}>
-              Guardar
-            </IonButton>
-          </IonButtons>
+          <IonTitle size="small">{isEdit ? 'Editar rutina' : 'Nueva rutina'}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
@@ -285,46 +317,43 @@ const RoutineEditor: React.FC = () => {
           </div>
         ) : (
           <>
-            <IonItem>
+            <IonItem className="routine-editor-title-item" lines="none">
               <IonInput
-                label="Nombre"
-                labelPlacement="stacked"
-                placeholder="Ej. Empuje A"
+                className="routine-editor-title-input"
+                placeholder="Nombre de la rutina"
                 value={name}
                 onIonInput={(event) => setName(event.detail.value ?? '')}
               />
             </IonItem>
 
             <IonListHeader>
-              <IonLabel>Ejercicios</IonLabel>
+              <IonLabel className="carga-overline routine-editor-section-label">Ejercicios</IonLabel>
             </IonListHeader>
 
             {exercises.length === 0 ? (
-              <p className="ion-padding-horizontal" style={{ color: 'var(--ion-color-medium)' }}>
+              <p className="routine-editor-empty">
                 Añade al menos un ejercicio para poder guardar la rutina.
               </p>
             ) : (
-              <IonList>
+              <IonList className="routine-editor-list" lines="none">
                 <IonReorderGroup disabled={false} onIonItemReorder={handleReorder}>
                   {exercises.map((exercise, index) => {
                     const exerciseData = allExercises.find((item) => item.id === exercise.exerciseId);
                     return (
-                      <IonItemSliding key={exercise.id}>
-                        <IonItem>
+                      <IonItemSliding key={exercise.id} className="editor-exercise-card">
+                        <IonItem className="editor-exercise-item" lines="none">
+                          <IonReorder slot="start">
+                            <div className="editor-handle" aria-label="Arrastrar para reordenar">
+                              <IonIcon icon={reorderThreeOutline} />
+                            </div>
+                          </IonReorder>
                           <ExerciseAvatar
                             target={exerciseData?.target ?? ''}
                             category={exerciseData?.category ?? ''}
                           />
-                          <IonLabel className="ion-text-wrap" style={{ marginInlineStart: '0.75rem' }}>
-                            <h2>{exercise.exerciseName}</h2>
-                            <div
-                              style={{
-                                display: 'flex',
-                                gap: '1rem',
-                                marginTop: '0.5rem',
-                                flexWrap: 'wrap',
-                              }}
-                            >
+                          <IonLabel className="ion-text-wrap editor-exercise-label">
+                            <h2 className="editor-exercise-name">{exercise.exerciseName}</h2>
+                            <div className="editor-stepper-row">
                               <NumberStepper
                                 label="Series"
                                 value={exercise.targetSets}
@@ -352,11 +381,10 @@ const RoutineEditor: React.FC = () => {
                               />
                             </div>
                           </IonLabel>
-                          <IonReorder slot="end" />
                         </IonItem>
                         <IonItemOptions side="end">
                           <IonItemOption color="danger" onClick={() => handleRemoveExercise(index)}>
-                            Quitar
+                            <IonIcon icon={trashOutline} slot="icon-only" />
                           </IonItemOption>
                         </IonItemOptions>
                       </IonItemSliding>
@@ -366,7 +394,7 @@ const RoutineEditor: React.FC = () => {
               </IonList>
             )}
 
-            <div className="ion-padding">
+            <div className="routine-editor-add">
               <IonButton expand="block" fill="outline" onClick={() => setShowPicker(true)}>
                 <IonIcon icon={addOutline} slot="start" />
                 Añadir ejercicio
@@ -393,13 +421,19 @@ const RoutineEditor: React.FC = () => {
             </IonToolbar>
           </IonHeader>
           <IonContent>
-            <IonList>
+            <IonList lines="none">
               {pickerVisible.map((exercise) => (
-                <IonItem key={exercise.id} button onClick={() => handleAddExercise(exercise)}>
-                  <ExerciseAvatar target={exercise.target} category={exercise.category} />
-                  <IonLabel className="ion-text-wrap" style={{ marginInlineStart: '0.75rem' }}>
-                    <h2>{exercise.name}</h2>
-                    <p>
+                <IonItem
+                  key={exercise.id}
+                  className="picker-row"
+                  button
+                  detail={false}
+                  onClick={() => handleAddExercise(exercise)}
+                >
+                  <ExerciseAvatar target={exercise.target} category={exercise.category} size={44} />
+                  <IonLabel className="ion-text-wrap" style={{ marginInlineStart: '12px' }}>
+                    <h2 className="picker-row-name">{exercise.name}</h2>
+                    <p className="picker-row-meta">
                       {capitalize(exercise.target)} · {capitalize(exercise.equipment)}
                     </p>
                   </IonLabel>
@@ -416,6 +450,31 @@ const RoutineEditor: React.FC = () => {
           </IonContent>
         </IonModal>
       </IonContent>
+
+      {!loading && !notFound && (
+        <IonFooter>
+          <IonToolbar className="routine-editor-footer-toolbar">
+            <div className="routine-editor-footer-inner">
+              <div className="routine-editor-footer-totals">
+                <p>
+                  <span className="carga-num">Σ {totalSets}</span> series ·{' '}
+                  <span className="carga-num">~{estimatedMinutes}</span> min · volumen estimado se
+                  calcula al entrenar
+                </p>
+              </div>
+              <IonButton
+                className="routine-editor-footer-save"
+                shape="round"
+                strong
+                disabled={!canSave}
+                onClick={handleSave}
+              >
+                Guardar
+              </IonButton>
+            </div>
+          </IonToolbar>
+        </IonFooter>
+      )}
     </IonPage>
   );
 };

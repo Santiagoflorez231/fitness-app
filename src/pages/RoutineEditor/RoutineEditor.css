@@ -1,0 +1,276 @@
+/**
+ * RoutineEditor — «ordenar la pizarra» (CARGA)
+ * Referencia obligatoria: docs/design-carga.md
+ */
+
+/* Título de la rutina: input grande sin chrome, estilo título de página */
+.routine-editor-title-item {
+  --background: transparent;
+  --padding-start: 16px;
+  --inner-padding-end: 16px;
+  --border-width: 0;
+}
+
+/*
+ * ion-input hereda font-family/size/weight/letter-spacing de su :host (que a
+ * su vez toma el valor del light DOM salvo font-family, que Ionic resuelve
+ * con var(--ion-font-family)). Fijando esas propiedades + el token aquí, en
+ * el propio elemento, se cuela hasta el <input> nativo sin sombras raras.
+ */
+.routine-editor-title-input {
+  --background: transparent;
+  --padding-start: 0;
+  --padding-end: 0;
+  --color: var(--app-text-primary);
+  --placeholder-color: var(--app-text-secondary);
+  --placeholder-opacity: 1;
+  --ion-font-family: 'Archivo', sans-serif;
+  font-family: 'Archivo', sans-serif;
+  font-weight: 800;
+  font-size: 24px;
+  letter-spacing: -0.01em;
+}
+
+.routine-editor-section-label {
+  margin: 4px 0 0;
+  --color: var(--app-text-secondary);
+}
+
+/* Lista de ejercicios: cards separadas con gap propio */
+.routine-editor-list {
+  background: transparent;
+  padding: 4px 16px 12px;
+}
+
+.editor-exercise-card {
+  display: block;
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-m);
+  overflow: hidden;
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow-card);
+  margin-bottom: 12px;
+  transition:
+    transform var(--app-dur-fast) var(--app-ease),
+    box-shadow var(--app-dur-fast) var(--app-ease);
+}
+
+.editor-exercise-card:last-child {
+  margin-bottom: 0;
+}
+
+/* Fila arrastrada: Ionic añade .reorder-selected al hijo directo del
+   IonReorderGroup (nuestro IonItemSliding). No expone un evento dedicado
+   para estilar el elemento arrastrado, así que enganchamos esa clase. */
+.editor-exercise-card.reorder-selected {
+  transform: scale(1.02);
+  box-shadow: var(--app-shadow-float);
+  opacity: 1;
+}
+
+.editor-exercise-item {
+  --background: transparent;
+  --border-width: 0;
+  --padding-start: 0;
+  --inner-padding-end: 16px;
+  --inner-padding-top: 12px;
+  --inner-padding-bottom: 12px;
+}
+
+/* Asa de arrastre explícita: 44px de objetivo táctil */
+.editor-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  color: var(--app-text-secondary);
+  cursor: grab;
+}
+
+.editor-handle ion-icon {
+  font-size: 22px;
+}
+
+.editor-exercise-label {
+  margin-inline-start: 12px;
+}
+
+.editor-exercise-name {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--app-text-primary);
+  margin: 0 0 10px;
+}
+
+/* Steppers: grid que se adapta a 3/2 columnas según ancho disponible */
+.editor-stepper-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+  gap: 10px 12px;
+}
+
+.editor-stepper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.editor-stepper-label {
+  margin: 0;
+}
+
+.editor-stepper-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.editor-stepper-btn {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-s);
+  background: var(--app-surface-elevated);
+  color: var(--app-text-primary);
+  cursor: pointer;
+}
+
+.editor-stepper-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.editor-stepper-btn ion-icon {
+  font-size: 20px;
+}
+
+/* Cifra tabular con transición: la saliente sube, la entrante entra desde abajo */
+.editor-stepper-track {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  min-width: 2.75rem;
+  overflow: hidden;
+}
+
+.editor-stepper-digit {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.editor-stepper-digit-in {
+  animation: editor-stepper-in var(--app-dur-fast) var(--app-ease) both;
+}
+
+.editor-stepper-digit-out {
+  animation: editor-stepper-out var(--app-dur-fast) var(--app-ease) both;
+}
+
+@keyframes editor-stepper-in {
+  from {
+    transform: translateY(120%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes editor-stepper-out {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-120%);
+    opacity: 0;
+  }
+}
+
+/* Botón "Añadir ejercicio" */
+.routine-editor-add {
+  margin: 4px 16px 12px;
+}
+
+/* Estado vacío de la lista de ejercicios */
+.routine-editor-empty {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 14px;
+  color: var(--app-text-secondary);
+  margin: 8px 16px 0;
+}
+
+/* Footer fijo: totales en vivo + Guardar en píldora */
+.routine-editor-footer-toolbar {
+  --background: var(--app-surface-elevated);
+  --border-color: var(--app-border);
+  --padding-top: 10px;
+  --padding-bottom: 10px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+}
+
+.routine-editor-footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.routine-editor-footer-totals {
+  min-width: 0;
+}
+
+.routine-editor-footer-totals p {
+  margin: 0;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px;
+  color: var(--app-text-secondary);
+  line-height: 1.4;
+}
+
+.routine-editor-footer-save {
+  --border-radius: var(--app-radius-full);
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+/* Picker de ejercicios: filas 64px como Explorar */
+.picker-row {
+  --background: var(--app-surface);
+  --border-color: var(--app-border);
+  --min-height: 64px;
+  --padding-start: 16px;
+  --inner-padding-end: 16px;
+}
+
+.picker-row-name {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--app-text-primary);
+  margin: 0 0 2px;
+}
+
+.picker-row-meta {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px;
+  color: var(--app-text-secondary);
+  margin: 0;
+  text-transform: capitalize;
+}

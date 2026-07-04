@@ -1,0 +1,140 @@
+/**
+ * Rutinas — «ordenar la pizarra» (CARGA)
+ * Referencia obligatoria: docs/design-carga.md
+ */
+
+/* Lista de rutinas: fondo transparente, cards con gap propio */
+.rutinas-list {
+  background: transparent;
+  padding: 12px 16px 96px;
+}
+
+/* Card de rutina: envuelve IonItemSliding, borde + radio + sombra sutil */
+.rutinas-card {
+  display: block;
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-m);
+  overflow: hidden;
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow-card);
+  margin-bottom: 12px;
+}
+
+.rutinas-card-item {
+  --background: transparent;
+  --border-width: 0;
+  --padding-start: 16px;
+  --inner-padding-end: 16px;
+  --min-height: 76px;
+}
+
+.rutinas-card-name {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--app-text-primary);
+  margin: 0 0 4px;
+}
+
+.rutinas-card-meta {
+  margin: 0;
+}
+
+/* Botón "Plantillas" del header */
+.rutinas-templates-button {
+  --color: var(--ion-color-primary);
+  font-weight: 600;
+}
+
+/* Estado vacío */
+.rutinas-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 64px 24px 24px;
+  text-align: center;
+}
+
+.rutinas-empty-overline {
+  margin: 0;
+}
+
+.rutinas-empty-text {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 15px;
+  color: var(--app-text-secondary);
+  margin: 0 0 8px;
+  max-width: 28ch;
+}
+
+.rutinas-empty-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 280px;
+}
+
+/* Sheet de plantillas */
+.templates-sheet {
+  --border-radius: var(--app-radius-l);
+}
+
+.templates-sheet-content {
+  --background: var(--app-bg);
+}
+
+.templates-sheet-intro {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 14px;
+  color: var(--app-text-secondary);
+  margin: 0 0 16px;
+}
+
+.templates-sheet-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.template-card {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-m);
+  background: var(--app-surface);
+  padding: 16px;
+  cursor: pointer;
+  transition: transform var(--app-dur-fast) var(--app-ease);
+}
+
+.template-card:active {
+  transform: scale(0.98);
+}
+
+.template-card-name {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--app-text-primary);
+  margin: 0 0 4px;
+}
+
+.template-card-description {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 14px;
+  color: var(--app-text-secondary);
+  margin: 0 0 8px;
+}
+
+.template-card-meta {
+  margin: 0;
+}
+
+.template-card-disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
