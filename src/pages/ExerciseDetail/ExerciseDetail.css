@@ -1,0 +1,143 @@
+/**
+ * Detalle de ejercicio — «ficha de taller» (CARGA)
+ * Referencia obligatoria: docs/design-carga.md
+ */
+
+.detail-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0 28px;
+  text-align: center;
+}
+
+.detail-name {
+  margin: 0;
+  text-align: center;
+}
+
+.detail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.detail-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: var(--app-radius-s);
+  background: var(--app-surface-elevated);
+  border: 1px solid var(--app-border);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--app-text-primary);
+  text-transform: capitalize;
+}
+
+.detail-section {
+  margin-bottom: 28px;
+}
+
+.detail-section > .carga-overline {
+  display: block;
+  margin-bottom: 12px;
+}
+
+.detail-muscles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.detail-muscle-primary,
+.detail-muscle-secondary {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: var(--app-radius-full);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: capitalize;
+}
+
+.detail-muscle-primary {
+  background: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
+}
+
+.detail-muscle-secondary {
+  border: 1px solid var(--app-border);
+  color: var(--app-text-secondary);
+}
+
+/* Instrucciones: grid [número | texto], numeración colgada en el margen */
+.detail-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.detail-step {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  column-gap: 12px;
+  align-items: start;
+  animation: detail-step-in var(--app-dur-base) var(--app-ease) both;
+}
+
+.detail-step-number {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  color: var(--ion-color-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.detail-step-text {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--app-text-primary);
+}
+
+@keyframes detail-step-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estados vacío / no encontrado */
+.detail-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 16px;
+  text-align: center;
+}
+
+.detail-empty-icon {
+  font-size: 40px;
+  color: var(--app-text-secondary);
+}
+
+.detail-empty-text {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 15px;
+  color: var(--app-text-secondary);
+  margin: 0;
+}

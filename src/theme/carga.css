@@ -99,3 +99,45 @@ h3,
     --app-dur-slow: 0ms;
   }
 }
+
+/* ---------------------------------------------------------------------- */
+/* Avatares duotono — 6 familias musculares (ExerciseAvatar)              */
+/* Tema claro por defecto; override en oscuro. Ver docs/design-carga.md.  */
+/* ---------------------------------------------------------------------- */
+:root {
+  /* empuje: chest, shoulders */
+  --carga-avatar-empuje-bg: #F3DCCB;
+  --carga-avatar-empuje-text: #8A4A1F;
+  /* tirón: back, lower arms, neck */
+  --carga-avatar-tiron-bg: #D6E6F1;
+  --carga-avatar-tiron-text: #2E566E;
+  /* pierna: upper legs, lower legs */
+  --carga-avatar-pierna-bg: #DCEAD5;
+  --carga-avatar-pierna-text: #3E6633;
+  /* core: waist */
+  --carga-avatar-core-bg: #EFDAEA;
+  --carga-avatar-core-text: #6E3A60;
+  /* brazos: upper arms */
+  --carga-avatar-brazos-bg: #EEE7CC;
+  --carga-avatar-brazos-text: #6E6023;
+  /* cardio */
+  --carga-avatar-cardio-bg: #D2ECE8;
+  --carga-avatar-cardio-text: #2E5F58;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --carga-avatar-empuje-bg: #3A2A22;
+    --carga-avatar-empuje-text: #FFB38A;
+    --carga-avatar-tiron-bg: #22303A;
+    --carga-avatar-tiron-text: #8AC3E8;
+    --carga-avatar-pierna-bg: #283426;
+    --carga-avatar-pierna-text: #9ED38F;
+    --carga-avatar-core-bg: #362633;
+    --carga-avatar-core-text: #E0A3D0;
+    --carga-avatar-brazos-bg: #363222;
+    --carga-avatar-brazos-text: #DBC98A;
+    --carga-avatar-cardio-bg: #223634;
+    --carga-avatar-cardio-text: #8AD8CE;
+  }
+}

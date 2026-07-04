@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
-  IonButton,
   IonContent,
   IonHeader,
   IonIcon,
@@ -9,7 +8,6 @@ import {
   IonItem,
   IonLabel,
   IonList,
-  IonNote,
   IonPage,
   IonSearchbar,
   IonSelect,
@@ -23,9 +21,61 @@ import { useExercises } from '../../hooks/useExercises';
 import ExerciseAvatar, { capitalize } from '../../components/ExerciseAvatar';
 import type { Exercise } from '../../types/exercise';
 import { normalize } from '../../utils/text';
+import './Explorar.css';
 
 const PAGE_SIZE = 50;
 const ALL = 'all';
+/** Número de filas iniciales que reciben la animación de entrada escalonada. */
+const STAGGER_COUNT = 8;
+const STAGGER_STEP_MS = 20;
+
+interface ChipOption {
+  value: string;
+  label: string;
+}
+
+interface FilterChipProps {
+  label: string;
+  value: string;
+  active: boolean;
+  ariaLabel: string;
+  header: string;
+  options: ChipOption[];
+  onChange: (value: string) => void;
+}
+
+/**
+ * Chip-píldora persistente que ancla un IonSelect invisible superpuesto: el
+ * chip muestra la etiqueta/valor elegido y el IonSelect (opacity 0, cubre
+ * todo el chip) abre el popover nativo de opciones al tocar.
+ */
+const FilterChip: React.FC<FilterChipProps> = ({
+  label,
+  value,
+  active,
+  ariaLabel,
+  header,
+  options,
+  onChange,
+}) => (
+  <div className={`explorar-chip${active ? ' explorar-chip-active' : ''}`}>
+    <span>{label}</span>
+    <IonSelect
+      className="explorar-chip-select"
+      interface="popover"
+      value={value}
+      onIonChange={(event) => onChange(event.detail.value as string)}
+      interfaceOptions={{ header }}
+      aria-label={ariaLabel}
+    >
+      {options.map((option) => (
+        <IonSelectOption key={option.value} value={option.value}>
+          {option.label}
+        </IonSelectOption>
+      ))}
+    </IonSelect>
+  </div>
+);
 
 const Explorar: React.FC = () => {
   const { exercises, filters, loading } = useExercises();
@@ -35,6 +85,9 @@ const Explorar: React.FC = () => {
   const [selectedEquipment, setSelectedEquipment] = useState<string>(ALL);
   const [selectedTarget, setSelectedTarget] = useState<string>(ALL);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  // Se incrementa en cada cambio de filtro/búsqueda para forzar el remount
+  // (y por tanto la animación de entrada) de las primeras filas.
+  const [filterVersion, setFilterVersion] = useState(0);
 
   const normalizedSearch = useMemo(() => normalize(searchTerm), [searchTerm]);
 
@@ -59,6 +112,7 @@ const Explorar: React.FC = () => {
   // Reinicia la paginación cada vez que cambian los criterios de filtrado/búsqueda.
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
+    setFilterVersion((previous) => previous + 1);
   }, [selectedCategory, selectedEquipment, selectedTarget, normalizedSearch]);
 
   const visibleExercises = filteredExercises.slice(0, visibleCount);
@@ -86,6 +140,7 @@ const Explorar: React.FC = () => {
         </IonToolbar>
         <IonToolbar>
           <IonSearchbar
+            className="explorar-searchbar"
             placeholder="Buscar ejercicio…"
             debounce={300}
             value={searchTerm}
@@ -93,52 +148,52 @@ const Explorar: React.FC = () => {
           />
         </IonToolbar>
         <IonToolbar>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', width: '100%' }}>
-            <IonSelect
-              interface="popover"
+          <div className="explorar-chip-row">
+            <FilterChip
+              label={selectedCategory === ALL ? 'Categoría' : capitalize(selectedCategory)}
               value={selectedCategory}
-              onIonChange={(event) => setSelectedCategory(event.detail.value as string)}
-              interfaceOptions={{ header: 'Categoría' }}
-              aria-label="Categoría"
-              style={{ flex: '1 1 30%', minWidth: '110px' }}
-            >
-              <IonSelectOption value={ALL}>Todas las categorías</IonSelectOption>
-              {filters.categories.map((category) => (
-                <IonSelectOption key={category} value={category}>
-                  {capitalize(category)}
-                </IonSelectOption>
-              ))}
-            </IonSelect>
-            <IonSelect
-              interface="popover"
+              active={selectedCategory !== ALL}
+              ariaLabel="Categoría"
+              header="Categoría"
+              options={[
+                { value: ALL, label: 'Todas las categorías' },
+                ...filters.categories.map((category) => ({
+                  value: category,
+                  label: capitalize(category),
+                })),
+              ]}
+              onChange={setSelectedCategory}
+            />
+            <FilterChip
+              label={selectedEquipment === ALL ? 'Equipo' : capitalize(selectedEquipment)}
               value={selectedEquipment}
-              onIonChange={(event) => setSelectedEquipment(event.detail.value as string)}
-              interfaceOptions={{ header: 'Equipo' }}
-              aria-label="Equipo"
-              style={{ flex: '1 1 30%', minWidth: '110px' }}
-            >
-              <IonSelectOption value={ALL}>Todo el equipo</IonSelectOption>
-              {filters.equipment.map((equipment) => (
-                <IonSelectOption key={equipment} value={equipment}>
-                  {capitalize(equipment)}
-                </IonSelectOption>
-              ))}
-            </IonSelect>
-            <IonSelect
-              interface="popover"
+              active={selectedEquipment !== ALL}
+              ariaLabel="Equipo"
+              header="Equipo"
+              options={[
+                { value: ALL, label: 'Todo el equipo' },
+                ...filters.equipment.map((equipment) => ({
+                  value: equipment,
+                  label: capitalize(equipment),
+                })),
+              ]}
+              onChange={setSelectedEquipment}
+            />
+            <FilterChip
+              label={selectedTarget === ALL ? 'Músculo' : capitalize(selectedTarget)}
               value={selectedTarget}
-              onIonChange={(event) => setSelectedTarget(event.detail.value as string)}
-              interfaceOptions={{ header: 'Músculo objetivo' }}
-              aria-label="Músculo objetivo"
-              style={{ flex: '1 1 30%', minWidth: '110px' }}
-            >
-              <IonSelectOption value={ALL}>Todos los músculos</IonSelectOption>
-              {filters.targets.map((target) => (
-                <IonSelectOption key={target} value={target}>
-                  {capitalize(target)}
-                </IonSelectOption>
-              ))}
-            </IonSelect>
+              active={selectedTarget !== ALL}
+              ariaLabel="Músculo objetivo"
+              header="Músculo objetivo"
+              options={[
+                { value: ALL, label: 'Todos los músculos' },
+                ...filters.targets.map((target) => ({
+                  value: target,
+                  label: capitalize(target),
+                })),
+              ]}
+              onChange={setSelectedTarget}
+            />
           </div>
         </IonToolbar>
       </IonHeader>
@@ -164,46 +219,52 @@ const Explorar: React.FC = () => {
         ) : (
           <>
             <div className="ion-padding-horizontal ion-padding-top">
-              <IonNote>
+              <p className="carga-overline explorar-counter" key={filterVersion}>
                 {filteredExercises.length.toLocaleString('es-ES')}{' '}
                 {filteredExercises.length === 1 ? 'ejercicio' : 'ejercicios'}
-              </IonNote>
+              </p>
             </div>
 
             {filteredExercises.length === 0 ? (
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '0.75rem',
-                  padding: '3rem 1.5rem',
-                  textAlign: 'center',
-                }}
-              >
-                <IonIcon icon={searchOutline} style={{ fontSize: '3rem' }} color="medium" />
-                <p>Sin resultados</p>
-                <IonButton onClick={handleClearFilters}>Limpiar filtros</IonButton>
+              <div className="explorar-empty">
+                <IonIcon icon={searchOutline} className="explorar-empty-icon" />
+                <p className="explorar-empty-text">Sin resultados</p>
+                <button
+                  type="button"
+                  className="explorar-empty-clear"
+                  onClick={handleClearFilters}
+                >
+                  Limpiar filtros
+                </button>
               </div>
             ) : (
               <>
                 <IonList>
-                  {visibleExercises.map((exercise) => (
-                    <IonItem
-                      key={exercise.id}
-                      routerLink={`/tabs/explorar/${exercise.id}`}
-                      detail
-                    >
-                      <ExerciseAvatar target={exercise.target} category={exercise.category} />
-                      <IonLabel className="ion-text-wrap" style={{ marginInlineStart: '0.75rem' }}>
-                        <h2>{exercise.name}</h2>
-                        <p>
-                          {capitalize(exercise.target)} · {capitalize(exercise.equipment)}
-                        </p>
-                      </IonLabel>
-                    </IonItem>
-                  ))}
+                  {visibleExercises.map((exercise, index) => {
+                    const animated = index < STAGGER_COUNT;
+                    return (
+                      <IonItem
+                        key={animated ? `${filterVersion}-${exercise.id}` : exercise.id}
+                        className={`explorar-row${animated ? ' explorar-row-enter' : ''}`}
+                        style={animated ? { animationDelay: `${index * STAGGER_STEP_MS}ms` } : undefined}
+                        routerLink={`/tabs/explorar/${exercise.id}`}
+                        detail={false}
+                        lines="full"
+                      >
+                        <ExerciseAvatar
+                          target={exercise.target}
+                          category={exercise.category}
+                          size={44}
+                        />
+                        <IonLabel className="ion-text-wrap" style={{ marginInlineStart: '12px' }}>
+                          <h2 className="explorar-row-name">{exercise.name}</h2>
+                          <p className="explorar-row-meta">
+                            {capitalize(exercise.target)} · {capitalize(exercise.equipment)}
+                          </p>
+                        </IonLabel>
+                      </IonItem>
+                    );
+                  })}
                 </IonList>
 
                 <IonInfiniteScroll

@@ -3,25 +3,23 @@ import {
   IonBackButton,
   IonButton,
   IonButtons,
-  IonChip,
   IonContent,
   IonHeader,
   IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
   IonPage,
   IonSpinner,
-  IonTitle,
   IonToolbar,
 } from '@ionic/react';
 import { alertCircleOutline } from 'ionicons/icons';
 import { useExercises } from '../../hooks/useExercises';
 import ExerciseAvatar, { capitalize } from '../../components/ExerciseAvatar';
+import './ExerciseDetail.css';
 
 interface ExerciseDetailParams {
   id: string;
 }
+
+const STEP_STAGGER_MS = 30;
 
 const ExerciseDetail: React.FC = () => {
   const { id } = useParams<ExerciseDetailParams>();
@@ -35,19 +33,12 @@ const ExerciseDetail: React.FC = () => {
         <IonHeader>
           <IonToolbar>
             <IonButtons slot="start">
-              <IonBackButton defaultHref="/tabs/explorar" />
+              <IonBackButton defaultHref="/tabs/explorar" text="" />
             </IonButtons>
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              height: '100%',
-            }}
-          >
+          <div className="detail-empty">
             <IonSpinner name="crescent" />
           </div>
         </IonContent>
@@ -61,25 +52,14 @@ const ExerciseDetail: React.FC = () => {
         <IonHeader>
           <IonToolbar>
             <IonButtons slot="start">
-              <IonBackButton defaultHref="/tabs/explorar" />
+              <IonBackButton defaultHref="/tabs/explorar" text="" />
             </IonButtons>
-            <IonTitle>Ejercicio no encontrado</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen className="ion-padding">
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: '100%',
-              gap: '1rem',
-              textAlign: 'center',
-            }}
-          >
-            <IonIcon icon={alertCircleOutline} style={{ fontSize: '3rem' }} color="medium" />
-            <p>Ejercicio no encontrado</p>
+          <div className="detail-empty">
+            <IonIcon icon={alertCircleOutline} className="detail-empty-icon" />
+            <p className="detail-empty-text">Ejercicio no encontrado</p>
             <IonButton routerLink="/tabs/explorar" routerDirection="back">
               Volver
             </IonButton>
@@ -100,57 +80,47 @@ const ExerciseDetail: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton defaultHref="/tabs/explorar" />
+            <IonBackButton defaultHref="/tabs/explorar" text="" />
           </IonButtons>
-          <IonTitle>{exercise.name}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen className="ion-padding">
-        <div style={{ display: 'flex', justifyContent: 'center', padding: '1rem 0' }}>
-          <ExerciseAvatar target={exercise.target} category={exercise.category} size={96} />
-        </div>
-        <h1 style={{ textAlign: 'center', margin: '0 0 1rem' }}>{exercise.name}</h1>
-
-        <div
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: '0.5rem',
-            justifyContent: 'center',
-            marginBottom: '1.5rem',
-          }}
-        >
-          <IonChip color="primary">{capitalize(exercise.category)}</IonChip>
-          <IonChip color="secondary">{capitalize(exercise.equipment)}</IonChip>
-          <IonChip color="tertiary">{capitalize(exercise.target)}</IonChip>
+        <div className="detail-header">
+          <ExerciseAvatar target={exercise.target} category={exercise.category} size={72} />
+          <h1 className="detail-name">{exercise.name}</h1>
+          <div className="detail-tags">
+            <span className="detail-tag">{capitalize(exercise.category)}</span>
+            <span className="detail-tag">{capitalize(exercise.equipment)}</span>
+          </div>
         </div>
 
-        <h2>Músculos</h2>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.5rem' }}>
-          <IonChip outline color="dark">
-            {capitalize(exercise.muscle_group)}
-          </IonChip>
-          {secondaryMuscles.map((muscle) => (
-            <IonChip outline key={muscle}>
-              {capitalize(muscle)}
-            </IonChip>
-          ))}
-        </div>
+        <section className="detail-section">
+          <p className="carga-overline">Músculos</p>
+          <div className="detail-muscles">
+            <span className="detail-muscle-primary">{capitalize(exercise.muscle_group)}</span>
+            {secondaryMuscles.map((muscle) => (
+              <span className="detail-muscle-secondary" key={muscle}>
+                {capitalize(muscle)}
+              </span>
+            ))}
+          </div>
+        </section>
 
-        <h2>Instrucciones</h2>
-        <IonList inset>
-          {exercise.steps.es.map((step, index) => (
-            <IonItem key={index} lines="full">
-              <div
-                slot="start"
-                style={{ fontWeight: 600, minWidth: '1.5rem', textAlign: 'center' }}
+        <section className="detail-section">
+          <p className="carga-overline">Instrucciones</p>
+          <ol className="detail-steps">
+            {exercise.steps.es.map((step, index) => (
+              <li
+                className="detail-step"
+                key={index}
+                style={{ animationDelay: `${index * STEP_STAGGER_MS}ms` }}
               >
-                {index + 1}
-              </div>
-              <IonLabel className="ion-text-wrap">{step}</IonLabel>
-            </IonItem>
-          ))}
-        </IonList>
+                <span className="detail-step-number">{index + 1}</span>
+                <span className="detail-step-text">{step}</span>
+              </li>
+            ))}
+          </ol>
+        </section>
       </IonContent>
     </IonPage>
   );

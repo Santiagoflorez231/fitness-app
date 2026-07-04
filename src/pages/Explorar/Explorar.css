@@ -1,0 +1,165 @@
+/**
+ * Explorar — «fichero de biblioteca» (CARGA)
+ * Referencia obligatoria: docs/design-carga.md
+ */
+
+/* Buscador: fondo surface, radius-s, sin sombra flotante */
+.explorar-searchbar {
+  --background: var(--app-surface);
+  --border-radius: var(--app-radius-s);
+  --box-shadow: none;
+  --color: var(--app-text-primary);
+  --placeholder-color: var(--app-text-secondary);
+  --icon-color: var(--app-text-secondary);
+  padding-bottom: 0;
+}
+
+/* Fila de chips-píldora persistentes */
+.explorar-chip-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 8px 16px 12px;
+  scrollbar-width: none;
+}
+
+.explorar-chip-row::-webkit-scrollbar {
+  display: none;
+}
+
+.explorar-chip {
+  position: relative;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: var(--app-radius-full);
+  border: 1px solid var(--app-border);
+  background: var(--app-surface);
+  color: var(--app-text-primary);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition:
+    background var(--app-dur-fast) var(--app-ease),
+    color var(--app-dur-fast) var(--app-ease),
+    border-color var(--app-dur-fast) var(--app-ease);
+}
+
+.explorar-chip-active {
+  background: var(--ion-color-primary);
+  border-color: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
+  animation: explorar-chip-pop var(--app-dur-fast) var(--app-ease-pop) both;
+}
+
+@keyframes explorar-chip-pop {
+  from {
+    transform: scale(0.97);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* IonSelect invisible anclado: cubre el chip entero y abre el popover nativo */
+.explorar-chip-select {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  --padding-bottom: 0;
+}
+
+/* Contador de resultados: cross-fade al cambiar (retriggeado por key) */
+.explorar-counter {
+  animation: explorar-fade var(--app-dur-fast) var(--app-ease) both;
+}
+
+@keyframes explorar-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Filas de 64px */
+.explorar-row {
+  --background: var(--app-surface);
+  --border-color: var(--app-border);
+  --min-height: 64px;
+  --padding-start: 16px;
+  --inner-padding-end: 16px;
+}
+
+.explorar-row-name {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--app-text-primary);
+  margin: 0 0 2px;
+}
+
+.explorar-row-meta {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px;
+  color: var(--app-text-secondary);
+  margin: 0;
+  text-transform: capitalize;
+}
+
+/* Entrada escalonada — solo primeras 8 filas, con animation-delay por índice */
+.explorar-row-enter {
+  animation: explorar-row-in var(--app-dur-base) var(--app-ease) both;
+}
+
+@keyframes explorar-row-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estado vacío */
+.explorar-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.explorar-empty-icon {
+  font-size: 40px;
+  color: var(--app-text-secondary);
+}
+
+.explorar-empty-text {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 15px;
+  color: var(--app-text-secondary);
+  margin: 0;
+}
+
+.explorar-empty-clear {
+  background: none;
+  border: none;
+  padding: 4px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--ion-color-primary);
+  cursor: pointer;
+}
