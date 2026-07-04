@@ -1,0 +1,10 @@
+/*
+ * Tailwind CSS v4 sin Preflight.
+ *
+ * Se importan directamente los layers "theme" y "utilities" del paquete
+ * tailwindcss, evitando el layer "base" (Preflight), que resetea estilos
+ * globales (*, ::before, button, etc.) y rompe la apariencia nativa de los
+ * componentes Ionic. Ver https://tailwindcss.com/docs/preflight#disabling-preflight
+ */
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);

@@ -1,0 +1,3786 @@
+[
+  {
+    "id": "0001",
+    "name": "3/4 sit-up",
+    "matchLevel": "exact",
+    "freeDbId": "3_4_Sit-Up",
+    "freeDbName": "3/4 Sit-Up",
+    "images": [
+      "3_4_Sit-Up/0.jpg",
+      "3_4_Sit-Up/1.jpg"
+    ]
+  },
+  {
+    "id": "0003",
+    "name": "air bike",
+    "matchLevel": "exact",
+    "freeDbId": "Air_Bike",
+    "freeDbName": "Air Bike",
+    "images": [
+      "Air_Bike/0.jpg",
+      "Air_Bike/1.jpg"
+    ]
+  },
+  {
+    "id": "1512",
+    "name": "all fours squad stretch",
+    "matchLevel": "contains",
+    "freeDbId": "Quad_Stretch",
+    "freeDbName": "Quad Stretch",
+    "images": [
+      "Quad_Stretch/0.jpg",
+      "Quad_Stretch/1.jpg"
+    ]
+  },
+  {
+    "id": "0006",
+    "name": "alternate heel touchers",
+    "matchLevel": "exact",
+    "freeDbId": "Alternate_Heel_Touchers",
+    "freeDbName": "Alternate Heel Touchers",
+    "images": [
+      "Alternate_Heel_Touchers/0.jpg",
+      "Alternate_Heel_Touchers/1.jpg"
+    ]
+  },
+  {
+    "id": "1368",
+    "name": "ankle circles",
+    "matchLevel": "exact",
+    "freeDbId": "Ankle_Circles",
+    "freeDbName": "Ankle Circles",
+    "images": [
+      "Ankle_Circles/0.jpg",
+      "Ankle_Circles/1.jpg"
+    ]
+  },
+  {
+    "id": "1709",
+    "name": "assisted lying glutes stretch",
+    "matchLevel": "contains",
+    "freeDbId": "Lying_Glute",
+    "freeDbName": "Lying Glute",
+    "images": [
+      "Lying_Glute/0.jpg",
+      "Lying_Glute/1.jpg"
+    ]
+  },
+  {
+    "id": "1710",
+    "name": "assisted lying gluteus and piriformis stretch",
+    "matchLevel": "contains",
+    "freeDbId": "Lying_Glute",
+    "freeDbName": "Lying Glute",
+    "images": [
+      "Lying_Glute/0.jpg",
+      "Lying_Glute/1.jpg"
+    ]
+  },
+  {
+    "id": "0014",
+    "name": "assisted motion russian twist",
+    "matchLevel": "contains",
+    "freeDbId": "Russian_Twist",
+    "freeDbName": "Russian Twist",
+    "images": [
+      "Russian_Twist/0.jpg",
+      "Russian_Twist/1.jpg"
+    ]
+  },
+  {
+    "id": "0017",
+    "name": "assisted pull-up",
+    "matchLevel": "contains",
+    "freeDbId": "Band_Assisted_Pull-Up",
+    "freeDbName": "Band Assisted Pull-Up",
+    "images": [
+      "Band_Assisted_Pull-Up/0.jpg",
+      "Band_Assisted_Pull-Up/1.jpg"
+    ]
+  },
+  {
+    "id": "1712",
+    "name": "assisted side lying adductor stretch",
+    "matchLevel": "contains",
+    "freeDbId": "Adductor",
+    "freeDbName": "Adductor",
+    "images": [
+      "Adductor/0.jpg",
+      "Adductor/1.jpg"
+    ]
+  },
+  {
+    "id": "0020",
+    "name": "balance board",
+    "matchLevel": "exact",
+    "freeDbId": "Balance_Board",
+    "freeDbName": "Balance Board",
+    "images": [
+      "Balance_Board/0.jpg",
+      "Balance_Board/1.jpg"
+    ]
+  },
+  {
+    "id": "0970",
+    "name": "band assisted pull-up",
+    "matchLevel": "exact",
+    "freeDbId": "Band_Assisted_Pull-Up",
+    "freeDbName": "Band Assisted Pull-Up",
+    "images": [
+      "Band_Assisted_Pull-Up/0.jpg",
+      "Band_Assisted_Pull-Up/1.jpg"
+    ]
+  },
+  {
+    "id": "1254",
+    "name": "band bench press",
+    "matchLevel": "contains",
+    "freeDbId": "Reverse_Band_Bench_Press",
+    "freeDbName": "Reverse Band Bench Press",
+    "images": [
+      "Reverse_Band_Bench_Press/0.jpg",
+      "Reverse_Band_Bench_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "0979",
+    "name": "band horizontal pallof press",
+    "matchLevel": "contains",
+    "freeDbId": "Pallof_Press",
+    "freeDbName": "Pallof Press",
+    "images": [
+      "Pallof_Press/0.jpg",
+      "Pallof_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "0991",
+    "name": "band pull through",
+    "matchLevel": "contains",
+    "freeDbId": "Pull_Through",
+    "freeDbName": "Pull Through",
+    "images": [
+      "Pull_Through/0.jpg",
+      "Pull_Through/1.jpg"
+    ]
+  },
+  {
+    "id": "1015",
+    "name": "band vertical pallof press",
+    "matchLevel": "contains",
+    "freeDbId": "Pallof_Press",
+    "freeDbName": "Pallof Press",
+    "images": [
+      "Pallof_Press/0.jpg",
+      "Pallof_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "0025",
+    "name": "barbell bench press",
+    "matchLevel": "contains",
+    "freeDbId": "Barbell_Bench_Press_-_Medium_Grip",
+    "freeDbName": "Barbell Bench Press - Medium Grip",
+    "images": [
+      "Barbell_Bench_Press_-_Medium_Grip/0.jpg",
+      "Barbell_Bench_Press_-_Medium_Grip/1.jpg"
+    ]
+  },
+  {
+    "id": "0028",
+    "name": "barbell clean and press",
+    "matchLevel": "contains",
+    "freeDbId": "Clean_and_Press",
+    "freeDbName": "Clean and Press",
+    "images": [
+      "Clean_and_Press/0.jpg",
+      "Clean_and_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "0031",
+    "name": "barbell curl",
+    "matchLevel": "exact",
+    "freeDbId": "Barbell_Curl",
+    "freeDbName": "Barbell Curl",
+    "images": [
+      "Barbell_Curl/0.jpg",
+      "Barbell_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "0032",
+    "name": "barbell deadlift",
+    "matchLevel": "exact",
+    "freeDbId": "Barbell_Deadlift",
+    "freeDbName": "Barbell Deadlift",
+    "images": [
+      "Barbell_Deadlift/0.jpg",
+      "Barbell_Deadlift/1.jpg"
+    ]
+  },
+  {
+    "id": "0038",
+    "name": "barbell drag curl",
+    "matchLevel": "contains",
+    "freeDbId": "Drag_Curl",
+    "freeDbName": "Drag Curl",
+    "images": [
+      "Drag_Curl/0.jpg",
+      "Drag_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "0040",
+    "name": "barbell front raise and pullover",
+    "matchLevel": "contains",
+    "freeDbId": "Front_Raise_And_Pullover",
+    "freeDbName": "Front Raise And Pullover",
+    "images": [
+      "Front_Raise_And_Pullover/0.jpg",
+      "Front_Raise_And_Pullover/1.jpg"
+    ]
+  },
+  {
+    "id": "0043",
+    "name": "barbell full squat",
+    "matchLevel": "exact",
+    "freeDbId": "Barbell_Full_Squat",
+    "freeDbName": "Barbell Full Squat",
+    "images": [
+      "Barbell_Full_Squat/0.jpg",
+      "Barbell_Full_Squat/1.jpg"
+    ]
+  },
+  {
+    "id": "1461",
+    "name": "barbell full squat (back pov)",
+    "matchLevel": "noparen",
+    "freeDbId": "Barbell_Full_Squat",
+    "freeDbName": "Barbell Full Squat",
+    "images": [
+      "Barbell_Full_Squat/0.jpg",
+      "Barbell_Full_Squat/1.jpg"
+    ]
+  },
+  {
+    "id": "1462",
+    "name": "barbell full squat (side pov)",
+    "matchLevel": "noparen",
+    "freeDbId": "Barbell_Full_Squat",
+    "freeDbName": "Barbell Full Squat",
+    "images": [
+      "Barbell_Full_Squat/0.jpg",
+      "Barbell_Full_Squat/1.jpg"
+    ]
+  },
+  {
+    "id": "1409",
+    "name": "barbell glute bridge",
+    "matchLevel": "exact",
+    "freeDbId": "Barbell_Glute_Bridge",
+    "freeDbName": "Barbell Glute Bridge",
+    "images": [
+      "Barbell_Glute_Bridge/0.jpg",
+      "Barbell_Glute_Bridge/1.jpg"
+    ]
+  },
+  {
+    "id": "3562",
+    "name": "barbell glute bridge two legs on bench (male)",
+    "matchLevel": "contains",
+    "freeDbId": "Barbell_Glute_Bridge",
+    "freeDbName": "Barbell Glute Bridge",
+    "images": [
+      "Barbell_Glute_Bridge/0.jpg",
+      "Barbell_Glute_Bridge/1.jpg"
+    ]
+  },
+  {
+    "id": "0044",
+    "name": "barbell good morning",
+    "matchLevel": "contains",
+    "freeDbId": "Good_Morning",
+    "freeDbName": "Good Morning",
+    "images": [
+      "Good_Morning/0.jpg",
+      "Good_Morning/1.jpg"
+    ]
+  },
+  {
+    "id": "0045",
+    "name": "barbell guillotine bench press",
+    "matchLevel": "exact",
+    "freeDbId": "Barbell_Guillotine_Bench_Press",
+    "freeDbName": "Barbell Guillotine Bench Press",
+    "images": [
+      "Barbell_Guillotine_Bench_Press/0.jpg",
+      "Barbell_Guillotine_Bench_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "0046",
+    "name": "barbell hack squat",
+    "matchLevel": "exact",
+    "freeDbId": "Barbell_Hack_Squat",
+    "freeDbName": "Barbell Hack Squat",
+    "images": [
+      "Barbell_Hack_Squat/0.jpg",
+      "Barbell_Hack_Squat/1.jpg"
+    ]
+  },
+  {
+    "id": "0047",
+    "name": "barbell incline bench press",
+    "matchLevel": "contains",
+    "freeDbId": "Barbell_Incline_Bench_Press_-_Medium_Grip",
+    "freeDbName": "Barbell Incline Bench Press - Medium Grip",
+    "images": [
+      "Barbell_Incline_Bench_Press_-_Medium_Grip/0.jpg",
+      "Barbell_Incline_Bench_Press_-_Medium_Grip/1.jpg"
+    ]
+  },
+  {
+    "id": "0050",
+    "name": "barbell incline shoulder raise",
+    "matchLevel": "exact",
+    "freeDbId": "Barbell_Incline_Shoulder_Raise",
+    "freeDbName": "Barbell Incline Shoulder Raise",
+    "images": [
+      "Barbell_Incline_Shoulder_Raise/0.jpg",
+      "Barbell_Incline_Shoulder_Raise/1.jpg"
+    ]
+  },
+  {
+    "id": "0054",
+    "name": "barbell lunge",
+    "matchLevel": "exact",
+    "freeDbId": "Barbell_Lunge",
+    "freeDbName": "Barbell Lunge",
+    "images": [
+      "Barbell_Lunge/0.jpg",
+      "Barbell_Lunge/1.jpg"
+    ]
+  },
+  {
+    "id": "0059",
+    "name": "barbell lying preacher curl",
+    "matchLevel": "contains",
+    "freeDbId": "Preacher_Curl",
+    "freeDbName": "Preacher Curl",
+    "images": [
+      "Preacher_Curl/0.jpg",
+      "Preacher_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "0065",
+    "name": "barbell one arm floor press",
+    "matchLevel": "contains",
+    "freeDbId": "Floor_Press",
+    "freeDbName": "Floor Press",
+    "images": [
+      "Floor_Press/0.jpg",
+      "Floor_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "0069",
+    "name": "barbell overhead squat",
+    "matchLevel": "contains",
+    "freeDbId": "Overhead_Squat",
+    "freeDbName": "Overhead Squat",
+    "images": [
+      "Overhead_Squat/0.jpg",
+      "Overhead_Squat/1.jpg"
+    ]
+  },
+  {
+    "id": "1751",
+    "name": "barbell pin presses",
+    "matchLevel": "contains",
+    "freeDbId": "Pin_Presses",
+    "freeDbName": "Pin Presses",
+    "images": [
+      "Pin_Presses/0.jpg",
+      "Pin_Presses/1.jpg"
+    ]
+  },
+  {
+    "id": "0070",
+    "name": "barbell preacher curl",
+    "matchLevel": "contains",
+    "freeDbId": "Preacher_Curl",
+    "freeDbName": "Preacher Curl",
+    "images": [
+      "Preacher_Curl/0.jpg",
+      "Preacher_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "0071",
+    "name": "barbell press sit-up",
+    "matchLevel": "contains",
+    "freeDbId": "Press_Sit-Up",
+    "freeDbName": "Press Sit-Up",
+    "images": [
+      "Press_Sit-Up/0.jpg",
+      "Press_Sit-Up/1.jpg"
+    ]
+  },
+  {
+    "id": "0073",
+    "name": "barbell pullover",
+    "matchLevel": "contains",
+    "freeDbId": "Bent-Arm_Barbell_Pullover",
+    "freeDbName": "Bent-Arm Barbell Pullover",
+    "images": [
+      "Bent-Arm_Barbell_Pullover/0.jpg",
+      "Bent-Arm_Barbell_Pullover/1.jpg"
+    ]
+  },
+  {
+    "id": "0076",
+    "name": "barbell rear delt row",
+    "matchLevel": "exact",
+    "freeDbId": "Barbell_Rear_Delt_Row",
+    "freeDbName": "Barbell Rear Delt Row",
+    "images": [
+      "Barbell_Rear_Delt_Row/0.jpg",
+      "Barbell_Rear_Delt_Row/1.jpg"
+    ]
+  },
+  {
+    "id": "0081",
+    "name": "barbell reverse preacher curl",
+    "matchLevel": "contains",
+    "freeDbId": "Preacher_Curl",
+    "freeDbName": "Preacher Curl",
+    "images": [
+      "Preacher_Curl/0.jpg",
+      "Preacher_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "0085",
+    "name": "barbell romanian deadlift",
+    "matchLevel": "contains",
+    "freeDbId": "Romanian_Deadlift",
+    "freeDbName": "Romanian Deadlift",
+    "images": [
+      "Romanian_Deadlift/0.jpg",
+      "Romanian_Deadlift/1.jpg"
+    ]
+  },
+  {
+    "id": "0088",
+    "name": "barbell seated calf raise",
+    "matchLevel": "exact",
+    "freeDbId": "Barbell_Seated_Calf_Raise",
+    "freeDbName": "Barbell Seated Calf Raise",
+    "images": [
+      "Barbell_Seated_Calf_Raise/0.jpg",
+      "Barbell_Seated_Calf_Raise/1.jpg"
+    ]
+  },
+  {
+    "id": "1371",
+    "name": "barbell seated calf raise",
+    "matchLevel": "exact",
+    "freeDbId": "Barbell_Seated_Calf_Raise",
+    "freeDbName": "Barbell Seated Calf Raise",
+    "images": [
+      "Barbell_Seated_Calf_Raise/0.jpg",
+      "Barbell_Seated_Calf_Raise/1.jpg"
+    ]
+  },
+  {
+    "id": "0090",
+    "name": "barbell seated good morning",
+    "matchLevel": "contains",
+    "freeDbId": "Good_Morning",
+    "freeDbName": "Good Morning",
+    "images": [
+      "Good_Morning/0.jpg",
+      "Good_Morning/1.jpg"
+    ]
+  },
+  {
+    "id": "0092",
+    "name": "barbell seated overhead triceps extension",
+    "matchLevel": "contains",
+    "freeDbId": "Overhead_Triceps",
+    "freeDbName": "Overhead Triceps",
+    "images": [
+      "Overhead_Triceps/0.jpg",
+      "Overhead_Triceps/1.jpg"
+    ]
+  },
+  {
+    "id": "0095",
+    "name": "barbell shrug",
+    "matchLevel": "exact",
+    "freeDbId": "Barbell_Shrug",
+    "freeDbName": "Barbell Shrug",
+    "images": [
+      "Barbell_Shrug/0.jpg",
+      "Barbell_Shrug/1.jpg"
+    ]
+  },
+  {
+    "id": "0098",
+    "name": "barbell side split squat",
+    "matchLevel": "exact",
+    "freeDbId": "Barbell_Side_Split_Squat",
+    "freeDbName": "Barbell Side Split Squat",
+    "images": [
+      "Barbell_Side_Split_Squat/0.jpg",
+      "Barbell_Side_Split_Squat/1.jpg"
+    ]
+  },
+  {
+    "id": "0097",
+    "name": "barbell side split squat v. 2",
+    "matchLevel": "contains",
+    "freeDbId": "Barbell_Side_Split_Squat",
+    "freeDbName": "Barbell Side Split Squat",
+    "images": [
+      "Barbell_Side_Split_Squat/0.jpg",
+      "Barbell_Side_Split_Squat/1.jpg"
+    ]
+  },
+  {
+    "id": "0102",
+    "name": "barbell squat (on knees)",
+    "matchLevel": "noparen",
+    "freeDbId": "Barbell_Squat",
+    "freeDbName": "Barbell Squat",
+    "images": [
+      "Barbell_Squat/0.jpg",
+      "Barbell_Squat/1.jpg"
+    ]
+  },
+  {
+    "id": "2798",
+    "name": "barbell squat jump step rear lunge",
+    "matchLevel": "contains",
+    "freeDbId": "Barbell_Squat",
+    "freeDbName": "Barbell Squat",
+    "images": [
+      "Barbell_Squat/0.jpg",
+      "Barbell_Squat/1.jpg"
+    ]
+  },
+  {
+    "id": "0103",
+    "name": "barbell standing ab rollerout",
+    "matchLevel": "contains",
+    "freeDbId": "Ab_Roller",
+    "freeDbName": "Ab Roller",
+    "images": [
+      "Ab_Roller/0.jpg",
+      "Ab_Roller/1.jpg"
+    ]
+  },
+  {
+    "id": "0105",
+    "name": "barbell standing bradford press",
+    "matchLevel": "contains",
+    "freeDbId": "Standing_Bradford_Press",
+    "freeDbName": "Standing Bradford Press",
+    "images": [
+      "Standing_Bradford_Press/0.jpg",
+      "Standing_Bradford_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "2414",
+    "name": "barbell standing concentration curl",
+    "matchLevel": "contains",
+    "freeDbId": "Standing_Concentration_Curl",
+    "freeDbName": "Standing Concentration Curl",
+    "images": [
+      "Standing_Concentration_Curl/0.jpg",
+      "Standing_Concentration_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "0109",
+    "name": "barbell standing overhead triceps extension",
+    "matchLevel": "contains",
+    "freeDbId": "Overhead_Triceps",
+    "freeDbName": "Overhead Triceps",
+    "images": [
+      "Overhead_Triceps/0.jpg",
+      "Overhead_Triceps/1.jpg"
+    ]
+  },
+  {
+    "id": "0115",
+    "name": "barbell stiff leg good morning",
+    "matchLevel": "contains",
+    "freeDbId": "Good_Morning",
+    "freeDbName": "Good Morning",
+    "images": [
+      "Good_Morning/0.jpg",
+      "Good_Morning/1.jpg"
+    ]
+  },
+  {
+    "id": "0117",
+    "name": "barbell sumo deadlift",
+    "matchLevel": "contains",
+    "freeDbId": "Sumo_Deadlift",
+    "freeDbName": "Sumo Deadlift",
+    "images": [
+      "Sumo_Deadlift/0.jpg",
+      "Sumo_Deadlift/1.jpg"
+    ]
+  },
+  {
+    "id": "0126",
+    "name": "barbell wrist curl",
+    "matchLevel": "contains",
+    "freeDbId": "Palms-Up_Barbell_Wrist_Curl_Over_A_Bench",
+    "freeDbName": "Palms-Up Barbell Wrist Curl Over A Bench",
+    "images": [
+      "Palms-Up_Barbell_Wrist_Curl_Over_A_Bench/0.jpg",
+      "Palms-Up_Barbell_Wrist_Curl_Over_A_Bench/1.jpg"
+    ]
+  },
+  {
+    "id": "0128",
+    "name": "battling ropes",
+    "matchLevel": "exact",
+    "freeDbId": "Battling_Ropes",
+    "freeDbName": "Battling Ropes",
+    "images": [
+      "Battling_Ropes/0.jpg",
+      "Battling_Ropes/1.jpg"
+    ]
+  },
+  {
+    "id": "3360",
+    "name": "bear crawl",
+    "matchLevel": "contains",
+    "freeDbId": "Bear_Crawl_Sled_Drags",
+    "freeDbName": "Bear Crawl Sled Drags",
+    "images": [
+      "Bear_Crawl_Sled_Drags/0.jpg",
+      "Bear_Crawl_Sled_Drags/1.jpg"
+    ]
+  },
+  {
+    "id": "1259",
+    "name": "behind head chest stretch",
+    "matchLevel": "exact",
+    "freeDbId": "Behind_Head_Chest_Stretch",
+    "freeDbName": "Behind Head Chest Stretch",
+    "images": [
+      "Behind_Head_Chest_Stretch/0.jpg",
+      "Behind_Head_Chest_Stretch/1.jpg"
+    ]
+  },
+  {
+    "id": "0137",
+    "name": "body-up",
+    "matchLevel": "exact",
+    "freeDbId": "Body-Up",
+    "freeDbName": "Body-Up",
+    "images": [
+      "Body-Up/0.jpg",
+      "Body-Up/1.jpg"
+    ]
+  },
+  {
+    "id": "3168",
+    "name": "bodyweight squatting row",
+    "matchLevel": "contains",
+    "freeDbId": "Bodyweight_Squat",
+    "freeDbName": "Bodyweight Squat",
+    "images": [
+      "Bodyweight_Squat/0.jpg",
+      "Bodyweight_Squat/1.jpg"
+    ]
+  },
+  {
+    "id": "3167",
+    "name": "bodyweight squatting row (with towel)",
+    "matchLevel": "contains",
+    "freeDbId": "Bodyweight_Squat",
+    "freeDbName": "Bodyweight Squat",
+    "images": [
+      "Bodyweight_Squat/0.jpg",
+      "Bodyweight_Squat/1.jpg"
+    ]
+  },
+  {
+    "id": "0138",
+    "name": "bottoms-up",
+    "matchLevel": "contains",
+    "freeDbId": "Bottoms-Up_Clean_From_The_Hang_Position",
+    "freeDbName": "Bottoms-Up Clean From The Hang Position",
+    "images": [
+      "Bottoms-Up_Clean_From_The_Hang_Position/0.jpg",
+      "Bottoms-Up_Clean_From_The_Hang_Position/1.jpg"
+    ]
+  },
+  {
+    "id": "0870",
+    "name": "butt-ups",
+    "matchLevel": "exact",
+    "freeDbId": "Butt-Ups",
+    "freeDbName": "Butt-Ups",
+    "images": [
+      "Butt-Ups/0.jpg",
+      "Butt-Ups/1.jpg"
+    ]
+  },
+  {
+    "id": "1494",
+    "name": "butterfly yoga pose",
+    "matchLevel": "contains",
+    "freeDbId": "Butterfly",
+    "freeDbName": "Butterfly",
+    "images": [
+      "Butterfly/0.jpg",
+      "Butterfly/1.jpg"
+    ]
+  },
+  {
+    "id": "0153",
+    "name": "cable cross-over lateral pulldown",
+    "matchLevel": "contains",
+    "freeDbId": "Cable_Crossover",
+    "freeDbName": "Cable Crossover",
+    "images": [
+      "Cable_Crossover/0.jpg",
+      "Cable_Crossover/1.jpg"
+    ]
+  },
+  {
+    "id": "0154",
+    "name": "cable cross-over revers fly",
+    "matchLevel": "contains",
+    "freeDbId": "Cable_Crossover",
+    "freeDbName": "Cable Crossover",
+    "images": [
+      "Cable_Crossover/0.jpg",
+      "Cable_Crossover/1.jpg"
+    ]
+  },
+  {
+    "id": "0155",
+    "name": "cable cross-over variation",
+    "matchLevel": "contains",
+    "freeDbId": "Cable_Crossover",
+    "freeDbName": "Cable Crossover",
+    "images": [
+      "Cable_Crossover/0.jpg",
+      "Cable_Crossover/1.jpg"
+    ]
+  },
+  {
+    "id": "0868",
+    "name": "cable curl",
+    "matchLevel": "contains",
+    "freeDbId": "High_Cable_Curls",
+    "freeDbName": "High Cable Curls",
+    "images": [
+      "High_Cable_Curls/0.jpg",
+      "High_Cable_Curls/1.jpg"
+    ]
+  },
+  {
+    "id": "0157",
+    "name": "cable deadlift",
+    "matchLevel": "contains",
+    "freeDbId": "Cable_Deadlifts",
+    "freeDbName": "Cable Deadlifts",
+    "images": [
+      "Cable_Deadlifts/0.jpg",
+      "Cable_Deadlifts/1.jpg"
+    ]
+  },
+  {
+    "id": "1632",
+    "name": "cable drag curl",
+    "matchLevel": "contains",
+    "freeDbId": "Drag_Curl",
+    "freeDbName": "Drag Curl",
+    "images": [
+      "Drag_Curl/0.jpg",
+      "Drag_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "0164",
+    "name": "cable front shoulder raise",
+    "matchLevel": "contains",
+    "freeDbId": "Shoulder_Raise",
+    "freeDbName": "Shoulder Raise",
+    "images": [
+      "Shoulder_Raise/0.jpg",
+      "Shoulder_Raise/1.jpg"
+    ]
+  },
+  {
+    "id": "0168",
+    "name": "cable hip adduction",
+    "matchLevel": "exact",
+    "freeDbId": "Cable_Hip_Adduction",
+    "freeDbName": "Cable Hip Adduction",
+    "images": [
+      "Cable_Hip_Adduction/0.jpg",
+      "Cable_Hip_Adduction/1.jpg"
+    ]
+  },
+  {
+    "id": "0172",
+    "name": "cable incline pushdown",
+    "matchLevel": "exact",
+    "freeDbId": "Cable_Incline_Pushdown",
+    "freeDbName": "Cable Incline Pushdown",
+    "images": [
+      "Cable_Incline_Pushdown/0.jpg",
+      "Cable_Incline_Pushdown/1.jpg"
+    ]
+  },
+  {
+    "id": "0173",
+    "name": "cable incline triceps extension",
+    "matchLevel": "exact",
+    "freeDbId": "Cable_Incline_Triceps_Extension",
+    "freeDbName": "Cable Incline Triceps Extension",
+    "images": [
+      "Cable_Incline_Triceps_Extension/0.jpg",
+      "Cable_Incline_Triceps_Extension/1.jpg"
+    ]
+  },
+  {
+    "id": "0174",
+    "name": "cable judo flip",
+    "matchLevel": "exact",
+    "freeDbId": "Cable_Judo_Flip",
+    "freeDbName": "Cable Judo Flip",
+    "images": [
+      "Cable_Judo_Flip/0.jpg",
+      "Cable_Judo_Flip/1.jpg"
+    ]
+  },
+  {
+    "id": "0860",
+    "name": "cable kickback",
+    "matchLevel": "contains",
+    "freeDbId": "One-Legged_Cable_Kickback",
+    "freeDbName": "One-Legged Cable Kickback",
+    "images": [
+      "One-Legged_Cable_Kickback/0.jpg",
+      "One-Legged_Cable_Kickback/1.jpg"
+    ]
+  },
+  {
+    "id": "0186",
+    "name": "cable lying triceps extension v. 2",
+    "matchLevel": "contains",
+    "freeDbId": "Cable_Lying_Triceps_Extension",
+    "freeDbName": "Cable Lying Triceps Extension",
+    "images": [
+      "Cable_Lying_Triceps_Extension/0.jpg",
+      "Cable_Lying_Triceps_Extension/1.jpg"
+    ]
+  },
+  {
+    "id": "1633",
+    "name": "cable one arm preacher curl",
+    "matchLevel": "contains",
+    "freeDbId": "Preacher_Curl",
+    "freeDbName": "Preacher Curl",
+    "images": [
+      "Preacher_Curl/0.jpg",
+      "Preacher_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "1635",
+    "name": "cable one arm reverse preacher curl",
+    "matchLevel": "contains",
+    "freeDbId": "Preacher_Curl",
+    "freeDbName": "Preacher Curl",
+    "images": [
+      "Preacher_Curl/0.jpg",
+      "Preacher_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "0194",
+    "name": "cable overhead triceps extension (rope attachment)",
+    "matchLevel": "contains",
+    "freeDbId": "Overhead_Triceps",
+    "freeDbName": "Overhead Triceps",
+    "images": [
+      "Overhead_Triceps/0.jpg",
+      "Overhead_Triceps/1.jpg"
+    ]
+  },
+  {
+    "id": "0195",
+    "name": "cable preacher curl",
+    "matchLevel": "exact",
+    "freeDbId": "Cable_Preacher_Curl",
+    "freeDbName": "Cable Preacher Curl",
+    "images": [
+      "Cable_Preacher_Curl/0.jpg",
+      "Cable_Preacher_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "0196",
+    "name": "cable pull through (with rope)",
+    "matchLevel": "contains",
+    "freeDbId": "Pull_Through",
+    "freeDbName": "Pull Through",
+    "images": [
+      "Pull_Through/0.jpg",
+      "Pull_Through/1.jpg"
+    ]
+  },
+  {
+    "id": "0198",
+    "name": "cable pulldown",
+    "matchLevel": "contains",
+    "freeDbId": "Underhand_Cable_Pulldowns",
+    "freeDbName": "Underhand Cable Pulldowns",
+    "images": [
+      "Underhand_Cable_Pulldowns/0.jpg",
+      "Underhand_Cable_Pulldowns/1.jpg"
+    ]
+  },
+  {
+    "id": "0873",
+    "name": "cable reverse crunch",
+    "matchLevel": "exact",
+    "freeDbId": "Cable_Reverse_Crunch",
+    "freeDbName": "Cable Reverse Crunch",
+    "images": [
+      "Cable_Reverse_Crunch/0.jpg",
+      "Cable_Reverse_Crunch/1.jpg"
+    ]
+  },
+  {
+    "id": "2406",
+    "name": "cable reverse grip triceps pushdown (sz-bar) (with arm blaster)",
+    "matchLevel": "contains",
+    "freeDbId": "Reverse_Grip_Triceps_Pushdown",
+    "freeDbName": "Reverse Grip Triceps Pushdown",
+    "images": [
+      "Reverse_Grip_Triceps_Pushdown/0.jpg",
+      "Reverse_Grip_Triceps_Pushdown/1.jpg"
+    ]
+  },
+  {
+    "id": "0209",
+    "name": "cable reverse preacher curl",
+    "matchLevel": "contains",
+    "freeDbId": "Preacher_Curl",
+    "freeDbName": "Preacher Curl",
+    "images": [
+      "Preacher_Curl/0.jpg",
+      "Preacher_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "1639",
+    "name": "cable rope hammer preacher curl",
+    "matchLevel": "contains",
+    "freeDbId": "Preacher_Curl",
+    "freeDbName": "Preacher Curl",
+    "images": [
+      "Preacher_Curl/0.jpg",
+      "Preacher_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "1640",
+    "name": "cable rope one arm hammer preacher curl",
+    "matchLevel": "contains",
+    "freeDbId": "Preacher_Curl",
+    "freeDbName": "Preacher Curl",
+    "images": [
+      "Preacher_Curl/0.jpg",
+      "Preacher_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "0211",
+    "name": "cable russian twists (on stability ball)",
+    "matchLevel": "noparen",
+    "freeDbId": "Cable_Russian_Twists",
+    "freeDbName": "Cable Russian Twists",
+    "images": [
+      "Cable_Russian_Twists/0.jpg",
+      "Cable_Russian_Twists/1.jpg"
+    ]
+  },
+  {
+    "id": "0212",
+    "name": "cable seated crunch",
+    "matchLevel": "exact",
+    "freeDbId": "Cable_Seated_Crunch",
+    "freeDbName": "Cable Seated Crunch",
+    "images": [
+      "Cable_Seated_Crunch/0.jpg",
+      "Cable_Seated_Crunch/1.jpg"
+    ]
+  },
+  {
+    "id": "0219",
+    "name": "cable shoulder press",
+    "matchLevel": "exact",
+    "freeDbId": "Cable_Shoulder_Press",
+    "freeDbName": "Cable Shoulder Press",
+    "images": [
+      "Cable_Shoulder_Press/0.jpg",
+      "Cable_Shoulder_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "0220",
+    "name": "cable shrug",
+    "matchLevel": "contains",
+    "freeDbId": "Cable_Shrugs",
+    "freeDbName": "Cable Shrugs",
+    "images": [
+      "Cable_Shrugs/0.jpg",
+      "Cable_Shrugs/1.jpg"
+    ]
+  },
+  {
+    "id": "0222",
+    "name": "cable side bend",
+    "matchLevel": "contains",
+    "freeDbId": "One-Arm_High-Pulley_Cable_Side_Bends",
+    "freeDbName": "One-Arm High-Pulley Cable Side Bends",
+    "images": [
+      "One-Arm_High-Pulley_Cable_Side_Bends/0.jpg",
+      "One-Arm_High-Pulley_Cable_Side_Bends/1.jpg"
+    ]
+  },
+  {
+    "id": "0235",
+    "name": "cable standing shoulder external rotation",
+    "matchLevel": "contains",
+    "freeDbId": "External_Rotation",
+    "freeDbName": "External Rotation",
+    "images": [
+      "External_Rotation/0.jpg",
+      "External_Rotation/1.jpg"
+    ]
+  },
+  {
+    "id": "0241",
+    "name": "cable triceps pushdown (v-bar)",
+    "matchLevel": "contains",
+    "freeDbId": "Triceps_Pushdown",
+    "freeDbName": "Triceps Pushdown",
+    "images": [
+      "Triceps_Pushdown/0.jpg",
+      "Triceps_Pushdown/1.jpg"
+    ]
+  },
+  {
+    "id": "2405",
+    "name": "cable triceps pushdown (v-bar) (with arm blaster)",
+    "matchLevel": "contains",
+    "freeDbId": "Triceps_Pushdown",
+    "freeDbName": "Triceps Pushdown",
+    "images": [
+      "Triceps_Pushdown/0.jpg",
+      "Triceps_Pushdown/1.jpg"
+    ]
+  },
+  {
+    "id": "0242",
+    "name": "cable tuck reverse crunch",
+    "matchLevel": "contains",
+    "freeDbId": "Reverse_Crunch",
+    "freeDbName": "Reverse Crunch",
+    "images": [
+      "Reverse_Crunch/0.jpg",
+      "Reverse_Crunch/1.jpg"
+    ]
+  },
+  {
+    "id": "0247",
+    "name": "cable wrist curl",
+    "matchLevel": "exact",
+    "freeDbId": "Cable_Wrist_Curl",
+    "freeDbName": "Cable Wrist Curl",
+    "images": [
+      "Cable_Wrist_Curl/0.jpg",
+      "Cable_Wrist_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "1548",
+    "name": "chair leg extended stretch",
+    "matchLevel": "exact",
+    "freeDbId": "Chair_Leg_Extended_Stretch",
+    "freeDbName": "Chair Leg Extended Stretch",
+    "images": [
+      "Chair_Leg_Extended_Stretch/0.jpg",
+      "Chair_Leg_Extended_Stretch/1.jpg"
+    ]
+  },
+  {
+    "id": "1271",
+    "name": "chest and front of shoulder stretch",
+    "matchLevel": "exact",
+    "freeDbId": "Chest_And_Front_Of_Shoulder_Stretch",
+    "freeDbName": "Chest And Front Of Shoulder Stretch",
+    "images": [
+      "Chest_And_Front_Of_Shoulder_Stretch/0.jpg",
+      "Chest_And_Front_Of_Shoulder_Stretch/1.jpg"
+    ]
+  },
+  {
+    "id": "1326",
+    "name": "chin-up",
+    "matchLevel": "exact",
+    "freeDbId": "Chin-Up",
+    "freeDbName": "Chin-Up",
+    "images": [
+      "Chin-Up/0.jpg",
+      "Chin-Up/1.jpg"
+    ]
+  },
+  {
+    "id": "0258",
+    "name": "clock push-up",
+    "matchLevel": "exact",
+    "freeDbId": "Clock_Push-Up",
+    "freeDbName": "Clock Push-Up",
+    "images": [
+      "Clock_Push-Up/0.jpg",
+      "Clock_Push-Up/1.jpg"
+    ]
+  },
+  {
+    "id": "0259",
+    "name": "close-grip push-up",
+    "matchLevel": "contains",
+    "freeDbId": "Close-Grip_Push-Up_off_of_a_Dumbbell",
+    "freeDbName": "Close-Grip Push-Up off of a Dumbbell",
+    "images": [
+      "Close-Grip_Push-Up_off_of_a_Dumbbell/0.jpg",
+      "Close-Grip_Push-Up_off_of_a_Dumbbell/1.jpg"
+    ]
+  },
+  {
+    "id": "0260",
+    "name": "cocoons",
+    "matchLevel": "exact",
+    "freeDbId": "Cocoons",
+    "freeDbName": "Cocoons",
+    "images": [
+      "Cocoons/0.jpg",
+      "Cocoons/1.jpg"
+    ]
+  },
+  {
+    "id": "0276",
+    "name": "dead bug",
+    "matchLevel": "exact",
+    "freeDbId": "Dead_Bug",
+    "freeDbName": "Dead Bug",
+    "images": [
+      "Dead_Bug/0.jpg",
+      "Dead_Bug/1.jpg"
+    ]
+  },
+  {
+    "id": "0277",
+    "name": "decline crunch",
+    "matchLevel": "exact",
+    "freeDbId": "Decline_Crunch",
+    "freeDbName": "Decline Crunch",
+    "images": [
+      "Decline_Crunch/0.jpg",
+      "Decline_Crunch/1.jpg"
+    ]
+  },
+  {
+    "id": "0279",
+    "name": "decline push-up",
+    "matchLevel": "exact",
+    "freeDbId": "Decline_Push-Up",
+    "freeDbName": "Decline Push-Up",
+    "images": [
+      "Decline_Push-Up/0.jpg",
+      "Decline_Push-Up/1.jpg"
+    ]
+  },
+  {
+    "id": "0284",
+    "name": "donkey calf raise",
+    "matchLevel": "contains",
+    "freeDbId": "Donkey_Calf_Raises",
+    "freeDbName": "Donkey Calf Raises",
+    "images": [
+      "Donkey_Calf_Raises/0.jpg",
+      "Donkey_Calf_Raises/1.jpg"
+    ]
+  },
+  {
+    "id": "1275",
+    "name": "drop push up",
+    "matchLevel": "contains",
+    "freeDbId": "Drop_Push",
+    "freeDbName": "Drop Push",
+    "images": [
+      "Drop_Push/0.jpg",
+      "Drop_Push/1.jpg"
+    ]
+  },
+  {
+    "id": "1646",
+    "name": "dumbbell alternate hammer preacher curl",
+    "matchLevel": "contains",
+    "freeDbId": "Preacher_Curl",
+    "freeDbName": "Preacher Curl",
+    "images": [
+      "Preacher_Curl/0.jpg",
+      "Preacher_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "1647",
+    "name": "dumbbell alternate preacher curl",
+    "matchLevel": "contains",
+    "freeDbId": "Preacher_Curl",
+    "freeDbName": "Preacher Curl",
+    "images": [
+      "Preacher_Curl/0.jpg",
+      "Preacher_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "0289",
+    "name": "dumbbell bench press",
+    "matchLevel": "exact",
+    "freeDbId": "Dumbbell_Bench_Press",
+    "freeDbName": "Dumbbell Bench Press",
+    "images": [
+      "Dumbbell_Bench_Press/0.jpg",
+      "Dumbbell_Bench_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "1651",
+    "name": "dumbbell bicep curl lunge with bowling motion",
+    "matchLevel": "contains",
+    "freeDbId": "Dumbbell_Bicep_Curl",
+    "freeDbName": "Dumbbell Bicep Curl",
+    "images": [
+      "Dumbbell_Bicep_Curl/0.jpg",
+      "Dumbbell_Bicep_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "1652",
+    "name": "dumbbell bicep curl on exercise ball with leg raised",
+    "matchLevel": "contains",
+    "freeDbId": "Dumbbell_Bicep_Curl",
+    "freeDbName": "Dumbbell Bicep Curl",
+    "images": [
+      "Dumbbell_Bicep_Curl/0.jpg",
+      "Dumbbell_Bicep_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "1653",
+    "name": "dumbbell bicep curl with stork stance",
+    "matchLevel": "contains",
+    "freeDbId": "Dumbbell_Bicep_Curl",
+    "freeDbName": "Dumbbell Bicep Curl",
+    "images": [
+      "Dumbbell_Bicep_Curl/0.jpg",
+      "Dumbbell_Bicep_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "0295",
+    "name": "dumbbell clean",
+    "matchLevel": "exact",
+    "freeDbId": "Dumbbell_Clean",
+    "freeDbName": "Dumbbell Clean",
+    "images": [
+      "Dumbbell_Clean/0.jpg",
+      "Dumbbell_Clean/1.jpg"
+    ]
+  },
+  {
+    "id": "0298",
+    "name": "dumbbell cross body hammer curl",
+    "matchLevel": "contains",
+    "freeDbId": "Cross_Body_Hammer_Curl",
+    "freeDbName": "Cross Body Hammer Curl",
+    "images": [
+      "Cross_Body_Hammer_Curl/0.jpg",
+      "Cross_Body_Hammer_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "1657",
+    "name": "dumbbell cross body hammer curl v. 2",
+    "matchLevel": "contains",
+    "freeDbId": "Cross_Body_Hammer_Curl",
+    "freeDbName": "Cross Body Hammer Curl",
+    "images": [
+      "Cross_Body_Hammer_Curl/0.jpg",
+      "Cross_Body_Hammer_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "0299",
+    "name": "dumbbell cuban press",
+    "matchLevel": "contains",
+    "freeDbId": "Cuban_Press",
+    "freeDbName": "Cuban Press",
+    "images": [
+      "Cuban_Press/0.jpg",
+      "Cuban_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "2136",
+    "name": "dumbbell cuban press v. 2",
+    "matchLevel": "contains",
+    "freeDbId": "Cuban_Press",
+    "freeDbName": "Cuban Press",
+    "images": [
+      "Cuban_Press/0.jpg",
+      "Cuban_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "0300",
+    "name": "dumbbell deadlift",
+    "matchLevel": "contains",
+    "freeDbId": "Stiff-Legged_Dumbbell_Deadlift",
+    "freeDbName": "Stiff-Legged Dumbbell Deadlift",
+    "images": [
+      "Stiff-Legged_Dumbbell_Deadlift/0.jpg",
+      "Stiff-Legged_Dumbbell_Deadlift/1.jpg"
+    ]
+  },
+  {
+    "id": "1437",
+    "name": "dumbbell finger curls",
+    "matchLevel": "contains",
+    "freeDbId": "Finger_Curls",
+    "freeDbName": "Finger Curls",
+    "images": [
+      "Finger_Curls/0.jpg",
+      "Finger_Curls/1.jpg"
+    ]
+  },
+  {
+    "id": "0308",
+    "name": "dumbbell fly",
+    "matchLevel": "contains",
+    "freeDbId": "Decline_Dumbbell_Flyes",
+    "freeDbName": "Decline Dumbbell Flyes",
+    "images": [
+      "Decline_Dumbbell_Flyes/0.jpg",
+      "Decline_Dumbbell_Flyes/1.jpg"
+    ]
+  },
+  {
+    "id": "1760",
+    "name": "dumbbell goblet squat",
+    "matchLevel": "contains",
+    "freeDbId": "Goblet_Squat",
+    "freeDbName": "Goblet Squat",
+    "images": [
+      "Goblet_Squat/0.jpg",
+      "Goblet_Squat/1.jpg"
+    ]
+  },
+  {
+    "id": "2402",
+    "name": "dumbbell hammer curls (with arm blaster)",
+    "matchLevel": "contains",
+    "freeDbId": "Hammer_Curls",
+    "freeDbName": "Hammer Curls",
+    "images": [
+      "Hammer_Curls/0.jpg",
+      "Hammer_Curls/1.jpg"
+    ]
+  },
+  {
+    "id": "0322",
+    "name": "dumbbell incline inner biceps curl",
+    "matchLevel": "contains",
+    "freeDbId": "Incline_Inner_Biceps_Curl",
+    "freeDbName": "Incline Inner Biceps Curl",
+    "images": [
+      "Incline_Inner_Biceps_Curl/0.jpg",
+      "Incline_Inner_Biceps_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "0327",
+    "name": "dumbbell incline row",
+    "matchLevel": "exact",
+    "freeDbId": "Dumbbell_Incline_Row",
+    "freeDbName": "Dumbbell Incline Row",
+    "images": [
+      "Dumbbell_Incline_Row/0.jpg",
+      "Dumbbell_Incline_Row/1.jpg"
+    ]
+  },
+  {
+    "id": "0328",
+    "name": "dumbbell incline shoulder raise",
+    "matchLevel": "exact",
+    "freeDbId": "Dumbbell_Incline_Shoulder_Raise",
+    "freeDbName": "Dumbbell Incline Shoulder Raise",
+    "images": [
+      "Dumbbell_Incline_Shoulder_Raise/0.jpg",
+      "Dumbbell_Incline_Shoulder_Raise/1.jpg"
+    ]
+  },
+  {
+    "id": "0332",
+    "name": "dumbbell iron cross",
+    "matchLevel": "contains",
+    "freeDbId": "Iron_Cross",
+    "freeDbName": "Iron Cross",
+    "images": [
+      "Iron_Cross/0.jpg",
+      "Iron_Cross/1.jpg"
+    ]
+  },
+  {
+    "id": "0333",
+    "name": "dumbbell kickback",
+    "matchLevel": "contains",
+    "freeDbId": "Tricep_Dumbbell_Kickback",
+    "freeDbName": "Tricep Dumbbell Kickback",
+    "images": [
+      "Tricep_Dumbbell_Kickback/0.jpg",
+      "Tricep_Dumbbell_Kickback/1.jpg"
+    ]
+  },
+  {
+    "id": "0336",
+    "name": "dumbbell lunge",
+    "matchLevel": "contains",
+    "freeDbId": "Dumbbell_Lunges",
+    "freeDbName": "Dumbbell Lunges",
+    "images": [
+      "Dumbbell_Lunges/0.jpg",
+      "Dumbbell_Lunges/1.jpg"
+    ]
+  },
+  {
+    "id": "0347",
+    "name": "dumbbell lying pronation",
+    "matchLevel": "exact",
+    "freeDbId": "Dumbbell_Lying_Pronation",
+    "freeDbName": "Dumbbell Lying Pronation",
+    "images": [
+      "Dumbbell_Lying_Pronation/0.jpg",
+      "Dumbbell_Lying_Pronation/1.jpg"
+    ]
+  },
+  {
+    "id": "2705",
+    "name": "dumbbell lying pronation on floor",
+    "matchLevel": "contains",
+    "freeDbId": "Dumbbell_Lying_Pronation",
+    "freeDbName": "Dumbbell Lying Pronation",
+    "images": [
+      "Dumbbell_Lying_Pronation/0.jpg",
+      "Dumbbell_Lying_Pronation/1.jpg"
+    ]
+  },
+  {
+    "id": "0348",
+    "name": "dumbbell lying rear lateral raise",
+    "matchLevel": "exact",
+    "freeDbId": "Dumbbell_Lying_Rear_Lateral_Raise",
+    "freeDbName": "Dumbbell Lying Rear Lateral Raise",
+    "images": [
+      "Dumbbell_Lying_Rear_Lateral_Raise/0.jpg",
+      "Dumbbell_Lying_Rear_Lateral_Raise/1.jpg"
+    ]
+  },
+  {
+    "id": "0349",
+    "name": "dumbbell lying supination",
+    "matchLevel": "exact",
+    "freeDbId": "Dumbbell_Lying_Supination",
+    "freeDbName": "Dumbbell Lying Supination",
+    "images": [
+      "Dumbbell_Lying_Supination/0.jpg",
+      "Dumbbell_Lying_Supination/1.jpg"
+    ]
+  },
+  {
+    "id": "2706",
+    "name": "dumbbell lying supination on floor",
+    "matchLevel": "contains",
+    "freeDbId": "Dumbbell_Lying_Supination",
+    "freeDbName": "Dumbbell Lying Supination",
+    "images": [
+      "Dumbbell_Lying_Supination/0.jpg",
+      "Dumbbell_Lying_Supination/1.jpg"
+    ]
+  },
+  {
+    "id": "1663",
+    "name": "dumbbell one arm hammer preacher curl",
+    "matchLevel": "contains",
+    "freeDbId": "Preacher_Curl",
+    "freeDbName": "Preacher Curl",
+    "images": [
+      "Preacher_Curl/0.jpg",
+      "Preacher_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "1414",
+    "name": "dumbbell one arm reverse preacher curl",
+    "matchLevel": "contains",
+    "freeDbId": "Preacher_Curl",
+    "freeDbName": "Preacher Curl",
+    "images": [
+      "Preacher_Curl/0.jpg",
+      "Preacher_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "1667",
+    "name": "dumbbell one arm reverse spider curl",
+    "matchLevel": "contains",
+    "freeDbId": "Spider_Curl",
+    "freeDbName": "Spider Curl",
+    "images": [
+      "Spider_Curl/0.jpg",
+      "Spider_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "1672",
+    "name": "dumbbell one arm zottman preacher curl",
+    "matchLevel": "contains",
+    "freeDbId": "Preacher_Curl",
+    "freeDbName": "Preacher Curl",
+    "images": [
+      "Preacher_Curl/0.jpg",
+      "Preacher_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "0372",
+    "name": "dumbbell preacher curl",
+    "matchLevel": "contains",
+    "freeDbId": "One_Arm_Dumbbell_Preacher_Curl",
+    "freeDbName": "One Arm Dumbbell Preacher Curl",
+    "images": [
+      "One_Arm_Dumbbell_Preacher_Curl/0.jpg",
+      "One_Arm_Dumbbell_Preacher_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "1673",
+    "name": "dumbbell preacher curl over exercise ball",
+    "matchLevel": "contains",
+    "freeDbId": "Preacher_Curl",
+    "freeDbName": "Preacher Curl",
+    "images": [
+      "Preacher_Curl/0.jpg",
+      "Preacher_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "0374",
+    "name": "dumbbell prone incline curl",
+    "matchLevel": "exact",
+    "freeDbId": "Dumbbell_Prone_Incline_Curl",
+    "freeDbName": "Dumbbell Prone Incline Curl",
+    "images": [
+      "Dumbbell_Prone_Incline_Curl/0.jpg",
+      "Dumbbell_Prone_Incline_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "0375",
+    "name": "dumbbell pullover",
+    "matchLevel": "contains",
+    "freeDbId": "Bent-Arm_Dumbbell_Pullover",
+    "freeDbName": "Bent-Arm Dumbbell Pullover",
+    "images": [
+      "Bent-Arm_Dumbbell_Pullover/0.jpg",
+      "Bent-Arm_Dumbbell_Pullover/1.jpg"
+    ]
+  },
+  {
+    "id": "1700",
+    "name": "dumbbell push press",
+    "matchLevel": "contains",
+    "freeDbId": "Push_Press",
+    "freeDbName": "Push Press",
+    "images": [
+      "Push_Press/0.jpg",
+      "Push_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "0376",
+    "name": "dumbbell raise",
+    "matchLevel": "exact",
+    "freeDbId": "Dumbbell_Raise",
+    "freeDbName": "Dumbbell Raise",
+    "images": [
+      "Dumbbell_Raise/0.jpg",
+      "Dumbbell_Raise/1.jpg"
+    ]
+  },
+  {
+    "id": "2292",
+    "name": "dumbbell rear delt raise",
+    "matchLevel": "contains",
+    "freeDbId": "Bent_Over_Dumbbell_Rear_Delt_Raise_With_Head_On_Bench",
+    "freeDbName": "Bent Over Dumbbell Rear Delt Raise With Head On Bench",
+    "images": [
+      "Bent_Over_Dumbbell_Rear_Delt_Raise_With_Head_On_Bench/0.jpg",
+      "Bent_Over_Dumbbell_Rear_Delt_Raise_With_Head_On_Bench/1.jpg"
+    ]
+  },
+  {
+    "id": "0381",
+    "name": "dumbbell rear lunge",
+    "matchLevel": "exact",
+    "freeDbId": "Dumbbell_Rear_Lunge",
+    "freeDbName": "Dumbbell Rear Lunge",
+    "images": [
+      "Dumbbell_Rear_Lunge/0.jpg",
+      "Dumbbell_Rear_Lunge/1.jpg"
+    ]
+  },
+  {
+    "id": "0384",
+    "name": "dumbbell reverse preacher curl",
+    "matchLevel": "contains",
+    "freeDbId": "Preacher_Curl",
+    "freeDbName": "Preacher Curl",
+    "images": [
+      "Preacher_Curl/0.jpg",
+      "Preacher_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "1675",
+    "name": "dumbbell reverse spider curl",
+    "matchLevel": "contains",
+    "freeDbId": "Spider_Curl",
+    "freeDbName": "Spider Curl",
+    "images": [
+      "Spider_Curl/0.jpg",
+      "Spider_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "1459",
+    "name": "dumbbell romanian deadlift",
+    "matchLevel": "contains",
+    "freeDbId": "Romanian_Deadlift",
+    "freeDbName": "Romanian Deadlift",
+    "images": [
+      "Romanian_Deadlift/0.jpg",
+      "Romanian_Deadlift/1.jpg"
+    ]
+  },
+  {
+    "id": "1676",
+    "name": "dumbbell seated alternate hammer curl on exercise ball",
+    "matchLevel": "contains",
+    "freeDbId": "Alternate_Hammer_Curl",
+    "freeDbName": "Alternate Hammer Curl",
+    "images": [
+      "Alternate_Hammer_Curl/0.jpg",
+      "Alternate_Hammer_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "0390",
+    "name": "dumbbell seated biceps curl (on stability ball)",
+    "matchLevel": "contains",
+    "freeDbId": "Seated_Biceps",
+    "freeDbName": "Seated Biceps",
+    "images": [
+      "Seated_Biceps/0.jpg",
+      "Seated_Biceps/1.jpg"
+    ]
+  },
+  {
+    "id": "3547",
+    "name": "dumbbell seated biceps curl to shoulder press",
+    "matchLevel": "contains",
+    "freeDbId": "Seated_Biceps",
+    "freeDbName": "Seated Biceps",
+    "images": [
+      "Seated_Biceps/0.jpg",
+      "Seated_Biceps/1.jpg"
+    ]
+  },
+  {
+    "id": "1379",
+    "name": "dumbbell seated calf raise",
+    "matchLevel": "contains",
+    "freeDbId": "Seated_Calf_Raise",
+    "freeDbName": "Seated Calf Raise",
+    "images": [
+      "Seated_Calf_Raise/0.jpg",
+      "Seated_Calf_Raise/1.jpg"
+    ]
+  },
+  {
+    "id": "0402",
+    "name": "dumbbell seated preacher curl",
+    "matchLevel": "contains",
+    "freeDbId": "Preacher_Curl",
+    "freeDbName": "Preacher Curl",
+    "images": [
+      "Preacher_Curl/0.jpg",
+      "Preacher_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "0406",
+    "name": "dumbbell shrug",
+    "matchLevel": "exact",
+    "freeDbId": "Dumbbell_Shrug",
+    "freeDbName": "Dumbbell Shrug",
+    "images": [
+      "Dumbbell_Shrug/0.jpg",
+      "Dumbbell_Shrug/1.jpg"
+    ]
+  },
+  {
+    "id": "0407",
+    "name": "dumbbell side bend",
+    "matchLevel": "exact",
+    "freeDbId": "Dumbbell_Side_Bend",
+    "freeDbName": "Dumbbell Side Bend",
+    "images": [
+      "Dumbbell_Side_Bend/0.jpg",
+      "Dumbbell_Side_Bend/1.jpg"
+    ]
+  },
+  {
+    "id": "0413",
+    "name": "dumbbell squat",
+    "matchLevel": "exact",
+    "freeDbId": "Dumbbell_Squat",
+    "freeDbName": "Dumbbell Squat",
+    "images": [
+      "Dumbbell_Squat/0.jpg",
+      "Dumbbell_Squat/1.jpg"
+    ]
+  },
+  {
+    "id": "3560",
+    "name": "dumbbell standing alternate hammer curl and press",
+    "matchLevel": "contains",
+    "freeDbId": "Alternate_Hammer_Curl",
+    "freeDbName": "Alternate Hammer Curl",
+    "images": [
+      "Alternate_Hammer_Curl/0.jpg",
+      "Alternate_Hammer_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "0418",
+    "name": "dumbbell standing concentration curl",
+    "matchLevel": "contains",
+    "freeDbId": "Standing_Concentration_Curl",
+    "freeDbName": "Standing Concentration Curl",
+    "images": [
+      "Standing_Concentration_Curl/0.jpg",
+      "Standing_Concentration_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "0428",
+    "name": "dumbbell standing preacher curl",
+    "matchLevel": "contains",
+    "freeDbId": "Preacher_Curl",
+    "freeDbName": "Preacher Curl",
+    "images": [
+      "Preacher_Curl/0.jpg",
+      "Preacher_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "2293",
+    "name": "dumbbell standing zottman preacher curl",
+    "matchLevel": "contains",
+    "freeDbId": "Preacher_Curl",
+    "freeDbName": "Preacher Curl",
+    "images": [
+      "Preacher_Curl/0.jpg",
+      "Preacher_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "2808",
+    "name": "dumbbell sumo pull through",
+    "matchLevel": "contains",
+    "freeDbId": "Pull_Through",
+    "freeDbName": "Pull Through",
+    "images": [
+      "Pull_Through/0.jpg",
+      "Pull_Through/1.jpg"
+    ]
+  },
+  {
+    "id": "0436",
+    "name": "dumbbell tate press",
+    "matchLevel": "contains",
+    "freeDbId": "Tate_Press",
+    "freeDbName": "Tate Press",
+    "images": [
+      "Tate_Press/0.jpg",
+      "Tate_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "0437",
+    "name": "dumbbell upright row",
+    "matchLevel": "contains",
+    "freeDbId": "Standing_Dumbbell_Upright_Row",
+    "freeDbName": "Standing Dumbbell Upright Row",
+    "images": [
+      "Standing_Dumbbell_Upright_Row/0.jpg",
+      "Standing_Dumbbell_Upright_Row/1.jpg"
+    ]
+  },
+  {
+    "id": "0864",
+    "name": "dumbbell upright shoulder external rotation",
+    "matchLevel": "contains",
+    "freeDbId": "External_Rotation",
+    "freeDbName": "External Rotation",
+    "images": [
+      "External_Rotation/0.jpg",
+      "External_Rotation/1.jpg"
+    ]
+  },
+  {
+    "id": "0439",
+    "name": "dumbbell zottman curl",
+    "matchLevel": "contains",
+    "freeDbId": "Zottman_Curl",
+    "freeDbName": "Zottman Curl",
+    "images": [
+      "Zottman_Curl/0.jpg",
+      "Zottman_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "2294",
+    "name": "dumbbell zottman preacher curl",
+    "matchLevel": "contains",
+    "freeDbId": "Preacher_Curl",
+    "freeDbName": "Preacher Curl",
+    "images": [
+      "Preacher_Curl/0.jpg",
+      "Preacher_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "1167",
+    "name": "dynamic chest stretch (male)",
+    "matchLevel": "noparen",
+    "freeDbId": "Dynamic_Chest_Stretch",
+    "freeDbName": "Dynamic Chest Stretch",
+    "images": [
+      "Dynamic_Chest_Stretch/0.jpg",
+      "Dynamic_Chest_Stretch/1.jpg"
+    ]
+  },
+  {
+    "id": "1560",
+    "name": "exercise ball seated hamstring stretch",
+    "matchLevel": "contains",
+    "freeDbId": "Hamstring_Stretch",
+    "freeDbName": "Hamstring Stretch",
+    "images": [
+      "Hamstring_Stretch/0.jpg",
+      "Hamstring_Stretch/1.jpg"
+    ]
+  },
+  {
+    "id": "1745",
+    "name": "exercise ball seated triceps stretch",
+    "matchLevel": "contains",
+    "freeDbId": "Triceps_Stretch",
+    "freeDbName": "Triceps Stretch",
+    "images": [
+      "Triceps_Stretch/0.jpg",
+      "Triceps_Stretch/1.jpg"
+    ]
+  },
+  {
+    "id": "1627",
+    "name": "ez barbell close grip preacher curl",
+    "matchLevel": "contains",
+    "freeDbId": "Preacher_Curl",
+    "freeDbName": "Preacher Curl",
+    "images": [
+      "Preacher_Curl/0.jpg",
+      "Preacher_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "0447",
+    "name": "ez barbell curl",
+    "matchLevel": "contains",
+    "freeDbId": "Barbell_Curl",
+    "freeDbName": "Barbell Curl",
+    "images": [
+      "Barbell_Curl/0.jpg",
+      "Barbell_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "0452",
+    "name": "ez barbell reverse grip preacher curl",
+    "matchLevel": "contains",
+    "freeDbId": "Preacher_Curl",
+    "freeDbName": "Preacher Curl",
+    "images": [
+      "Preacher_Curl/0.jpg",
+      "Preacher_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "0454",
+    "name": "ez barbell spider curl",
+    "matchLevel": "contains",
+    "freeDbId": "Spider_Curl",
+    "freeDbName": "Spider Curl",
+    "images": [
+      "Spider_Curl/0.jpg",
+      "Spider_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "1628",
+    "name": "ez barbell spider curl",
+    "matchLevel": "contains",
+    "freeDbId": "Spider_Curl",
+    "freeDbName": "Spider Curl",
+    "images": [
+      "Spider_Curl/0.jpg",
+      "Spider_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "0455",
+    "name": "finger curls",
+    "matchLevel": "exact",
+    "freeDbId": "Finger_Curls",
+    "freeDbName": "Finger Curls",
+    "images": [
+      "Finger_Curls/0.jpg",
+      "Finger_Curls/1.jpg"
+    ]
+  },
+  {
+    "id": "0459",
+    "name": "flutter kicks",
+    "matchLevel": "exact",
+    "freeDbId": "Flutter_Kicks",
+    "freeDbName": "Flutter Kicks",
+    "images": [
+      "Flutter_Kicks/0.jpg",
+      "Flutter_Kicks/1.jpg"
+    ]
+  },
+  {
+    "id": "3194",
+    "name": "frankenstein squat",
+    "matchLevel": "exact",
+    "freeDbId": "Frankenstein_Squat",
+    "freeDbName": "Frankenstein Squat",
+    "images": [
+      "Frankenstein_Squat/0.jpg",
+      "Frankenstein_Squat/1.jpg"
+    ]
+  },
+  {
+    "id": "0466",
+    "name": "gironda sternum chin",
+    "matchLevel": "contains",
+    "freeDbId": "Gironda_Sternum_Chins",
+    "freeDbName": "Gironda Sternum Chins",
+    "images": [
+      "Gironda_Sternum_Chins/0.jpg",
+      "Gironda_Sternum_Chins/1.jpg"
+    ]
+  },
+  {
+    "id": "3193",
+    "name": "glute-ham raise",
+    "matchLevel": "contains",
+    "freeDbId": "Floor_Glute-Ham_Raise",
+    "freeDbName": "Floor Glute-Ham Raise",
+    "images": [
+      "Floor_Glute-Ham_Raise/0.jpg",
+      "Floor_Glute-Ham_Raise/1.jpg"
+    ]
+  },
+  {
+    "id": "0467",
+    "name": "gorilla chin",
+    "matchLevel": "contains",
+    "freeDbId": "Gorilla_Chin_Crunch",
+    "freeDbName": "Gorilla Chin/Crunch",
+    "images": [
+      "Gorilla_Chin_Crunch/0.jpg",
+      "Gorilla_Chin_Crunch/1.jpg"
+    ]
+  },
+  {
+    "id": "1511",
+    "name": "hamstring stretch",
+    "matchLevel": "exact",
+    "freeDbId": "Hamstring_Stretch",
+    "freeDbName": "Hamstring Stretch",
+    "images": [
+      "Hamstring_Stretch/0.jpg",
+      "Hamstring_Stretch/1.jpg"
+    ]
+  },
+  {
+    "id": "3302",
+    "name": "handstand",
+    "matchLevel": "contains",
+    "freeDbId": "Handstand_Push-Ups",
+    "freeDbName": "Handstand Push-Ups",
+    "images": [
+      "Handstand_Push-Ups/0.jpg",
+      "Handstand_Push-Ups/1.jpg"
+    ]
+  },
+  {
+    "id": "0471",
+    "name": "handstand push-up",
+    "matchLevel": "contains",
+    "freeDbId": "Handstand_Push-Ups",
+    "freeDbName": "Handstand Push-Ups",
+    "images": [
+      "Handstand_Push-Ups/0.jpg",
+      "Handstand_Push-Ups/1.jpg"
+    ]
+  },
+  {
+    "id": "0472",
+    "name": "hanging leg raise",
+    "matchLevel": "exact",
+    "freeDbId": "Hanging_Leg_Raise",
+    "freeDbName": "Hanging Leg Raise",
+    "images": [
+      "Hanging_Leg_Raise/0.jpg",
+      "Hanging_Leg_Raise/1.jpg"
+    ]
+  },
+  {
+    "id": "0473",
+    "name": "hanging pike",
+    "matchLevel": "exact",
+    "freeDbId": "Hanging_Pike",
+    "freeDbName": "Hanging Pike",
+    "images": [
+      "Hanging_Pike/0.jpg",
+      "Hanging_Pike/1.jpg"
+    ]
+  },
+  {
+    "id": "0489",
+    "name": "hyperextension",
+    "matchLevel": "contains",
+    "freeDbId": "Hyperextensions_Back_Extensions",
+    "freeDbName": "Hyperextensions (Back Extensions)",
+    "images": [
+      "Hyperextensions_Back_Extensions/0.jpg",
+      "Hyperextensions_Back_Extensions/1.jpg"
+    ]
+  },
+  {
+    "id": "1471",
+    "name": "inchworm",
+    "matchLevel": "exact",
+    "freeDbId": "Inchworm",
+    "freeDbName": "Inchworm",
+    "images": [
+      "Inchworm/0.jpg",
+      "Inchworm/1.jpg"
+    ]
+  },
+  {
+    "id": "3698",
+    "name": "inchworm v. 2",
+    "matchLevel": "contains",
+    "freeDbId": "Inchworm",
+    "freeDbName": "Inchworm",
+    "images": [
+      "Inchworm/0.jpg",
+      "Inchworm/1.jpg"
+    ]
+  },
+  {
+    "id": "0493",
+    "name": "incline push-up",
+    "matchLevel": "exact",
+    "freeDbId": "Incline_Push-Up",
+    "freeDbName": "Incline Push-Up",
+    "images": [
+      "Incline_Push-Up/0.jpg",
+      "Incline_Push-Up/1.jpg"
+    ]
+  },
+  {
+    "id": "3785",
+    "name": "incline push-up (on box)",
+    "matchLevel": "noparen",
+    "freeDbId": "Incline_Push-Up",
+    "freeDbName": "Incline Push-Up",
+    "images": [
+      "Incline_Push-Up/0.jpg",
+      "Incline_Push-Up/1.jpg"
+    ]
+  },
+  {
+    "id": "1564",
+    "name": "intermediate hip flexor and quad stretch",
+    "matchLevel": "exact",
+    "freeDbId": "Intermediate_Hip_Flexor_and_Quad_Stretch",
+    "freeDbName": "Intermediate Hip Flexor and Quad Stretch",
+    "images": [
+      "Intermediate_Hip_Flexor_and_Quad_Stretch/0.jpg",
+      "Intermediate_Hip_Flexor_and_Quad_Stretch/1.jpg"
+    ]
+  },
+  {
+    "id": "0499",
+    "name": "inverted row",
+    "matchLevel": "exact",
+    "freeDbId": "Inverted_Row",
+    "freeDbName": "Inverted Row",
+    "images": [
+      "Inverted_Row/0.jpg",
+      "Inverted_Row/1.jpg"
+    ]
+  },
+  {
+    "id": "2300",
+    "name": "inverted row bent knees",
+    "matchLevel": "contains",
+    "freeDbId": "Inverted_Row",
+    "freeDbName": "Inverted Row",
+    "images": [
+      "Inverted_Row/0.jpg",
+      "Inverted_Row/1.jpg"
+    ]
+  },
+  {
+    "id": "2298",
+    "name": "inverted row on bench",
+    "matchLevel": "contains",
+    "freeDbId": "Inverted_Row",
+    "freeDbName": "Inverted Row",
+    "images": [
+      "Inverted_Row/0.jpg",
+      "Inverted_Row/1.jpg"
+    ]
+  },
+  {
+    "id": "0497",
+    "name": "inverted row v. 2",
+    "matchLevel": "contains",
+    "freeDbId": "Inverted_Row",
+    "freeDbName": "Inverted Row",
+    "images": [
+      "Inverted_Row/0.jpg",
+      "Inverted_Row/1.jpg"
+    ]
+  },
+  {
+    "id": "0498",
+    "name": "inverted row with straps",
+    "matchLevel": "exact",
+    "freeDbId": "Inverted_Row_with_Straps",
+    "freeDbName": "Inverted Row with Straps",
+    "images": [
+      "Inverted_Row_with_Straps/0.jpg",
+      "Inverted_Row_with_Straps/1.jpg"
+    ]
+  },
+  {
+    "id": "1419",
+    "name": "iron cross stretch",
+    "matchLevel": "contains",
+    "freeDbId": "Iron_Cross",
+    "freeDbName": "Iron Cross",
+    "images": [
+      "Iron_Cross/0.jpg",
+      "Iron_Cross/1.jpg"
+    ]
+  },
+  {
+    "id": "1297",
+    "name": "isometric chest squeeze",
+    "matchLevel": "contains",
+    "freeDbId": "Isometric_Chest_Squeezes",
+    "freeDbName": "Isometric Chest Squeezes",
+    "images": [
+      "Isometric_Chest_Squeezes/0.jpg",
+      "Isometric_Chest_Squeezes/1.jpg"
+    ]
+  },
+  {
+    "id": "0500",
+    "name": "isometric wipers",
+    "matchLevel": "exact",
+    "freeDbId": "Isometric_Wipers",
+    "freeDbName": "Isometric Wipers",
+    "images": [
+      "Isometric_Wipers/0.jpg",
+      "Isometric_Wipers/1.jpg"
+    ]
+  },
+  {
+    "id": "0507",
+    "name": "jackknife sit-up",
+    "matchLevel": "exact",
+    "freeDbId": "Jackknife_Sit-Up",
+    "freeDbName": "Jackknife Sit-Up",
+    "images": [
+      "Jackknife_Sit-Up/0.jpg",
+      "Jackknife_Sit-Up/1.jpg"
+    ]
+  },
+  {
+    "id": "0508",
+    "name": "janda sit-up",
+    "matchLevel": "exact",
+    "freeDbId": "Janda_Sit-Up",
+    "freeDbName": "Janda Sit-Up",
+    "images": [
+      "Janda_Sit-Up/0.jpg",
+      "Janda_Sit-Up/1.jpg"
+    ]
+  },
+  {
+    "id": "0514",
+    "name": "jump squat",
+    "matchLevel": "contains",
+    "freeDbId": "Freehand_Jump_Squat",
+    "freeDbName": "Freehand Jump Squat",
+    "images": [
+      "Freehand_Jump_Squat/0.jpg",
+      "Freehand_Jump_Squat/1.jpg"
+    ]
+  },
+  {
+    "id": "0518",
+    "name": "kettlebell alternating hang clean",
+    "matchLevel": "contains",
+    "freeDbId": "Alternating_Hang_Clean",
+    "freeDbName": "Alternating Hang Clean",
+    "images": [
+      "Alternating_Hang_Clean/0.jpg",
+      "Alternating_Hang_Clean/1.jpg"
+    ]
+  },
+  {
+    "id": "0521",
+    "name": "kettlebell alternating renegade row",
+    "matchLevel": "contains",
+    "freeDbId": "Alternating_Renegade_Row",
+    "freeDbName": "Alternating Renegade Row",
+    "images": [
+      "Alternating_Renegade_Row/0.jpg",
+      "Alternating_Renegade_Row/1.jpg"
+    ]
+  },
+  {
+    "id": "0523",
+    "name": "kettlebell arnold press",
+    "matchLevel": "exact",
+    "freeDbId": "Kettlebell_Arnold_Press",
+    "freeDbName": "Kettlebell Arnold Press",
+    "images": [
+      "Kettlebell_Arnold_Press/0.jpg",
+      "Kettlebell_Arnold_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "0524",
+    "name": "kettlebell bent press",
+    "matchLevel": "contains",
+    "freeDbId": "Bent_Press",
+    "freeDbName": "Bent Press",
+    "images": [
+      "Bent_Press/0.jpg",
+      "Bent_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "0525",
+    "name": "kettlebell bottoms up clean from the hang position",
+    "matchLevel": "contains",
+    "freeDbId": "Bottoms_Up",
+    "freeDbName": "Bottoms Up",
+    "images": [
+      "Bottoms_Up/0.jpg",
+      "Bottoms_Up/1.jpg"
+    ]
+  },
+  {
+    "id": "0526",
+    "name": "kettlebell double alternating hang clean",
+    "matchLevel": "contains",
+    "freeDbId": "Alternating_Hang_Clean",
+    "freeDbName": "Alternating Hang Clean",
+    "images": [
+      "Alternating_Hang_Clean/0.jpg",
+      "Alternating_Hang_Clean/1.jpg"
+    ]
+  },
+  {
+    "id": "0528",
+    "name": "kettlebell double push press",
+    "matchLevel": "contains",
+    "freeDbId": "Push_Press",
+    "freeDbName": "Push Press",
+    "images": [
+      "Push_Press/0.jpg",
+      "Push_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "0532",
+    "name": "kettlebell figure 8",
+    "matchLevel": "exact",
+    "freeDbId": "Kettlebell_Figure_8",
+    "freeDbName": "Kettlebell Figure 8",
+    "images": [
+      "Kettlebell_Figure_8/0.jpg",
+      "Kettlebell_Figure_8/1.jpg"
+    ]
+  },
+  {
+    "id": "0534",
+    "name": "kettlebell goblet squat",
+    "matchLevel": "contains",
+    "freeDbId": "Goblet_Squat",
+    "freeDbName": "Goblet Squat",
+    "images": [
+      "Goblet_Squat/0.jpg",
+      "Goblet_Squat/1.jpg"
+    ]
+  },
+  {
+    "id": "0535",
+    "name": "kettlebell hang clean",
+    "matchLevel": "exact",
+    "freeDbId": "Kettlebell_Hang_Clean",
+    "freeDbName": "Kettlebell Hang Clean",
+    "images": [
+      "Kettlebell_Hang_Clean/0.jpg",
+      "Kettlebell_Hang_Clean/1.jpg"
+    ]
+  },
+  {
+    "id": "0536",
+    "name": "kettlebell lunge pass through",
+    "matchLevel": "contains",
+    "freeDbId": "Lunge_Pass_Through",
+    "freeDbName": "Lunge Pass Through",
+    "images": [
+      "Lunge_Pass_Through/0.jpg",
+      "Lunge_Pass_Through/1.jpg"
+    ]
+  },
+  {
+    "id": "0537",
+    "name": "kettlebell one arm clean and jerk",
+    "matchLevel": "contains",
+    "freeDbId": "Clean_and_Jerk",
+    "freeDbName": "Clean and Jerk",
+    "images": [
+      "Clean_and_Jerk/0.jpg",
+      "Clean_and_Jerk/1.jpg"
+    ]
+  },
+  {
+    "id": "1298",
+    "name": "kettlebell one arm floor press",
+    "matchLevel": "contains",
+    "freeDbId": "Floor_Press",
+    "freeDbName": "Floor Press",
+    "images": [
+      "Floor_Press/0.jpg",
+      "Floor_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "0540",
+    "name": "kettlebell one arm push press",
+    "matchLevel": "contains",
+    "freeDbId": "Push_Press",
+    "freeDbName": "Push Press",
+    "images": [
+      "Push_Press/0.jpg",
+      "Push_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "0544",
+    "name": "kettlebell pistol squat",
+    "matchLevel": "exact",
+    "freeDbId": "Kettlebell_Pistol_Squat",
+    "freeDbName": "Kettlebell Pistol Squat",
+    "images": [
+      "Kettlebell_Pistol_Squat/0.jpg",
+      "Kettlebell_Pistol_Squat/1.jpg"
+    ]
+  },
+  {
+    "id": "0545",
+    "name": "kettlebell plyo push-up",
+    "matchLevel": "contains",
+    "freeDbId": "Plyo_Push-up",
+    "freeDbName": "Plyo Push-up",
+    "images": [
+      "Plyo_Push-up/0.jpg",
+      "Plyo_Push-up/1.jpg"
+    ]
+  },
+  {
+    "id": "0546",
+    "name": "kettlebell seated press",
+    "matchLevel": "exact",
+    "freeDbId": "Kettlebell_Seated_Press",
+    "freeDbName": "Kettlebell Seated Press",
+    "images": [
+      "Kettlebell_Seated_Press/0.jpg",
+      "Kettlebell_Seated_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "0547",
+    "name": "kettlebell seesaw press",
+    "matchLevel": "exact",
+    "freeDbId": "Kettlebell_Seesaw_Press",
+    "freeDbName": "Kettlebell Seesaw Press",
+    "images": [
+      "Kettlebell_Seesaw_Press/0.jpg",
+      "Kettlebell_Seesaw_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "0548",
+    "name": "kettlebell sumo high pull",
+    "matchLevel": "exact",
+    "freeDbId": "Kettlebell_Sumo_High_Pull",
+    "freeDbName": "Kettlebell Sumo High Pull",
+    "images": [
+      "Kettlebell_Sumo_High_Pull/0.jpg",
+      "Kettlebell_Sumo_High_Pull/1.jpg"
+    ]
+  },
+  {
+    "id": "0549",
+    "name": "kettlebell swing",
+    "matchLevel": "contains",
+    "freeDbId": "One-Arm_Kettlebell_Swings",
+    "freeDbName": "One-Arm Kettlebell Swings",
+    "images": [
+      "One-Arm_Kettlebell_Swings/0.jpg",
+      "One-Arm_Kettlebell_Swings/1.jpg"
+    ]
+  },
+  {
+    "id": "0550",
+    "name": "kettlebell thruster",
+    "matchLevel": "exact",
+    "freeDbId": "Kettlebell_Thruster",
+    "freeDbName": "Kettlebell Thruster",
+    "images": [
+      "Kettlebell_Thruster/0.jpg",
+      "Kettlebell_Thruster/1.jpg"
+    ]
+  },
+  {
+    "id": "0554",
+    "name": "kettlebell windmill",
+    "matchLevel": "exact",
+    "freeDbId": "Kettlebell_Windmill",
+    "freeDbName": "Kettlebell Windmill",
+    "images": [
+      "Kettlebell_Windmill/0.jpg",
+      "Kettlebell_Windmill/1.jpg"
+    ]
+  },
+  {
+    "id": "0558",
+    "name": "kipping muscle up",
+    "matchLevel": "exact",
+    "freeDbId": "Kipping_Muscle_Up",
+    "freeDbName": "Kipping Muscle Up",
+    "images": [
+      "Kipping_Muscle_Up/0.jpg",
+      "Kipping_Muscle_Up/1.jpg"
+    ]
+  },
+  {
+    "id": "1420",
+    "name": "kneeling jump squat",
+    "matchLevel": "exact",
+    "freeDbId": "Kneeling_Jump_Squat",
+    "freeDbName": "Kneeling Jump Squat",
+    "images": [
+      "Kneeling_Jump_Squat/0.jpg",
+      "Kneeling_Jump_Squat/1.jpg"
+    ]
+  },
+  {
+    "id": "0562",
+    "name": "landmine 180",
+    "matchLevel": "contains",
+    "freeDbId": "Landmine_180s",
+    "freeDbName": "Landmine 180's",
+    "images": [
+      "Landmine_180s/0.jpg",
+      "Landmine_180s/1.jpg"
+    ]
+  },
+  {
+    "id": "1576",
+    "name": "leg up hamstring stretch",
+    "matchLevel": "contains",
+    "freeDbId": "Hamstring_Stretch",
+    "freeDbName": "Hamstring Stretch",
+    "images": [
+      "Hamstring_Stretch/0.jpg",
+      "Hamstring_Stretch/1.jpg"
+    ]
+  },
+  {
+    "id": "2287",
+    "name": "lever alternate leg press",
+    "matchLevel": "contains",
+    "freeDbId": "Leg_Press",
+    "freeDbName": "Leg Press",
+    "images": [
+      "Leg_Press/0.jpg",
+      "Leg_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "2289",
+    "name": "lever calf press",
+    "matchLevel": "contains",
+    "freeDbId": "Calf_Press",
+    "freeDbName": "Calf Press",
+    "images": [
+      "Calf_Press/0.jpg",
+      "Calf_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "1615",
+    "name": "lever hammer grip preacher curl",
+    "matchLevel": "contains",
+    "freeDbId": "Preacher_Curl",
+    "freeDbName": "Preacher Curl",
+    "images": [
+      "Preacher_Curl/0.jpg",
+      "Preacher_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "2611",
+    "name": "lever horizontal one leg press",
+    "matchLevel": "contains",
+    "freeDbId": "Leg_Press",
+    "freeDbName": "Leg Press",
+    "images": [
+      "Leg_Press/0.jpg",
+      "Leg_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "0592",
+    "name": "lever preacher curl",
+    "matchLevel": "contains",
+    "freeDbId": "Preacher_Curl",
+    "freeDbName": "Preacher Curl",
+    "images": [
+      "Preacher_Curl/0.jpg",
+      "Preacher_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "1614",
+    "name": "lever preacher curl v. 2",
+    "matchLevel": "contains",
+    "freeDbId": "Preacher_Curl",
+    "freeDbName": "Preacher Curl",
+    "images": [
+      "Preacher_Curl/0.jpg",
+      "Preacher_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "1616",
+    "name": "lever reverse grip preacher curl",
+    "matchLevel": "contains",
+    "freeDbId": "Preacher_Curl",
+    "freeDbName": "Preacher Curl",
+    "images": [
+      "Preacher_Curl/0.jpg",
+      "Preacher_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "0593",
+    "name": "lever reverse hyperextension",
+    "matchLevel": "contains",
+    "freeDbId": "Reverse_Hyperextension",
+    "freeDbName": "Reverse Hyperextension",
+    "images": [
+      "Reverse_Hyperextension/0.jpg",
+      "Reverse_Hyperextension/1.jpg"
+    ]
+  },
+  {
+    "id": "2335",
+    "name": "lever seated calf press",
+    "matchLevel": "contains",
+    "freeDbId": "Calf_Press",
+    "freeDbName": "Calf Press",
+    "images": [
+      "Calf_Press/0.jpg",
+      "Calf_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "0594",
+    "name": "lever seated calf raise",
+    "matchLevel": "contains",
+    "freeDbId": "Seated_Calf_Raise",
+    "freeDbName": "Seated Calf Raise",
+    "images": [
+      "Seated_Calf_Raise/0.jpg",
+      "Seated_Calf_Raise/1.jpg"
+    ]
+  },
+  {
+    "id": "3759",
+    "name": "lever seated good morning",
+    "matchLevel": "contains",
+    "freeDbId": "Good_Morning",
+    "freeDbName": "Good Morning",
+    "images": [
+      "Good_Morning/0.jpg",
+      "Good_Morning/1.jpg"
+    ]
+  },
+  {
+    "id": "0599",
+    "name": "lever seated leg curl",
+    "matchLevel": "contains",
+    "freeDbId": "Seated_Leg_Curl",
+    "freeDbName": "Seated Leg Curl",
+    "images": [
+      "Seated_Leg_Curl/0.jpg",
+      "Seated_Leg_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "1385",
+    "name": "lever seated squat calf raise on leg press machine",
+    "matchLevel": "contains",
+    "freeDbId": "Leg_Press",
+    "freeDbName": "Leg Press",
+    "images": [
+      "Leg_Press/0.jpg",
+      "Leg_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "0609",
+    "name": "london bridge",
+    "matchLevel": "contains",
+    "freeDbId": "London_Bridges",
+    "freeDbName": "London Bridges",
+    "images": [
+      "London_Bridges/0.jpg",
+      "London_Bridges/1.jpg"
+    ]
+  },
+  {
+    "id": "1352",
+    "name": "lower back curl",
+    "matchLevel": "exact",
+    "freeDbId": "Lower_Back_Curl",
+    "freeDbName": "Lower Back Curl",
+    "images": [
+      "Lower_Back_Curl/0.jpg",
+      "Lower_Back_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "2312",
+    "name": "lying elbow to knee",
+    "matchLevel": "contains",
+    "freeDbId": "Elbow_to_Knee",
+    "freeDbName": "Elbow to Knee",
+    "images": [
+      "Elbow_to_Knee/0.jpg",
+      "Elbow_to_Knee/1.jpg"
+    ]
+  },
+  {
+    "id": "1353",
+    "name": "medicine ball catch and overhead throw",
+    "matchLevel": "contains",
+    "freeDbId": "Catch_and_Overhead_Throw",
+    "freeDbName": "Catch and Overhead Throw",
+    "images": [
+      "Catch_and_Overhead_Throw/0.jpg",
+      "Catch_and_Overhead_Throw/1.jpg"
+    ]
+  },
+  {
+    "id": "1302",
+    "name": "medicine ball chest pass",
+    "matchLevel": "exact",
+    "freeDbId": "Medicine_Ball_Chest_Pass",
+    "freeDbName": "Medicine Ball Chest Pass",
+    "images": [
+      "Medicine_Ball_Chest_Pass/0.jpg",
+      "Medicine_Ball_Chest_Pass/1.jpg"
+    ]
+  },
+  {
+    "id": "1303",
+    "name": "medicine ball chest push from 3 point stance",
+    "matchLevel": "contains",
+    "freeDbId": "Chest_Push_from_3_point_stance",
+    "freeDbName": "Chest Push from 3 point stance",
+    "images": [
+      "Chest_Push_from_3_point_stance/0.jpg",
+      "Chest_Push_from_3_point_stance/1.jpg"
+    ]
+  },
+  {
+    "id": "1304",
+    "name": "medicine ball chest push multiple response",
+    "matchLevel": "contains",
+    "freeDbId": "Chest_Push_multiple_response",
+    "freeDbName": "Chest Push (multiple response)",
+    "images": [
+      "Chest_Push_multiple_response/0.jpg",
+      "Chest_Push_multiple_response/1.jpg"
+    ]
+  },
+  {
+    "id": "1305",
+    "name": "medicine ball chest push single response",
+    "matchLevel": "contains",
+    "freeDbId": "Chest_Push_single_response",
+    "freeDbName": "Chest Push (single response)",
+    "images": [
+      "Chest_Push_single_response/0.jpg",
+      "Chest_Push_single_response/1.jpg"
+    ]
+  },
+  {
+    "id": "1312",
+    "name": "medicine ball chest push with run release",
+    "matchLevel": "contains",
+    "freeDbId": "Chest_Push_with_Run_Release",
+    "freeDbName": "Chest Push with Run Release",
+    "images": [
+      "Chest_Push_with_Run_Release/0.jpg",
+      "Chest_Push_with_Run_Release/1.jpg"
+    ]
+  },
+  {
+    "id": "1354",
+    "name": "medicine ball overhead slam",
+    "matchLevel": "contains",
+    "freeDbId": "Overhead_Slam",
+    "freeDbName": "Overhead Slam",
+    "images": [
+      "Overhead_Slam/0.jpg",
+      "Overhead_Slam/1.jpg"
+    ]
+  },
+  {
+    "id": "1750",
+    "name": "medicine ball supine chest throw",
+    "matchLevel": "contains",
+    "freeDbId": "Supine_Chest_Throw",
+    "freeDbName": "Supine Chest Throw",
+    "images": [
+      "Supine_Chest_Throw/0.jpg",
+      "Supine_Chest_Throw/1.jpg"
+    ]
+  },
+  {
+    "id": "0627",
+    "name": "mixed grip chin-up",
+    "matchLevel": "contains",
+    "freeDbId": "Mixed_Grip_Chin",
+    "freeDbName": "Mixed Grip Chin",
+    "images": [
+      "Mixed_Grip_Chin/0.jpg",
+      "Mixed_Grip_Chin/1.jpg"
+    ]
+  },
+  {
+    "id": "0628",
+    "name": "monster walk",
+    "matchLevel": "exact",
+    "freeDbId": "Monster_Walk",
+    "freeDbName": "Monster Walk",
+    "images": [
+      "Monster_Walk/0.jpg",
+      "Monster_Walk/1.jpg"
+    ]
+  },
+  {
+    "id": "0630",
+    "name": "mountain climber",
+    "matchLevel": "contains",
+    "freeDbId": "Mountain_Climbers",
+    "freeDbName": "Mountain Climbers",
+    "images": [
+      "Mountain_Climbers/0.jpg",
+      "Mountain_Climbers/1.jpg"
+    ]
+  },
+  {
+    "id": "0631",
+    "name": "muscle up",
+    "matchLevel": "exact",
+    "freeDbId": "Muscle_Up",
+    "freeDbName": "Muscle Up",
+    "images": [
+      "Muscle_Up/0.jpg",
+      "Muscle_Up/1.jpg"
+    ]
+  },
+  {
+    "id": "0635",
+    "name": "oblique crunches floor",
+    "matchLevel": "contains",
+    "freeDbId": "Crunches",
+    "freeDbName": "Crunches",
+    "images": [
+      "Crunches/0.jpg",
+      "Crunches/1.jpg"
+    ]
+  },
+  {
+    "id": "1355",
+    "name": "one arm against wall",
+    "matchLevel": "exact",
+    "freeDbId": "One_Arm_Against_Wall",
+    "freeDbName": "One Arm Against Wall",
+    "images": [
+      "One_Arm_Against_Wall/0.jpg",
+      "One_Arm_Against_Wall/1.jpg"
+    ]
+  },
+  {
+    "id": "0638",
+    "name": "one arm chin-up",
+    "matchLevel": "exact",
+    "freeDbId": "One_Arm_Chin-Up",
+    "freeDbName": "One Arm Chin-Up",
+    "images": [
+      "One_Arm_Chin-Up/0.jpg",
+      "One_Arm_Chin-Up/1.jpg"
+    ]
+  },
+  {
+    "id": "0643",
+    "name": "overhead triceps stretch",
+    "matchLevel": "contains",
+    "freeDbId": "Overhead_Triceps",
+    "freeDbName": "Overhead Triceps",
+    "images": [
+      "Overhead_Triceps/0.jpg",
+      "Overhead_Triceps/1.jpg"
+    ]
+  },
+  {
+    "id": "3147",
+    "name": "pelvic tilt",
+    "matchLevel": "contains",
+    "freeDbId": "Pelvic_Tilt_Into_Bridge",
+    "freeDbName": "Pelvic Tilt Into Bridge",
+    "images": [
+      "Pelvic_Tilt_Into_Bridge/0.jpg",
+      "Pelvic_Tilt_Into_Bridge/1.jpg"
+    ]
+  },
+  {
+    "id": "1422",
+    "name": "pelvic tilt into bridge",
+    "matchLevel": "exact",
+    "freeDbId": "Pelvic_Tilt_Into_Bridge",
+    "freeDbName": "Pelvic Tilt Into Bridge",
+    "images": [
+      "Pelvic_Tilt_Into_Bridge/0.jpg",
+      "Pelvic_Tilt_Into_Bridge/1.jpg"
+    ]
+  },
+  {
+    "id": "1388",
+    "name": "peroneals stretch",
+    "matchLevel": "exact",
+    "freeDbId": "Peroneals_Stretch",
+    "freeDbName": "Peroneals Stretch",
+    "images": [
+      "Peroneals_Stretch/0.jpg",
+      "Peroneals_Stretch/1.jpg"
+    ]
+  },
+  {
+    "id": "1389",
+    "name": "posterior tibialis stretch",
+    "matchLevel": "exact",
+    "freeDbId": "Posterior_Tibialis_Stretch",
+    "freeDbName": "Posterior Tibialis Stretch",
+    "images": [
+      "Posterior_Tibialis_Stretch/0.jpg",
+      "Posterior_Tibialis_Stretch/1.jpg"
+    ]
+  },
+  {
+    "id": "0648",
+    "name": "power clean",
+    "matchLevel": "exact",
+    "freeDbId": "Power_Clean",
+    "freeDbName": "Power Clean",
+    "images": [
+      "Power_Clean/0.jpg",
+      "Power_Clean/1.jpg"
+    ]
+  },
+  {
+    "id": "0670",
+    "name": "rear pull-up",
+    "matchLevel": "contains",
+    "freeDbId": "Wide-Grip_Rear_Pull-Up",
+    "freeDbName": "Wide-Grip Rear Pull-Up",
+    "images": [
+      "Wide-Grip_Rear_Pull-Up/0.jpg",
+      "Wide-Grip_Rear_Pull-Up/1.jpg"
+    ]
+  },
+  {
+    "id": "3123",
+    "name": "resistance band seated biceps curl",
+    "matchLevel": "contains",
+    "freeDbId": "Seated_Biceps",
+    "freeDbName": "Seated Biceps",
+    "images": [
+      "Seated_Biceps/0.jpg",
+      "Seated_Biceps/1.jpg"
+    ]
+  },
+  {
+    "id": "0872",
+    "name": "reverse crunch",
+    "matchLevel": "exact",
+    "freeDbId": "Reverse_Crunch",
+    "freeDbName": "Reverse Crunch",
+    "images": [
+      "Reverse_Crunch/0.jpg",
+      "Reverse_Crunch/1.jpg"
+    ]
+  },
+  {
+    "id": "3663",
+    "name": "reverse plank with leg lift",
+    "matchLevel": "contains",
+    "freeDbId": "Leg_Lift",
+    "freeDbName": "Leg Lift",
+    "images": [
+      "Leg_Lift/0.jpg",
+      "Leg_Lift/1.jpg"
+    ]
+  },
+  {
+    "id": "0677",
+    "name": "ring dips",
+    "matchLevel": "exact",
+    "freeDbId": "Ring_Dips",
+    "freeDbName": "Ring Dips",
+    "images": [
+      "Ring_Dips/0.jpg",
+      "Ring_Dips/1.jpg"
+    ]
+  },
+  {
+    "id": "2206",
+    "name": "roller reverse crunch",
+    "matchLevel": "contains",
+    "freeDbId": "Reverse_Crunch",
+    "freeDbName": "Reverse Crunch",
+    "images": [
+      "Reverse_Crunch/0.jpg",
+      "Reverse_Crunch/1.jpg"
+    ]
+  },
+  {
+    "id": "0680",
+    "name": "rope climb",
+    "matchLevel": "exact",
+    "freeDbId": "Rope_Climb",
+    "freeDbName": "Rope Climb",
+    "images": [
+      "Rope_Climb/0.jpg",
+      "Rope_Climb/1.jpg"
+    ]
+  },
+  {
+    "id": "0687",
+    "name": "russian twist",
+    "matchLevel": "exact",
+    "freeDbId": "Russian_Twist",
+    "freeDbName": "Russian Twist",
+    "images": [
+      "Russian_Twist/0.jpg",
+      "Russian_Twist/1.jpg"
+    ]
+  },
+  {
+    "id": "0688",
+    "name": "scapular pull-up",
+    "matchLevel": "exact",
+    "freeDbId": "Scapular_Pull-Up",
+    "freeDbName": "Scapular Pull-Up",
+    "images": [
+      "Scapular_Pull-Up/0.jpg",
+      "Scapular_Pull-Up/1.jpg"
+    ]
+  },
+  {
+    "id": "1390",
+    "name": "seated calf stretch (male)",
+    "matchLevel": "noparen",
+    "freeDbId": "Seated_Calf_Stretch",
+    "freeDbName": "Seated Calf Stretch",
+    "images": [
+      "Seated_Calf_Stretch/0.jpg",
+      "Seated_Calf_Stretch/1.jpg"
+    ]
+  },
+  {
+    "id": "1424",
+    "name": "seated glute stretch",
+    "matchLevel": "contains",
+    "freeDbId": "Seated_Glute",
+    "freeDbName": "Seated Glute",
+    "images": [
+      "Seated_Glute/0.jpg",
+      "Seated_Glute/1.jpg"
+    ]
+  },
+  {
+    "id": "1774",
+    "name": "side bridge hip abduction",
+    "matchLevel": "contains",
+    "freeDbId": "Side_Bridge",
+    "freeDbName": "Side Bridge",
+    "images": [
+      "Side_Bridge/0.jpg",
+      "Side_Bridge/1.jpg"
+    ]
+  },
+  {
+    "id": "0705",
+    "name": "side bridge v. 2",
+    "matchLevel": "contains",
+    "freeDbId": "Side_Bridge",
+    "freeDbName": "Side Bridge",
+    "images": [
+      "Side_Bridge/0.jpg",
+      "Side_Bridge/1.jpg"
+    ]
+  },
+  {
+    "id": "0721",
+    "name": "side wrist pull stretch",
+    "matchLevel": "contains",
+    "freeDbId": "Side_Wrist_Pull",
+    "freeDbName": "Side Wrist Pull",
+    "images": [
+      "Side_Wrist_Pull/0.jpg",
+      "Side_Wrist_Pull/1.jpg"
+    ]
+  },
+  {
+    "id": "0727",
+    "name": "single leg calf raise (on a dumbbell)",
+    "matchLevel": "contains",
+    "freeDbId": "Calf_Raise_On_A_Dumbbell",
+    "freeDbName": "Calf Raise On A Dumbbell",
+    "images": [
+      "Calf_Raise_On_A_Dumbbell/0.jpg",
+      "Calf_Raise_On_A_Dumbbell/1.jpg"
+    ]
+  },
+  {
+    "id": "1489",
+    "name": "sissy squat",
+    "matchLevel": "contains",
+    "freeDbId": "Weighted_Sissy_Squat",
+    "freeDbName": "Weighted Sissy Squat",
+    "images": [
+      "Weighted_Sissy_Squat/0.jpg",
+      "Weighted_Sissy_Squat/1.jpg"
+    ]
+  },
+  {
+    "id": "1425",
+    "name": "sled 45 degrees one leg press",
+    "matchLevel": "contains",
+    "freeDbId": "Leg_Press",
+    "freeDbName": "Leg Press",
+    "images": [
+      "Leg_Press/0.jpg",
+      "Leg_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "0738",
+    "name": "sled 45в° calf press",
+    "matchLevel": "contains",
+    "freeDbId": "Calf_Press",
+    "freeDbName": "Calf Press",
+    "images": [
+      "Calf_Press/0.jpg",
+      "Calf_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "0739",
+    "name": "sled 45в° leg press",
+    "matchLevel": "contains",
+    "freeDbId": "Leg_Press",
+    "freeDbName": "Leg Press",
+    "images": [
+      "Leg_Press/0.jpg",
+      "Leg_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "1464",
+    "name": "sled 45в° leg press (back pov)",
+    "matchLevel": "contains",
+    "freeDbId": "Leg_Press",
+    "freeDbName": "Leg Press",
+    "images": [
+      "Leg_Press/0.jpg",
+      "Leg_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "1463",
+    "name": "sled 45° leg press (side pov)",
+    "matchLevel": "contains",
+    "freeDbId": "Leg_Press",
+    "freeDbName": "Leg Press",
+    "images": [
+      "Leg_Press/0.jpg",
+      "Leg_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "1391",
+    "name": "sled calf press on leg press",
+    "matchLevel": "contains",
+    "freeDbId": "Calf_Press",
+    "freeDbName": "Calf Press",
+    "images": [
+      "Calf_Press/0.jpg",
+      "Calf_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "0741",
+    "name": "sled closer hack squat",
+    "matchLevel": "contains",
+    "freeDbId": "Hack_Squat",
+    "freeDbName": "Hack Squat",
+    "images": [
+      "Hack_Squat/0.jpg",
+      "Hack_Squat/1.jpg"
+    ]
+  },
+  {
+    "id": "0743",
+    "name": "sled hack squat",
+    "matchLevel": "contains",
+    "freeDbId": "Hack_Squat",
+    "freeDbName": "Hack Squat",
+    "images": [
+      "Hack_Squat/0.jpg",
+      "Hack_Squat/1.jpg"
+    ]
+  },
+  {
+    "id": "2334",
+    "name": "sled lying calf press",
+    "matchLevel": "contains",
+    "freeDbId": "Calf_Press",
+    "freeDbName": "Calf Press",
+    "images": [
+      "Calf_Press/0.jpg",
+      "Calf_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "1392",
+    "name": "sled one leg calf press on leg press",
+    "matchLevel": "contains",
+    "freeDbId": "Calf_Press",
+    "freeDbName": "Calf Press",
+    "images": [
+      "Calf_Press/0.jpg",
+      "Calf_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "0747",
+    "name": "smith behind neck press",
+    "matchLevel": "contains",
+    "freeDbId": "Neck_Press",
+    "freeDbName": "Neck Press",
+    "images": [
+      "Neck_Press/0.jpg",
+      "Neck_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "0749",
+    "name": "smith bent knee good morning",
+    "matchLevel": "contains",
+    "freeDbId": "Good_Morning",
+    "freeDbName": "Good Morning",
+    "images": [
+      "Good_Morning/0.jpg",
+      "Good_Morning/1.jpg"
+    ]
+  },
+  {
+    "id": "0750",
+    "name": "smith chair squat",
+    "matchLevel": "contains",
+    "freeDbId": "Chair_Squat",
+    "freeDbName": "Chair Squat",
+    "images": [
+      "Chair_Squat/0.jpg",
+      "Chair_Squat/1.jpg"
+    ]
+  },
+  {
+    "id": "1433",
+    "name": "smith front squat (clean grip)",
+    "matchLevel": "contains",
+    "freeDbId": "Front_Squat_Clean_Grip",
+    "freeDbName": "Front Squat (Clean Grip)",
+    "images": [
+      "Front_Squat_Clean_Grip/0.jpg",
+      "Front_Squat_Clean_Grip/1.jpg"
+    ]
+  },
+  {
+    "id": "0755",
+    "name": "smith hack squat",
+    "matchLevel": "contains",
+    "freeDbId": "Hack_Squat",
+    "freeDbName": "Hack Squat",
+    "images": [
+      "Hack_Squat/0.jpg",
+      "Hack_Squat/1.jpg"
+    ]
+  },
+  {
+    "id": "0759",
+    "name": "smith incline shoulder raises",
+    "matchLevel": "contains",
+    "freeDbId": "Shoulder_Raise",
+    "freeDbName": "Shoulder Raise",
+    "images": [
+      "Shoulder_Raise/0.jpg",
+      "Shoulder_Raise/1.jpg"
+    ]
+  },
+  {
+    "id": "0760",
+    "name": "smith leg press",
+    "matchLevel": "contains",
+    "freeDbId": "Leg_Press",
+    "freeDbName": "Leg Press",
+    "images": [
+      "Leg_Press/0.jpg",
+      "Leg_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "1683",
+    "name": "smith machine bicep curl",
+    "matchLevel": "contains",
+    "freeDbId": "Machine_Bicep_Curl",
+    "freeDbName": "Machine Bicep Curl",
+    "images": [
+      "Machine_Bicep_Curl/0.jpg",
+      "Machine_Bicep_Curl/1.jpg"
+    ]
+  },
+  {
+    "id": "0774",
+    "name": "smith standing military press",
+    "matchLevel": "contains",
+    "freeDbId": "Standing_Military_Press",
+    "freeDbName": "Standing Military Press",
+    "images": [
+      "Standing_Military_Press/0.jpg",
+      "Standing_Military_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "0776",
+    "name": "snatch pull",
+    "matchLevel": "exact",
+    "freeDbId": "Snatch_Pull",
+    "freeDbName": "Snatch Pull",
+    "images": [
+      "Snatch_Pull/0.jpg",
+      "Snatch_Pull/1.jpg"
+    ]
+  },
+  {
+    "id": "0777",
+    "name": "spell caster",
+    "matchLevel": "exact",
+    "freeDbId": "Spell_Caster",
+    "freeDbName": "Spell Caster",
+    "images": [
+      "Spell_Caster/0.jpg",
+      "Spell_Caster/1.jpg"
+    ]
+  },
+  {
+    "id": "0778",
+    "name": "spider crawl push up",
+    "matchLevel": "contains",
+    "freeDbId": "Spider_Crawl",
+    "freeDbName": "Spider Crawl",
+    "images": [
+      "Spider_Crawl/0.jpg",
+      "Spider_Crawl/1.jpg"
+    ]
+  },
+  {
+    "id": "2368",
+    "name": "split squats",
+    "matchLevel": "exact",
+    "freeDbId": "Split_Squats",
+    "freeDbName": "Split Squats",
+    "images": [
+      "Split_Squats/0.jpg",
+      "Split_Squats/1.jpg"
+    ]
+  },
+  {
+    "id": "0786",
+    "name": "squat jerk",
+    "matchLevel": "exact",
+    "freeDbId": "Squat_Jerk",
+    "freeDbName": "Squat Jerk",
+    "images": [
+      "Squat_Jerk/0.jpg",
+      "Squat_Jerk/1.jpg"
+    ]
+  },
+  {
+    "id": "0788",
+    "name": "standing behind neck press",
+    "matchLevel": "contains",
+    "freeDbId": "Neck_Press",
+    "freeDbName": "Neck Press",
+    "images": [
+      "Neck_Press/0.jpg",
+      "Neck_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "1599",
+    "name": "standing hamstring and calf stretch with strap",
+    "matchLevel": "contains",
+    "freeDbId": "Standing_Hamstring_and_Calf_Stretch",
+    "freeDbName": "Standing Hamstring and Calf Stretch",
+    "images": [
+      "Standing_Hamstring_and_Calf_Stretch/0.jpg",
+      "Standing_Hamstring_and_Calf_Stretch/1.jpg"
+    ]
+  },
+  {
+    "id": "0794",
+    "name": "standing lateral stretch",
+    "matchLevel": "exact",
+    "freeDbId": "Standing_Lateral_Stretch",
+    "freeDbName": "Standing Lateral Stretch",
+    "images": [
+      "Standing_Lateral_Stretch/0.jpg",
+      "Standing_Lateral_Stretch/1.jpg"
+    ]
+  },
+  {
+    "id": "1364",
+    "name": "standing pelvic tilt",
+    "matchLevel": "exact",
+    "freeDbId": "Standing_Pelvic_Tilt",
+    "freeDbName": "Standing Pelvic Tilt",
+    "images": [
+      "Standing_Pelvic_Tilt/0.jpg",
+      "Standing_Pelvic_Tilt/1.jpg"
+    ]
+  },
+  {
+    "id": "3223",
+    "name": "star jump (male)",
+    "matchLevel": "noparen",
+    "freeDbId": "Star_Jump",
+    "freeDbName": "Star Jump",
+    "images": [
+      "Star_Jump/0.jpg",
+      "Star_Jump/1.jpg"
+    ]
+  },
+  {
+    "id": "0803",
+    "name": "superman push-up",
+    "matchLevel": "contains",
+    "freeDbId": "Superman",
+    "freeDbName": "Superman",
+    "images": [
+      "Superman/0.jpg",
+      "Superman/1.jpg"
+    ]
+  },
+  {
+    "id": "0806",
+    "name": "suspended push-up",
+    "matchLevel": "exact",
+    "freeDbId": "Suspended_Push-Up",
+    "freeDbName": "Suspended Push-Up",
+    "images": [
+      "Suspended_Push-Up/0.jpg",
+      "Suspended_Push-Up/1.jpg"
+    ]
+  },
+  {
+    "id": "0807",
+    "name": "suspended reverse crunch",
+    "matchLevel": "exact",
+    "freeDbId": "Suspended_Reverse_Crunch",
+    "freeDbName": "Suspended Reverse Crunch",
+    "images": [
+      "Suspended_Reverse_Crunch/0.jpg",
+      "Suspended_Reverse_Crunch/1.jpg"
+    ]
+  },
+  {
+    "id": "0808",
+    "name": "suspended row",
+    "matchLevel": "exact",
+    "freeDbId": "Suspended_Row",
+    "freeDbName": "Suspended Row",
+    "images": [
+      "Suspended_Row/0.jpg",
+      "Suspended_Row/1.jpg"
+    ]
+  },
+  {
+    "id": "0809",
+    "name": "suspended split squat",
+    "matchLevel": "exact",
+    "freeDbId": "Suspended_Split_Squat",
+    "freeDbName": "Suspended Split Squat",
+    "images": [
+      "Suspended_Split_Squat/0.jpg",
+      "Suspended_Split_Squat/1.jpg"
+    ]
+  },
+  {
+    "id": "2459",
+    "name": "tire flip",
+    "matchLevel": "exact",
+    "freeDbId": "Tire_Flip",
+    "freeDbName": "Tire Flip",
+    "images": [
+      "Tire_Flip/0.jpg",
+      "Tire_Flip/1.jpg"
+    ]
+  },
+  {
+    "id": "0811",
+    "name": "trap bar deadlift",
+    "matchLevel": "exact",
+    "freeDbId": "Trap_Bar_Deadlift",
+    "freeDbName": "Trap Bar Deadlift",
+    "images": [
+      "Trap_Bar_Deadlift/0.jpg",
+      "Trap_Bar_Deadlift/1.jpg"
+    ]
+  },
+  {
+    "id": "0816",
+    "name": "triceps press",
+    "matchLevel": "contains",
+    "freeDbId": "Lying_Close-Grip_Barbell_Triceps_Press_To_Chin",
+    "freeDbName": "Lying Close-Grip Barbell Triceps Press To Chin",
+    "images": [
+      "Lying_Close-Grip_Barbell_Triceps_Press_To_Chin/0.jpg",
+      "Lying_Close-Grip_Barbell_Triceps_Press_To_Chin/1.jpg"
+    ]
+  },
+  {
+    "id": "0817",
+    "name": "triceps stretch",
+    "matchLevel": "exact",
+    "freeDbId": "Triceps_Stretch",
+    "freeDbName": "Triceps Stretch",
+    "images": [
+      "Triceps_Stretch/0.jpg",
+      "Triceps_Stretch/1.jpg"
+    ]
+  },
+  {
+    "id": "0871",
+    "name": "tuck crunch",
+    "matchLevel": "exact",
+    "freeDbId": "Tuck_Crunch",
+    "freeDbName": "Tuck Crunch",
+    "images": [
+      "Tuck_Crunch/0.jpg",
+      "Tuck_Crunch/1.jpg"
+    ]
+  },
+  {
+    "id": "1365",
+    "name": "upper back stretch",
+    "matchLevel": "exact",
+    "freeDbId": "Upper_Back_Stretch",
+    "freeDbName": "Upper Back Stretch",
+    "images": [
+      "Upper_Back_Stretch/0.jpg",
+      "Upper_Back_Stretch/1.jpg"
+    ]
+  },
+  {
+    "id": "1460",
+    "name": "walking lunge",
+    "matchLevel": "contains",
+    "freeDbId": "Barbell_Walking_Lunge",
+    "freeDbName": "Barbell Walking Lunge",
+    "images": [
+      "Barbell_Walking_Lunge/0.jpg",
+      "Barbell_Walking_Lunge/1.jpg"
+    ]
+  },
+  {
+    "id": "0830",
+    "name": "weighted bench dip",
+    "matchLevel": "exact",
+    "freeDbId": "Weighted_Bench_Dip",
+    "freeDbName": "Weighted Bench Dip",
+    "images": [
+      "Weighted_Bench_Dip/0.jpg",
+      "Weighted_Bench_Dip/1.jpg"
+    ]
+  },
+  {
+    "id": "0832",
+    "name": "weighted crunch",
+    "matchLevel": "contains",
+    "freeDbId": "Weighted_Crunches",
+    "freeDbName": "Weighted Crunches",
+    "images": [
+      "Weighted_Crunches/0.jpg",
+      "Weighted_Crunches/1.jpg"
+    ]
+  },
+  {
+    "id": "1310",
+    "name": "weighted drop push up",
+    "matchLevel": "contains",
+    "freeDbId": "Drop_Push",
+    "freeDbName": "Drop Push",
+    "images": [
+      "Drop_Push/0.jpg",
+      "Drop_Push/1.jpg"
+    ]
+  },
+  {
+    "id": "3286",
+    "name": "weighted muscle up",
+    "matchLevel": "contains",
+    "freeDbId": "Muscle_Up",
+    "freeDbName": "Muscle Up",
+    "images": [
+      "Muscle_Up/0.jpg",
+      "Muscle_Up/1.jpg"
+    ]
+  },
+  {
+    "id": "3312",
+    "name": "weighted muscle up (on bar)",
+    "matchLevel": "contains",
+    "freeDbId": "Muscle_Up",
+    "freeDbName": "Muscle Up",
+    "images": [
+      "Muscle_Up/0.jpg",
+      "Muscle_Up/1.jpg"
+    ]
+  },
+  {
+    "id": "0846",
+    "name": "weighted russian twist",
+    "matchLevel": "contains",
+    "freeDbId": "Russian_Twist",
+    "freeDbName": "Russian Twist",
+    "images": [
+      "Russian_Twist/0.jpg",
+      "Russian_Twist/1.jpg"
+    ]
+  },
+  {
+    "id": "0845",
+    "name": "weighted russian twist (legs up)",
+    "matchLevel": "contains",
+    "freeDbId": "Russian_Twist",
+    "freeDbName": "Russian Twist",
+    "images": [
+      "Russian_Twist/0.jpg",
+      "Russian_Twist/1.jpg"
+    ]
+  },
+  {
+    "id": "2371",
+    "name": "weighted russian twist v. 2",
+    "matchLevel": "contains",
+    "freeDbId": "Russian_Twist",
+    "freeDbName": "Russian Twist",
+    "images": [
+      "Russian_Twist/0.jpg",
+      "Russian_Twist/1.jpg"
+    ]
+  },
+  {
+    "id": "0851",
+    "name": "weighted sissy squat",
+    "matchLevel": "exact",
+    "freeDbId": "Weighted_Sissy_Squat",
+    "freeDbName": "Weighted Sissy Squat",
+    "images": [
+      "Weighted_Sissy_Squat/0.jpg",
+      "Weighted_Sissy_Squat/1.jpg"
+    ]
+  },
+  {
+    "id": "0852",
+    "name": "weighted squat",
+    "matchLevel": "exact",
+    "freeDbId": "Weighted_Squat",
+    "freeDbName": "Weighted Squat",
+    "images": [
+      "Weighted_Squat/0.jpg",
+      "Weighted_Squat/1.jpg"
+    ]
+  },
+  {
+    "id": "0856",
+    "name": "weighted svend press",
+    "matchLevel": "contains",
+    "freeDbId": "Svend_Press",
+    "freeDbName": "Svend Press",
+    "images": [
+      "Svend_Press/0.jpg",
+      "Svend_Press/1.jpg"
+    ]
+  },
+  {
+    "id": "1754",
+    "name": "weighted three bench dips",
+    "matchLevel": "contains",
+    "freeDbId": "Bench_Dips",
+    "freeDbName": "Bench Dips",
+    "images": [
+      "Bench_Dips/0.jpg",
+      "Bench_Dips/1.jpg"
+    ]
+  },
+  {
+    "id": "0858",
+    "name": "wind sprints",
+    "matchLevel": "exact",
+    "freeDbId": "Wind_Sprints",
+    "freeDbName": "Wind Sprints",
+    "images": [
+      "Wind_Sprints/0.jpg",
+      "Wind_Sprints/1.jpg"
+    ]
+  },
+  {
+    "id": "1428",
+    "name": "wrist circles",
+    "matchLevel": "exact",
+    "freeDbId": "Wrist_Circles",
+    "freeDbName": "Wrist Circles",
+    "images": [
+      "Wrist_Circles/0.jpg",
+      "Wrist_Circles/1.jpg"
+    ]
+  },
+  {
+    "id": "0859",
+    "name": "wrist rollerer",
+    "matchLevel": "contains",
+    "freeDbId": "Wrist_Roller",
+    "freeDbName": "Wrist Roller",
+    "images": [
+      "Wrist_Roller/0.jpg",
+      "Wrist_Roller/1.jpg"
+    ]
+  }
+]
