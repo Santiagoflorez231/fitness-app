@@ -1,30 +1,30 @@
 /**
  * Constantes de estilo compartidas por los gráficos de Progreso (Recharts).
- * Un único color de dato en toda la vista: azul primario de Ionic (#3880ff),
- * validado por contraste sobre fondo claro y oscuro (`--ion-background-color`).
+ * Un único color de dato en toda la vista: `--app-data` (azul acero CARGA),
+ * reservado a gráficos/datos — 4,4:1 sobre fondo claro, 6,9:1 sobre oscuro.
  */
 import type { CSSProperties } from 'react';
 
 /** Color de la serie de datos (barras y línea). */
-export const CHART_DATA_COLOR = '#3880ff';
+export const CHART_DATA_COLOR = 'var(--app-data)';
 
 /** Grid recesivo: solo líneas horizontales, opacidad baja. */
-export const CHART_GRID_STROKE = 'var(--ion-color-medium)';
+export const CHART_GRID_STROKE = 'var(--app-border)';
 export const CHART_GRID_OPACITY = 0.2;
 
 /** Color de los ticks de los ejes (texto secundario). */
-export const CHART_TICK_FILL = 'var(--ion-color-medium)';
+export const CHART_TICK_FILL = 'var(--app-text-secondary)';
 export const CHART_TICK_FONT_SIZE = 12;
 
 /** Estilo del recuadro del tooltip: fondo y texto en tokens de tema, borde sutil. */
 export const chartTooltipStyle: CSSProperties = {
-  background: 'var(--ion-background-color)',
-  color: 'var(--ion-text-color)',
-  border: '1px solid rgba(var(--ion-color-medium-rgb), 0.35)',
+  background: 'var(--app-surface-elevated)',
+  color: 'var(--app-text-primary)',
+  border: '1px solid var(--app-border)',
   borderRadius: 8,
   padding: '0.5rem 0.75rem',
   fontSize: '0.85rem',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
+  boxShadow: 'var(--app-shadow-card)',
 };
 
 /** Formatea kg en es-ES con como máximo 1 decimal (ej. "1234,5 kg"). */

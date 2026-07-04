@@ -1,6 +1,6 @@
 {
-  "short_name": "Fitness",
-  "name": "Fitness",
+  "short_name": "CARGA",
+  "name": "CARGA",
   "icons": [
     {
       "src": "assets/icon/favicon.png",
@@ -16,6 +16,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff"
+  "theme_color": "#151210",
+  "background_color": "#151210"
 }

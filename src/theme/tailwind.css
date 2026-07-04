@@ -8,3 +8,22 @@
  */
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
+
+/**
+ * Mapeo de tokens CARGA (src/theme/variables.css) a utilidades Tailwind:
+ * bg-surface, bg-bg, bg-elevated, text-secondary-text, border-borderc,
+ * text-data, rounded-s/m/l.
+ */
+@theme inline {
+  --color-surface: var(--app-surface);
+  --color-bg: var(--app-bg);
+  --color-elevated: var(--app-surface-elevated);
+  --color-primary-app: var(--ion-color-primary);
+  --color-secondary-text: var(--app-text-secondary);
+  --color-borderc: var(--app-border);
+  --color-data: var(--app-data);
+
+  --radius-s: var(--app-radius-s);
+  --radius-m: var(--app-radius-m);
+  --radius-l: var(--app-radius-l);
+}

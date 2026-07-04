@@ -1,2 +1,144 @@
-/* For information on how to create your own theme, please refer to:
-http://ionicframework.com/docs/theming/ */
+/**
+ * CARGA — tokens de tema.
+ *
+ * Referencia obligatoria: docs/design-carga.md
+ * Tema claro por defecto en :root; oscuro vía @media (prefers-color-scheme: dark).
+ * Tokens propios --app-* + overrides --ion-* que Ionic consume directamente.
+ */
+
+/* ---------------------------------------------------------------------- */
+/* Tema claro (por defecto)                                               */
+/* ---------------------------------------------------------------------- */
+:root {
+  /* Tokens CARGA */
+  --app-bg: #F7F4EF;
+  --app-surface: #FCFBF8;
+  --app-surface-elevated: #FFFFFF;
+  --app-text-primary: #201B16;
+  --app-text-secondary: #6B635A;
+  --app-accent: #2E5E73;
+  --app-data: #3676A6;
+  --app-border: #E5DFD5;
+
+  --app-radius-s: 8px;
+  --app-radius-m: 14px;
+  --app-radius-l: 20px;
+  --app-radius-full: 999px;
+
+  --app-shadow-card: 0 1px 2px rgba(32, 27, 22, .06), 0 4px 12px rgba(32, 27, 22, .05);
+  --app-shadow-float: 0 8px 28px rgba(32, 27, 22, .16);
+
+  --app-dur-fast: 120ms;
+  --app-dur-base: 200ms;
+  --app-dur-slow: 320ms;
+  --app-ease: cubic-bezier(.2, 0, 0, 1);
+  --app-ease-pop: cubic-bezier(.34, 1.56, .64, 1);
+
+  /* Ionic — fondo / texto / superficies */
+  --ion-background-color: #F7F4EF;
+  --ion-background-color-rgb: 247, 244, 239;
+  --ion-text-color: #201B16;
+  --ion-text-color-rgb: 32, 27, 22;
+
+  --ion-toolbar-background: #F7F4EF;
+  --ion-item-background: #FCFBF8;
+  --ion-card-background: #FCFBF8;
+  --ion-border-color: #E5DFD5;
+
+  --ion-font-family: 'IBM Plex Sans', sans-serif;
+
+  /* Ionic — color primary (naranja quemado, único color de acción) */
+  --ion-color-primary: #D9480F;
+  --ion-color-primary-rgb: 217, 72, 15;
+  --ion-color-primary-contrast: #FFFFFF;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #BF3F0D;
+  --ion-color-primary-tint: #DD5A27;
+
+  /* Ionic — success */
+  --ion-color-success: #2F7D46;
+  --ion-color-success-rgb: 47, 125, 70;
+  --ion-color-success-contrast: #FFFFFF;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #296E3E;
+  --ion-color-success-tint: #448A59;
+
+  /* Ionic — warning */
+  --ion-color-warning: #B87A00;
+  --ion-color-warning-rgb: 184, 122, 0;
+  --ion-color-warning-contrast: #FFFFFF;
+  --ion-color-warning-contrast-rgb: 255, 255, 255;
+  --ion-color-warning-shade: #A26B00;
+  --ion-color-warning-tint: #BF871A;
+
+  /* Ionic — danger */
+  --ion-color-danger: #C03221;
+  --ion-color-danger-rgb: 192, 50, 33;
+  --ion-color-danger-contrast: #FFFFFF;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #A92C1D;
+  --ion-color-danger-tint: #C64737;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Tema oscuro                                                            */
+/* ---------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Tokens CARGA */
+    --app-bg: #151210;
+    --app-surface: #1E1A17;
+    --app-surface-elevated: #272220;
+    --app-text-primary: #F2EDE6;
+    --app-text-secondary: #A79C90;
+    --app-accent: #7FB5CC;
+    --app-data: #6FB1E3;
+    --app-border: #352E29;
+
+    --app-shadow-card: none;
+    --app-shadow-float: 0 8px 28px rgba(0, 0, 0, .5);
+
+    /* Ionic — fondo / texto / superficies */
+    --ion-background-color: #151210;
+    --ion-background-color-rgb: 21, 18, 16;
+    --ion-text-color: #F2EDE6;
+    --ion-text-color-rgb: 242, 237, 230;
+
+    --ion-toolbar-background: #151210;
+    --ion-item-background: #1E1A17;
+    --ion-card-background: #1E1A17;
+    --ion-border-color: #352E29;
+
+    /* Ionic — color primary */
+    --ion-color-primary: #FF6B2C;
+    --ion-color-primary-rgb: 255, 107, 44;
+    --ion-color-primary-contrast: #2B1305;
+    --ion-color-primary-contrast-rgb: 43, 19, 5;
+    --ion-color-primary-shade: #E05E27;
+    --ion-color-primary-tint: #FF7A41;
+
+    /* Ionic — success */
+    --ion-color-success: #58C97A;
+    --ion-color-success-rgb: 88, 201, 122;
+    --ion-color-success-contrast: #0E2416;
+    --ion-color-success-contrast-rgb: 14, 36, 22;
+    --ion-color-success-shade: #4DB16B;
+    --ion-color-success-tint: #69CE87;
+
+    /* Ionic — warning */
+    --ion-color-warning: #F0B23E;
+    --ion-color-warning-rgb: 240, 178, 62;
+    --ion-color-warning-contrast: #241A05;
+    --ion-color-warning-contrast-rgb: 36, 26, 5;
+    --ion-color-warning-shade: #D39D37;
+    --ion-color-warning-tint: #F2BA51;
+
+    /* Ionic — danger */
+    --ion-color-danger: #F26D5B;
+    --ion-color-danger-rgb: 242, 109, 91;
+    --ion-color-danger-contrast: #2A0B07;
+    --ion-color-danger-contrast-rgb: 42, 11, 7;
+    --ion-color-danger-shade: #D56050;
+    --ion-color-danger-tint: #F37C6B;
+  }
+}

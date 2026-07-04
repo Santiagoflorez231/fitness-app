@@ -1,0 +1,101 @@
+/**
+ * CARGA — estilos globales del sistema de diseño.
+ *
+ * Referencia obligatoria: docs/design-carga.md
+ * Se importa en App.tsx DESPUÉS de variables.css.
+ */
+
+/* ---------------------------------------------------------------------- */
+/* Títulos — Archivo                                                      */
+/* ---------------------------------------------------------------------- */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-display {
+  font-family: 'Archivo', sans-serif;
+}
+
+/* Título de página: Archivo 900, 28–34px, tracking -2% */
+h1,
+.carga-title-page {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 900;
+  font-size: clamp(28px, 7vw, 34px);
+  letter-spacing: -0.02em;
+  color: var(--app-text-primary);
+}
+
+/* Título de card/ejercicio: Archivo 700, 17-19px */
+h2,
+h3,
+.carga-title-card {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--app-text-primary);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Utilidades CARGA                                                       */
+/* ---------------------------------------------------------------------- */
+
+/* Etiquetas/overlines: Archivo 800, 12px, mayúsculas, tracking +12% */
+.carga-overline {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--app-text-secondary);
+}
+
+/* Cifras de datos: Archivo 800, tabular-nums */
+.carga-num {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+}
+
+/* Card base: elevación por tono + borde, sombra sutil */
+.carga-card {
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-m);
+  box-shadow: var(--app-shadow-card);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Movimiento                                                             */
+/* ---------------------------------------------------------------------- */
+
+/* El PR es el único rebote de la app: escala .6 -> 1.08 -> 1 */
+@keyframes pr-pop {
+  0% {
+    transform: scale(.6);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.pr-pop {
+  animation: pr-pop var(--app-dur-slow) var(--app-ease-pop) both;
+}
+
+/* Respeto a prefers-reduced-motion: sin duraciones */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --app-dur-fast: 0ms;
+    --app-dur-base: 0ms;
+    --app-dur-slow: 0ms;
+  }
+}

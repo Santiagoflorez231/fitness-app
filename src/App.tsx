@@ -43,10 +43,17 @@ import '@ionic/react/css/display.css';
 
 /* import '@ionic/react/css/palettes/dark.always.css'; */
 /* import '@ionic/react/css/palettes/dark.class.css'; */
-import '@ionic/react/css/palettes/dark.system.css';
+/* Nuestros tokens (variables.css) ya definen ambos temas: el palette de
+   Ionic pisaría esos valores, así que no se importa. */
+
+/* Fuentes locales CARGA (Archivo + IBM Plex Sans) */
+import './theme/fonts';
 
 /* Theme variables */
 import './theme/variables.css';
+
+/* Estilos globales del sistema de diseño CARGA */
+import './theme/carga.css';
 
 /* Tailwind CSS (solo theme + utilities, sin preflight) */
 import './theme/tailwind.css';
