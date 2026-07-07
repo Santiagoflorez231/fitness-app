@@ -1,0 +1,112 @@
+/**
+ * ExerciseHistorySheet -- sheet CARGA con el historial de un ejercicio.
+ * Acabado propio (sin chrome estándar de Ionic): IonModal solo como
+ * contenedor del sheet.
+ * Referencia obligatoria: docs/design-carga.md
+ */
+
+.history-sheet {
+  --border-radius: var(--app-radius-l);
+  --background: var(--app-bg);
+}
+
+.carga-sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 20px 12px;
+}
+
+.history-sheet-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.carga-sheet-close {
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--app-radius-full);
+  border: 1px solid var(--app-border);
+  background: var(--app-surface-elevated);
+  color: var(--app-text-secondary);
+  font-size: 13px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.history-sheet-body {
+  padding: 0 20px 28px;
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+.history-sheet-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 0;
+}
+
+.history-sheet-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 56px 16px;
+  text-align: center;
+}
+
+.history-sheet-empty-text {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 15px;
+  color: var(--app-text-secondary);
+  margin: 0;
+}
+
+.history-sheet-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.history-sheet-row {
+  padding: 12px 14px;
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-m);
+  background: var(--app-surface);
+}
+
+.history-sheet-date {
+  margin: 0 0 6px;
+}
+
+.history-sheet-row-main {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.history-sheet-sets {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 14px;
+  color: var(--app-text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.history-sheet-e1rm {
+  font-size: 17px;
+  color: var(--ion-color-primary);
+  white-space: nowrap;
+}

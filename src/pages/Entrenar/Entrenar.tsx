@@ -3,16 +3,9 @@ import {
   IonAlert,
   IonButton,
   IonButtons,
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardTitle,
   IonContent,
   IonHeader,
   IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
   IonPage,
   IonSpinner,
   IonTitle,
@@ -20,14 +13,18 @@ import {
   useIonViewWillEnter,
   useIonViewWillLeave,
 } from '@ionic/react';
-import { barbell } from 'ionicons/icons';
+import { barbell, chevronDown, chevronUp } from 'ionicons/icons';
 import { routinesRepo, sessionsRepo } from '../../db';
 import { useExercises } from '../../hooks/useExercises';
+import { estimateSessionMinutes } from '../../data/routineTemplates';
 import ExerciseAvatar from '../../components/ExerciseAvatar';
 import SetRow from '../../components/SetRow';
 import RestTimer, { type RestTimerTrigger } from '../../components/RestTimer';
+import PlateCalculator, { type PlateCalculatorMode } from '../../components/PlateCalculator';
+import ExerciseHistorySheet from '../../components/ExerciseHistorySheet';
 import type { Exercise } from '../../types/exercise';
 import type { Routine, SessionSet, WorkoutSession } from '../../types/routine';
+import './Entrenar.css';
 
 const TWELVE_HOURS_MS = 12 * 60 * 60 * 1000;
 const REST_TIMER_STORAGE_KEY = 'fitness.restTimer';
@@ -71,8 +68,13 @@ function formatDateEs(ts: number): string {
   });
 }
 
-function formatKg(value: number): string {
-  return `${new Intl.NumberFormat('es-ES', { maximumFractionDigits: 1 }).format(value)} kg`;
+function formatEsNum(value: number, maximumFractionDigits = 1): string {
+  return new Intl.NumberFormat('es-ES', { maximumFractionDigits }).format(value);
+}
+
+/** Estimación de 1RM de Epley: weight x (1 + reps/30). */
+function epleyE1rm(weightKg: number, reps: number): number {
+  return weightKg * (1 + reps / 30);
 }
 
 /** true si `s` pertenece a alguno de los bloques REALES (no huérfanos) de
@@ -168,15 +170,43 @@ function buildPlan(routine: Routine | null, existingSets: SessionSet[], allExerc
   return plan;
 }
 
-/** Última serie histórica de cada ejercicio real del plan (para el prefill
- * de la serie 1). Se ignoran los ejercicios huérfanos: no tienen filas nuevas. */
-async function fetchHistoryMap(plan: PlanExercise[]): Promise<Record<string, SessionSet | undefined>> {
+/** Historial pre-cargado (antes de esta sesión) de un ejercicio del plan. */
+interface HistoryEntry {
+  /** Último set registrado (cualquier setNumber) antes de esta sesión: usado
+   * para el prefill de la serie 1 -- computeDraft, comportamiento sin cambios. */
+  last: SessionSet | undefined;
+  /** Máximo peso histórico antes de esta sesión (PR en vivo). */
+  maxWeightKg: number;
+  /** Mejor e1RM histórico antes de esta sesión, Epley (chip %1RM y hero). */
+  bestE1rm: number;
+  /** Series de la sesión anterior más reciente de este ejercicio, indexadas
+   * por setNumber ("valor fantasma" tocable en cada fila). */
+  previousSessionBySetNumber: Record<number, SessionSet>;
+}
+
+type HistoryMap = Record<string, HistoryEntry>;
+
+/** Historial de cada ejercicio real del plan (se ignoran los huérfanos: no
+ * tienen filas nuevas). Se calcula una única vez al iniciar/retomar la
+ * sesión, así que "antes de esta sesión" es literal para todo su contenido. */
+async function fetchHistoryMap(plan: PlanExercise[]): Promise<HistoryMap> {
   const entries = await Promise.all(
     plan
       .filter((pe) => !pe.isOrphan)
-      .map(async (pe): Promise<[string, SessionSet | undefined]> => {
+      .map(async (pe): Promise<[string, HistoryEntry]> => {
         const history = await sessionsRepo.listSetsByExercise(pe.exerciseId);
-        return [pe.exerciseId, history[history.length - 1]];
+        const last = history[history.length - 1];
+        const maxWeightKg = history.reduce((max, s) => Math.max(max, s.weightKg), 0);
+        const bestE1rm = history.reduce((max, s) => Math.max(max, epleyE1rm(s.weightKg, s.reps)), 0);
+        const previousSessionBySetNumber: Record<number, SessionSet> = {};
+        if (last) {
+          history
+            .filter((s) => s.sessionId === last.sessionId)
+            .forEach((s) => {
+              previousSessionBySetNumber[s.setNumber] = s;
+            });
+        }
+        return [pe.exerciseId, { last, maxWeightKg, bestE1rm, previousSessionBySetNumber }];
       }),
   );
   return Object.fromEntries(entries);
@@ -204,14 +234,33 @@ function computeDraft(
   return { weight: '', reps: pe.targetReps.toString() };
 }
 
+/** Series objetivo (de un ejercicio real) que faltan por completar. */
+function pendingCountForExercise(plan: PlanExercise[], pe: PlanExercise, currentSets: SessionSet[]): number {
+  const done = setsForPlanExercise(plan, pe, currentSets).filter((s) => s.setNumber <= pe.targetSets).length;
+  return Math.max(0, pe.targetSets - done);
+}
+
 /** Series objetivo (de ejercicios reales, no huérfanos) que faltan por completar. */
 function countRemaining(plan: PlanExercise[], currentSets: SessionSet[]): number {
-  return plan
-    .filter((pe) => !pe.isOrphan)
-    .reduce((sum, pe) => {
-      const done = setsForPlanExercise(plan, pe, currentSets).filter((s) => s.setNumber <= pe.targetSets).length;
-      return sum + Math.max(0, pe.targetSets - done);
-    }, 0);
+  return plan.filter((pe) => !pe.isOrphan).reduce((sum, pe) => sum + pendingCountForExercise(plan, pe, currentSets), 0);
+}
+
+/** Primer setNumber (1..rowCount) sin serie registrada, o null si están todas. */
+function nextPendingSetNumber(setsForExercise: SessionSet[], rowCount: number): number | null {
+  for (let n = 1; n <= rowCount; n += 1) {
+    if (!setsForExercise.some((s) => s.setNumber === n)) {
+      return n;
+    }
+  }
+  return null;
+}
+
+function parseWeightOrNull(value: string): number | null {
+  if (value.trim() === '') {
+    return null;
+  }
+  const num = Number(value);
+  return Number.isFinite(num) ? num : null;
 }
 
 const Entrenar: React.FC = () => {
@@ -219,13 +268,30 @@ const Entrenar: React.FC = () => {
 
   const [phase, setPhase] = useState<Phase>({ kind: 'loading' });
   const [sets, setSets] = useState<SessionSet[]>([]);
-  const [history, setHistory] = useState<Record<string, SessionSet | undefined>>({});
+  const [history, setHistory] = useState<HistoryMap>({});
 
   const [pendingRoutine, setPendingRoutine] = useState<Routine | null>(null);
   const [restTrigger, setRestTrigger] = useState<RestTimerTrigger | null>(null);
   const [pendingFinishRemaining, setPendingFinishRemaining] = useState<number | null>(null);
   const [summary, setSummary] = useState<{ completedSets: number; volumeKg: number } | null>(null);
   const [nowTick, setNowTick] = useState<number>(() => Date.now());
+
+  // Estado visual/aditivo (no afecta a la persistencia ni a la resolución de
+  // series): tarjetas expandidas, filas extra por bloque, PR en vivo y las
+  // dos herramientas nuevas.
+  const [expandedKeys, setExpandedKeys] = useState<Set<string>>(new Set());
+  const [extraRows, setExtraRows] = useState<Record<string, number>>({});
+  const [prKeys, setPrKeys] = useState<Set<string>>(new Set());
+  const [plateCalc, setPlateCalc] = useState<{ open: boolean; weightKg: number | null; mode: PlateCalculatorMode }>({
+    open: false,
+    weightKg: null,
+    mode: 'plates',
+  });
+  const [historySheet, setHistorySheet] = useState<{ open: boolean; exerciseId: string | null; exerciseName: string }>({
+    open: false,
+    exerciseId: null,
+    exerciseName: '',
+  });
 
   const [enterNonce, setEnterNonce] = useState(0);
   useIonViewWillEnter(() => {
@@ -250,6 +316,39 @@ const Entrenar: React.FC = () => {
    * que ya estaba en vuelo, p. ej. un RestTimer o un doble toque previo). */
   const sessionFinishedRef = useRef(false);
 
+  // Ejercicio "actual": el primero (no huérfano) con series pendientes. Se
+  // recalcula cada render a partir de `phase`/`sets`; no es un hook, así que
+  // puede vivir junto al resto de hooks sin alterar su orden entre renders.
+  const currentPe: PlanExercise | null =
+    phase.kind === 'workout'
+      ? phase.plan.find((pe) => !pe.isOrphan && pendingCountForExercise(phase.plan, pe, sets) > 0) ?? null
+      : null;
+
+  // Expande automáticamente la card del ejercicio actual cuando cambia
+  // (y contrae la anterior), sin pisar los toggles manuales del usuario en
+  // el resto de cards.
+  const prevCurrentKeyRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (phase.kind !== 'workout') {
+      return;
+    }
+    const key = currentPe?.key ?? null;
+    if (key === prevCurrentKeyRef.current) {
+      return;
+    }
+    setExpandedKeys((previous) => {
+      const next = new Set(previous);
+      if (prevCurrentKeyRef.current) {
+        next.delete(prevCurrentKeyRef.current);
+      }
+      if (key) {
+        next.add(key);
+      }
+      return next;
+    });
+    prevCurrentKeyRef.current = key;
+  }, [phase.kind, currentPe]);
+
   const bootstrap = async (): Promise<void> => {
     setPhase({ kind: 'loading' });
     const active = await sessionsRepo.getActive();
@@ -269,6 +368,8 @@ const Entrenar: React.FC = () => {
     setHistory(historyMap);
     setSets(active.sets);
     sessionFinishedRef.current = false;
+    setExtraRows({});
+    setPrKeys(new Set());
     setPhase({ kind: 'workout', session: active.session, plan });
   };
 
@@ -312,6 +413,8 @@ const Entrenar: React.FC = () => {
     setHistory(historyMap);
     setSets([]);
     sessionFinishedRef.current = false;
+    setExtraRows({});
+    setPrKeys(new Set());
     setPhase({ kind: 'workout', session, plan });
   };
 
@@ -326,6 +429,8 @@ const Entrenar: React.FC = () => {
     setHistory(historyMap);
     setSets(existingSets);
     sessionFinishedRef.current = false;
+    setExtraRows({});
+    setPrKeys(new Set());
     setPhase({ kind: 'workout', session, plan });
   };
 
@@ -361,6 +466,16 @@ const Entrenar: React.FC = () => {
     if (alreadyRecorded) {
       return;
     }
+
+    // PR en vivo (aditivo, no afecta a la persistencia): máximo histórico
+    // previo a esta sesión (history map, cargado una vez al empezar) más el
+    // máximo ya registrado de este ejercicio EN esta sesión, antes de esta serie.
+    const historicalMax = history[pe.exerciseId]?.maxWeightKg ?? 0;
+    const sessionMaxSoFar = sets
+      .filter((s) => s.exerciseId === pe.exerciseId)
+      .reduce((max, s) => Math.max(max, s.weightKg), 0);
+    const isPR = weightKg > Math.max(historicalMax, sessionMaxSoFar);
+
     const newSet: SessionSet = {
       id: crypto.randomUUID(),
       sessionId: phase.session.id,
@@ -377,6 +492,14 @@ const Entrenar: React.FC = () => {
     };
     await sessionsRepo.addSet(newSet);
     setSets((previous) => [...previous, newSet]);
+    if (isPR) {
+      const prKey = `${pe.key}#${setNumber}`;
+      setPrKeys((previous) => {
+        const next = new Set(previous);
+        next.add(prKey);
+        return next;
+      });
+    }
 
     const realExercises = phase.plan.filter((item) => !item.isOrphan);
     const lastExercise = realExercises[realExercises.length - 1];
@@ -420,6 +543,30 @@ const Entrenar: React.FC = () => {
     void bootstrap();
   };
 
+  const toggleExpanded = (key: string) => {
+    setExpandedKeys((previous) => {
+      const next = new Set(previous);
+      if (next.has(key)) {
+        next.delete(key);
+      } else {
+        next.add(key);
+      }
+      return next;
+    });
+  };
+
+  /** "+ Serie" en caliente: añade una fila editable extra al bloque, por
+   * encima de rowCount base. No cuenta como pendiente (countRemaining sigue
+   * mirando solo targetSets) y no toca la fórmula protegida de rowCount. */
+  const handleAddExtraRow = (pe: PlanExercise) => {
+    setExtraRows((previous) => ({ ...previous, [pe.key]: (previous[pe.key] ?? 0) + 1 }));
+  };
+
+  const openPlates = (weightKg: number | null) => setPlateCalc({ open: true, weightKg, mode: 'plates' });
+  const openWarmup = (weightKg: number | null) => setPlateCalc({ open: true, weightKg, mode: 'warmup' });
+  const openHistory = (exerciseId: string, exerciseName: string) =>
+    setHistorySheet({ open: true, exerciseId, exerciseName });
+
   if (phase.kind === 'loading') {
     return (
       <IonPage>
@@ -445,38 +592,38 @@ const Entrenar: React.FC = () => {
             <IonTitle>Entrenar</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent fullscreen>
+        <IonContent fullscreen className="entrenar-content">
           {phase.routines.length === 0 ? (
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '0.75rem',
-                padding: '3rem 1.5rem',
-                textAlign: 'center',
-              }}
-            >
-              <IonIcon icon={barbell} style={{ fontSize: '4rem' }} color="medium" />
-              <p>Aún no tienes rutinas</p>
+            <div className="entrenar-empty">
+              <IonIcon icon={barbell} className="entrenar-empty-icon" />
+              <p className="carga-overline">Sin rutinas todavía</p>
+              <p className="entrenar-empty-text">Crea una rutina para empezar a entrenar.</p>
               <IonButton routerLink="/tabs/rutinas">Ir a rutinas</IonButton>
             </div>
           ) : (
             <>
-              <p className="ion-padding-horizontal" style={{ color: 'var(--ion-color-medium)' }}>
-                Elige una rutina para entrenar
-              </p>
-              <IonList>
-                {phase.routines.map((routine) => (
-                  <IonItem key={routine.id} button onClick={() => setPendingRoutine(routine)}>
-                    <IonLabel>
-                      <h2>{routine.name}</h2>
-                      <p>{routine.exercises.length} ejercicios</p>
-                    </IonLabel>
-                  </IonItem>
-                ))}
-              </IonList>
+              <p className="carga-overline entrenar-choose-overline">Elige tu carga</p>
+              <div className="entrenar-choose-list">
+                {phase.routines.map((routine) => {
+                  const exerciseCount = routine.exercises.length;
+                  const setCount = routine.exercises.reduce((sum, e) => sum + e.targetSets, 0);
+                  const minutes = estimateSessionMinutes(routine.exercises);
+                  return (
+                    <button
+                      type="button"
+                      key={routine.id}
+                      className="carga-card entrenar-choose-card"
+                      onClick={() => setPendingRoutine(routine)}
+                    >
+                      <h2 className="entrenar-choose-card-name">{routine.name}</h2>
+                      <p className="carga-overline entrenar-choose-card-meta">
+                        {exerciseCount} {exerciseCount === 1 ? 'ejercicio' : 'ejercicios'} · ~{setCount}{' '}
+                        {setCount === 1 ? 'serie' : 'series'} · ~{minutes} min
+                      </p>
+                    </button>
+                  );
+                })}
+              </div>
             </>
           )}
 
@@ -540,54 +687,182 @@ const Entrenar: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <IonTitle>
-            {phase.session.routineName}
-            <div style={{ fontSize: '0.75rem', color: 'var(--ion-color-medium)', fontVariantNumeric: 'tabular-nums' }}>
-              {formatElapsed(elapsedMs)}
+            <div className="entrenar-toolbar-title">
+              <span className="entrenar-toolbar-routine">{phase.session.routineName}</span>
+              <span className="carga-num entrenar-toolbar-clock">{formatElapsed(elapsedMs)}</span>
             </div>
           </IonTitle>
           <IonButtons slot="end">
-            <IonButton onClick={handleFinishRequest}>Terminar sesión</IonButton>
+            <IonButton color="danger" fill="clear" onClick={handleFinishRequest}>
+              Terminar
+            </IonButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
-        {phase.plan.map((pe) => {
-          const setsForExercise = setsForPlanExercise(phase.plan, pe, sets);
-          // Fix 5: si targetSets se redujo mientras la sesión estaba activa,
-          // no ocultes series ya registradas por encima del nuevo objetivo;
-          // esas filas extra aparecen bloqueadas (ya están completadas).
-          const maxRecordedSetNumber = setsForExercise.reduce((max, s) => Math.max(max, s.setNumber), 0);
-          const rowCount = Math.max(pe.targetSets, maxRecordedSetNumber);
-          return (
-            <IonCard key={pe.key}>
-              <IonCardHeader>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <ExerciseAvatar target={pe.target} category={pe.category} size={32} />
-                  <IonCardTitle style={{ fontSize: '1.05rem' }}>{pe.exerciseName}</IonCardTitle>
+      <IonContent fullscreen className="entrenar-content">
+        <div className="entrenar-list">
+          {phase.plan.map((pe) => {
+            const setsForExercise = setsForPlanExercise(phase.plan, pe, sets);
+            // Fix 5: si targetSets se redujo mientras la sesión estaba activa,
+            // no ocultes series ya registradas por encima del nuevo objetivo;
+            // esas filas extra aparecen bloqueadas (ya están completadas).
+            const maxRecordedSetNumber = setsForExercise.reduce((max, s) => Math.max(max, s.setNumber), 0);
+            const baseRowCount = Math.max(pe.targetSets, maxRecordedSetNumber);
+            // "+ Serie" en caliente: extiende el render por encima de la
+            // fórmula protegida anterior, sin modificarla.
+            const rowCount = baseRowCount + (extraRows[pe.key] ?? 0);
+
+            const historyEntry = history[pe.exerciseId];
+            const isExpanded = expandedKeys.has(pe.key);
+            const isCurrentCard = currentPe?.key === pe.key;
+            const doneCount = setsForExercise.filter((s) => s.setNumber <= pe.targetSets).length;
+
+            const pendingSetNumber = nextPendingSetNumber(setsForExercise, rowCount);
+            let repWeightKg: number | null = null;
+            if (pendingSetNumber !== null) {
+              const draft = computeDraft(pe, pendingSetNumber, setsForExercise, historyEntry?.last);
+              repWeightKg = parseWeightOrNull(draft.weight);
+            } else {
+              const lastSet = setsForExercise[setsForExercise.length - 1];
+              repWeightKg = lastSet ? lastSet.weightKg : null;
+            }
+            const warmupDraft = computeDraft(pe, 1, setsForExercise, historyEntry?.last);
+            const warmupWeightKg = parseWeightOrNull(warmupDraft.weight) ?? repWeightKg;
+
+            let heroWeightKg: number | null = null;
+            let heroPct: number | null = null;
+            if (isCurrentCard && pendingSetNumber !== null) {
+              const heroDraft = computeDraft(pe, pendingSetNumber, setsForExercise, historyEntry?.last);
+              heroWeightKg = parseWeightOrNull(heroDraft.weight);
+              if (heroWeightKg !== null && historyEntry?.bestE1rm) {
+                heroPct = Math.round((heroWeightKg / historyEntry.bestE1rm) * 100);
+              }
+            }
+
+            return (
+              <div key={pe.key} className={`carga-card entrenar-card${isCurrentCard ? ' entrenar-card-current' : ''}`}>
+                <div className="entrenar-card-header">
+                  <button
+                    type="button"
+                    className="entrenar-card-heading"
+                    onClick={() => openHistory(pe.exerciseId, pe.exerciseName)}
+                  >
+                    <ExerciseAvatar target={pe.target} category={pe.category} size={isCurrentCard ? 40 : 32} />
+                    <span className={`entrenar-card-name${isCurrentCard ? ' entrenar-card-name-current' : ''}`}>
+                      {pe.exerciseName}
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    className="entrenar-card-expand"
+                    onClick={() => toggleExpanded(pe.key)}
+                    aria-label={isExpanded ? 'Contraer ejercicio' : 'Expandir ejercicio'}
+                  >
+                    <IonIcon icon={isExpanded ? chevronUp : chevronDown} />
+                  </button>
                 </div>
-              </IonCardHeader>
-              <IonCardContent>
-                {Array.from({ length: rowCount }, (_, i) => i + 1).map((setNumber) => {
-                  const completed = setsForExercise.find((s) => s.setNumber === setNumber) ?? null;
-                  const draft = computeDraft(pe, setNumber, setsForExercise, history[pe.exerciseId]);
-                  return (
-                    <SetRow
-                      key={`${phase.session.id}-${pe.key}-${setNumber}`}
-                      setNumber={setNumber}
-                      completed={completed}
-                      defaultWeightKg={draft.weight}
-                      defaultReps={draft.reps}
-                      onComplete={(weightKg, reps, rpe) => handleCompleteSet(pe, setNumber, weightKg, reps, rpe)}
-                    />
-                  );
-                })}
-              </IonCardContent>
-            </IonCard>
-          );
-        })}
+
+                <div className="entrenar-card-tools">
+                  <button type="button" className="entrenar-tool-btn" onClick={() => openPlates(repWeightKg)}>
+                    Discos
+                  </button>
+                  <button type="button" className="entrenar-tool-btn" onClick={() => openWarmup(warmupWeightKg)}>
+                    Aproximación
+                  </button>
+                </div>
+
+                {!isExpanded && (
+                  <p className="entrenar-card-progress">
+                    {doneCount}/{pe.targetSets} series
+                  </p>
+                )}
+
+                {isCurrentCard && isExpanded && (
+                  <div className="entrenar-hero">
+                    <p className="carga-overline">Próxima serie</p>
+                    <div className="carga-num entrenar-hero-num">
+                      {heroWeightKg !== null ? (
+                        <>
+                          {formatEsNum(heroWeightKg)}
+                          <span className="entrenar-hero-unit">kg</span> × {pe.targetReps}
+                          {heroPct !== null && <span className="entrenar-hero-pct"> · {heroPct} %</span>}
+                        </>
+                      ) : (
+                        <>× {pe.targetReps}</>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {isExpanded && (
+                  <div className="entrenar-card-rows">
+                    {Array.from({ length: rowCount }, (_, i) => i + 1).map((setNumber) => {
+                      const completedSet = setsForExercise.find((s) => s.setNumber === setNumber) ?? null;
+                      const draft = computeDraft(pe, setNumber, setsForExercise, historyEntry?.last);
+                      const ghostSet = historyEntry?.previousSessionBySetNumber[setNumber];
+                      const prKey = `${pe.key}#${setNumber}`;
+                      return (
+                        <div key={`${phase.session.id}-${pe.key}-${setNumber}`} className="entrenar-setrow-wrap">
+                          <SetRow
+                            setNumber={setNumber}
+                            completed={completedSet}
+                            defaultWeightKg={draft.weight}
+                            defaultReps={draft.reps}
+                            bestE1rmKg={historyEntry?.bestE1rm}
+                            ghost={ghostSet ? { weightKg: ghostSet.weightKg, reps: ghostSet.reps } : undefined}
+                            onComplete={(weightKg, reps, rpe) => handleCompleteSet(pe, setNumber, weightKg, reps, rpe)}
+                          />
+                          {prKeys.has(prKey) && <span className="pr-pop entrenar-pr-chip">PR</span>}
+                        </div>
+                      );
+                    })}
+                    {!pe.isOrphan && (
+                      <button type="button" className="entrenar-add-row" onClick={() => handleAddExtraRow(pe)}>
+                        + Serie
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {summary && (
+          <div className="entrenar-summary-backdrop" role="alertdialog" aria-modal="true">
+            <div className="entrenar-summary-card">
+              <p className="carga-overline">Sesión terminada</p>
+              <p className="entrenar-summary-line">
+                {summary.completedSets} {summary.completedSets === 1 ? 'serie completada' : 'series completadas'}
+              </p>
+              <div className="carga-num entrenar-summary-volume">
+                {formatEsNum(summary.volumeKg)}
+                <span className="entrenar-summary-unit">kg</span>
+              </div>
+              <p className="entrenar-summary-tagline">Trabajo hecho.</p>
+              <button type="button" className="entrenar-summary-btn" onClick={handleSummaryDismiss}>
+                Aceptar
+              </button>
+            </div>
+          </div>
+        )}
       </IonContent>
 
       <RestTimer trigger={restTrigger} />
+
+      <PlateCalculator
+        isOpen={plateCalc.open}
+        onDismiss={() => setPlateCalc((previous) => ({ ...previous, open: false }))}
+        initialWeightKg={plateCalc.weightKg}
+        initialMode={plateCalc.mode}
+      />
+
+      <ExerciseHistorySheet
+        isOpen={historySheet.open}
+        onDismiss={() => setHistorySheet((previous) => ({ ...previous, open: false }))}
+        exerciseId={historySheet.exerciseId}
+        exerciseName={historySheet.exerciseName}
+      />
 
       <IonAlert
         isOpen={pendingFinishRemaining !== null}
@@ -598,14 +873,6 @@ const Entrenar: React.FC = () => {
           { text: 'Terminar', role: 'destructive', handler: () => void finishSession() },
         ]}
         onDidDismiss={() => setPendingFinishRemaining(null)}
-      />
-
-      <IonAlert
-        isOpen={summary !== null}
-        header="Sesión terminada"
-        message={summary ? `${summary.completedSets} series completadas · ${formatKg(summary.volumeKg)} de volumen total` : ''}
-        buttons={[{ text: 'Aceptar', handler: handleSummaryDismiss }]}
-        backdropDismiss={false}
       />
     </IonPage>
   );

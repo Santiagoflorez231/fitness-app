@@ -1,0 +1,209 @@
+/**
+ * SetRow -- fila de serie, «modo esfuerzo» (CARGA)
+ * Referencia obligatoria: docs/design-carga.md
+ */
+
+.setrow {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 56px;
+  justify-content: center;
+  padding: 6px 2px;
+  border-radius: var(--app-radius-s);
+}
+
+.setrow-main {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+}
+
+.setrow-number {
+  flex: 0 0 auto;
+  min-width: 18px;
+  font-size: 16px;
+  text-align: center;
+  color: var(--app-text-secondary);
+}
+
+.setrow-field {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.setrow-field-reps {
+  flex: 0.8 1 0;
+}
+
+.setrow-input {
+  width: 100%;
+  height: 44px;
+  border-radius: var(--app-radius-s);
+  border: 1px solid var(--app-border);
+  background: var(--app-surface-elevated);
+  color: var(--app-text-primary);
+  font-family: 'Archivo', sans-serif;
+  font-size: 17px;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  padding: 0 8px;
+  -moz-appearance: textfield;
+}
+
+.setrow-input::placeholder {
+  color: var(--app-text-secondary);
+  opacity: 0.7;
+}
+
+.setrow-input::-webkit-outer-spin-button,
+.setrow-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.setrow-input:disabled {
+  opacity: 0.6;
+}
+
+.setrow-input:focus {
+  outline: none;
+  border-color: var(--ion-color-primary);
+}
+
+/* Chip %1RM en vivo -- ver docs/design-carga.md, punto A de la ampliación. */
+.setrow-pct-chip {
+  position: absolute;
+  top: -8px;
+  right: 0;
+  padding: 1px 6px;
+  border-radius: var(--app-radius-full);
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  font-size: 11px;
+  color: var(--app-accent);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.setrow-rpe {
+  flex: 0 0 3.4rem;
+  max-width: 3.4rem;
+  font-size: 13px;
+  --padding-start: 2px;
+  --padding-end: 2px;
+  --background: var(--app-surface-elevated);
+  --border-radius: var(--app-radius-s);
+}
+
+.setrow-check {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--app-radius-full);
+  border: 1px solid var(--app-border);
+  background: var(--app-surface-elevated);
+  color: var(--app-text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+}
+
+.setrow-check:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.setrow-check-svg {
+  width: 20px;
+  height: 20px;
+}
+
+.setrow-check-done {
+  border-color: var(--ion-color-success);
+  background: var(--ion-color-success);
+  color: var(--ion-color-success-contrast);
+}
+
+/* Trazo animado del check, una sola vez, al completar (stroke-dashoffset). */
+.setrow-check-svg-animate path {
+  stroke-dasharray: 32;
+  stroke-dashoffset: 32;
+  animation: setrow-check-draw var(--app-dur-base) var(--app-ease) forwards;
+}
+
+@keyframes setrow-check-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Valor fantasma -- ver docs/design-carga.md, punto B de la ampliación. */
+.setrow-ghost {
+  align-self: flex-start;
+  margin-inline-start: 26px;
+  border: none;
+  background: none;
+  padding: 2px 4px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 12px;
+  color: var(--app-text-secondary);
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.setrow-ghost:disabled {
+  cursor: default;
+  text-decoration: none;
+  opacity: 0.6;
+}
+
+.setrow-completed-text {
+  flex: 1 1 0;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+}
+
+.setrow-completed-values {
+  font-family: 'Archivo', sans-serif;
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+  color: var(--app-text-secondary);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--app-text-secondary);
+}
+
+.setrow-completed-rpe {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 12px;
+  color: var(--app-text-secondary);
+}
+
+.setrow-pct-chip-completed {
+  position: static;
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+
+/* Pulso de fondo success al 8%, una sola vez, al completar la fila. */
+@keyframes setrow-pulse-bg {
+  0% {
+    background-color: rgba(var(--ion-color-success-rgb), 0.08);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.setrow-pulse {
+  animation: setrow-pulse-bg var(--app-dur-base) var(--app-ease) both;
+}

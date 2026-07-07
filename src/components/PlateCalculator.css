@@ -1,0 +1,221 @@
+/**
+ * PlateCalculator -- sheet CARGA para discos y aproximación.
+ * Acabado propio (sin chrome estándar de Ionic): IonModal solo como
+ * contenedor del sheet.
+ * Referencia obligatoria: docs/design-carga.md
+ */
+
+.plate-calc-sheet {
+  --border-radius: var(--app-radius-l);
+  --background: var(--app-bg);
+}
+
+/* Cabecera propia del sheet, compartida en forma por PlateCalculator y
+   ExerciseHistorySheet (misma clase, definida en ambos css). */
+.carga-sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 20px 12px;
+}
+
+.carga-sheet-close {
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--app-radius-full);
+  border: 1px solid var(--app-border);
+  background: var(--app-surface-elevated);
+  color: var(--app-text-secondary);
+  font-size: 13px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.plate-calc-body {
+  padding: 0 20px 28px;
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+/* Segmento propio (reemplaza IonSegment): píldora con dos botones. */
+.carga-segment {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: var(--app-radius-full);
+  background: var(--app-surface-elevated);
+  border: 1px solid var(--app-border);
+  margin-bottom: 20px;
+}
+
+.carga-segment-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  border-radius: var(--app-radius-full);
+  padding: 9px 12px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--app-text-secondary);
+  cursor: pointer;
+  transition:
+    background var(--app-dur-fast) var(--app-ease),
+    color var(--app-dur-fast) var(--app-ease);
+}
+
+.carga-segment-btn-active {
+  background: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
+}
+
+.plate-calc-field {
+  margin-bottom: 20px;
+}
+
+.plate-calc-weight-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 10px 14px;
+  border-radius: var(--app-radius-s);
+  border: 1px solid var(--app-border);
+  background: var(--app-surface);
+}
+
+.plate-calc-weight-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--app-text-primary);
+  font-size: 28px;
+  min-width: 0;
+  -moz-appearance: textfield;
+}
+
+.plate-calc-weight-input:focus {
+  outline: none;
+}
+
+.plate-calc-weight-input::-webkit-outer-spin-button,
+.plate-calc-weight-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.plate-calc-weight-unit {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 14px;
+  color: var(--app-text-secondary);
+}
+
+/* Selector de barra: fila de píldoras (reemplaza IonSelect). */
+.carga-pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.carga-pill-btn {
+  padding: 8px 14px;
+  border-radius: var(--app-radius-full);
+  border: 1px solid var(--app-border);
+  background: var(--app-surface);
+  color: var(--app-text-primary);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.carga-pill-btn-active {
+  background: var(--ion-color-primary);
+  border-color: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
+}
+
+.plate-calc-result {
+  margin-top: 4px;
+}
+
+.plate-calc-empty {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 14px;
+  color: var(--app-text-secondary);
+  margin: 8px 0;
+}
+
+.plate-calc-rack {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 16px 0 4px;
+  flex-wrap: wrap;
+}
+
+.plate-disc {
+  width: 34px;
+  border-radius: var(--app-radius-s);
+  border: 1px solid var(--app-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.plate-disc-num {
+  font-size: 11px;
+}
+
+.plate-calc-shortfall {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px;
+  color: var(--app-text-secondary);
+  margin: 12px 0 0;
+}
+
+.plate-calc-tagline {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--app-text-primary);
+  margin: 4px 0 16px;
+}
+
+.plate-calc-warmup-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.plate-calc-warmup-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-s);
+  background: var(--app-surface);
+}
+
+.plate-calc-warmup-label {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px;
+  color: var(--app-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.plate-calc-warmup-value {
+  font-size: 16px;
+}

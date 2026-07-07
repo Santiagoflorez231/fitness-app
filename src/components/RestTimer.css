@@ -1,0 +1,102 @@
+/**
+ * RestTimer -- barra-píldora de descanso (CARGA)
+ * Referencia obligatoria: docs/design-carga.md
+ */
+
+.rest-timer-footer {
+  background: transparent;
+}
+
+.rest-timer-pill {
+  position: relative;
+  margin: 0 12px calc(10px + env(safe-area-inset-bottom, 0px));
+  border-radius: var(--app-radius-full);
+  background: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
+  box-shadow: var(--app-shadow-float);
+  overflow: hidden;
+  animation: rest-timer-in var(--app-dur-slow) var(--app-ease-pop) both;
+}
+
+@keyframes rest-timer-in {
+  from {
+    transform: translateY(120%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* Relleno de progreso: decrece con scaleX (remaining/total), origen a la
+   izquierda, recalculado en cada tick de 500ms del padre. */
+.rest-timer-fill {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.18);
+  transform-origin: left center;
+  transition: transform 500ms linear;
+  pointer-events: none;
+}
+
+.rest-timer-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 8px 12px 18px;
+}
+
+.rest-timer-label {
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.rest-timer-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.rest-timer-btn {
+  border: none;
+  background: transparent;
+  color: var(--ion-color-primary-contrast);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 8px 10px;
+  border-radius: var(--app-radius-full);
+  cursor: pointer;
+}
+
+.rest-timer-btn:active {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.rest-timer-btn-skip {
+  opacity: 0.85;
+}
+
+/* Últimos 5s: parpadeo de opacidad 1 -> .6 por segundo. */
+@keyframes rest-timer-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.rest-timer-pill-urgent {
+  animation:
+    rest-timer-in var(--app-dur-slow) var(--app-ease-pop) both,
+    rest-timer-blink 1s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rest-timer-pill-urgent {
+    animation: none;
+  }
+}

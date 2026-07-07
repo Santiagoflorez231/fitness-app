@@ -1,0 +1,345 @@
+/**
+ * Entrenar -- «modo esfuerzo» (CARGA), la pantalla estrella.
+ * Referencia obligatoria: docs/design-carga.md
+ */
+
+.entrenar-content {
+  --background: var(--app-bg);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Toolbar: nombre de rutina pequeño + cronómetro discreto                */
+/* ---------------------------------------------------------------------- */
+
+.entrenar-toolbar-title {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.entrenar-toolbar-routine {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--app-text-primary);
+}
+
+.entrenar-toolbar-clock {
+  font-size: 15px;
+  color: var(--app-text-secondary);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Elegir rutina                                                          */
+/* ---------------------------------------------------------------------- */
+
+.entrenar-choose-overline {
+  margin: 4px 16px 12px;
+}
+
+.entrenar-choose-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 16px 96px;
+}
+
+.entrenar-choose-card {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 16px;
+  cursor: pointer;
+  transition: transform var(--app-dur-fast) var(--app-ease);
+}
+
+.entrenar-choose-card:active {
+  transform: scale(0.98);
+}
+
+.entrenar-choose-card-name {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--app-text-primary);
+  margin: 0 0 4px;
+}
+
+.entrenar-choose-card-meta {
+  margin: 0;
+}
+
+.entrenar-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 64px 24px 24px;
+  text-align: center;
+}
+
+.entrenar-empty-icon {
+  font-size: 40px;
+  color: var(--app-text-secondary);
+}
+
+.entrenar-empty-text {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 15px;
+  color: var(--app-text-secondary);
+  margin: 0 0 8px;
+  max-width: 28ch;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Lista de ejercicios en sesión                                          */
+/* ---------------------------------------------------------------------- */
+
+.entrenar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 16px 24px;
+}
+
+.entrenar-card {
+  padding: 14px 14px 10px;
+}
+
+/* Card del ejercicio actual: destacada con borde primary sutil. */
+.entrenar-card-current {
+  border-color: var(--ion-color-primary);
+  border-width: 1.5px;
+}
+
+.entrenar-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.entrenar-card-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex: 1 1 0;
+  border: none;
+  background: none;
+  padding: 4px 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.entrenar-card-name {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--app-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.entrenar-card-name-current {
+  font-size: 20px;
+}
+
+.entrenar-card-expand {
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  color: var(--app-text-secondary);
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.entrenar-card-tools {
+  display: flex;
+  gap: 4px;
+  margin: 4px 0 0 -8px;
+}
+
+.entrenar-tool-btn {
+  border: none;
+  background: none;
+  color: var(--app-accent);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 6px 8px;
+  border-radius: var(--app-radius-s);
+  cursor: pointer;
+}
+
+.entrenar-tool-btn:active {
+  background: var(--app-surface-elevated);
+}
+
+.entrenar-card-progress {
+  margin: 6px 0 4px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px;
+  color: var(--app-text-secondary);
+}
+
+/* Cifra hero del ejercicio actual: objetivo de la próxima serie. */
+.entrenar-hero {
+  margin: 8px 0 6px;
+}
+
+.entrenar-hero-num {
+  font-size: clamp(40px, 12vw, 56px);
+  color: var(--app-text-primary);
+  line-height: 1.05;
+}
+
+.entrenar-hero-unit {
+  font-size: 40%;
+  font-weight: 700;
+  margin-inline-start: 2px;
+  color: var(--app-text-secondary);
+}
+
+.entrenar-hero-pct {
+  font-size: 40%;
+  color: var(--app-accent);
+}
+
+.entrenar-card-rows {
+  display: flex;
+  flex-direction: column;
+  margin-top: 4px;
+  animation: entrenar-rows-in var(--app-dur-base) var(--app-ease) both;
+}
+
+@keyframes entrenar-rows-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.entrenar-setrow-wrap {
+  position: relative;
+}
+
+/* Cinta PR: única celebración con rebote (usa .pr-pop de carga.css). */
+.entrenar-pr-chip {
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: var(--app-radius-full);
+  background: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
+  font-family: 'Archivo', sans-serif;
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  pointer-events: none;
+}
+
+.entrenar-add-row {
+  align-self: flex-start;
+  margin-top: 6px;
+  border: none;
+  background: none;
+  padding: 8px 4px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--ion-color-primary);
+  cursor: pointer;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Resumen al terminar -- overlay propio (no IonAlert)                    */
+/* ---------------------------------------------------------------------- */
+
+.entrenar-summary-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.5);
+  animation: entrenar-fade-in var(--app-dur-base) var(--app-ease) both;
+}
+
+@keyframes entrenar-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.entrenar-summary-card {
+  width: 100%;
+  max-width: 340px;
+  background: var(--app-surface-elevated);
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-l);
+  box-shadow: var(--app-shadow-float);
+  padding: 28px 24px;
+  text-align: center;
+  animation: pr-pop var(--app-dur-slow) var(--app-ease-pop) both;
+}
+
+.entrenar-summary-line {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 15px;
+  color: var(--app-text-secondary);
+  margin: 8px 0 4px;
+}
+
+.entrenar-summary-volume {
+  font-size: clamp(40px, 14vw, 56px);
+  color: var(--ion-color-primary);
+  margin: 8px 0;
+}
+
+.entrenar-summary-unit {
+  font-size: 40%;
+  font-weight: 700;
+  margin-inline-start: 4px;
+  color: var(--app-text-secondary);
+}
+
+.entrenar-summary-tagline {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--app-text-primary);
+  margin: 4px 0 20px;
+}
+
+.entrenar-summary-btn {
+  width: 100%;
+  border: none;
+  border-radius: var(--app-radius-full);
+  background: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 14px;
+  cursor: pointer;
+}

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { IonButton, IonFooter, IonProgressBar, IonToolbar } from '@ionic/react';
+import { IonFooter } from '@ionic/react';
+import './RestTimer.css';
 
 const STORAGE_KEY = 'fitness.restTimer';
 const EXTEND_MS = 30_000;
@@ -72,8 +73,10 @@ async function vibrateShort(): Promise<void> {
 }
 
 /**
- * Barra de descanso fija sobre el tab bar. Deriva el tiempo restante contra
- * un timestamp objetivo (Date.now() vs endsAt) en vez de decrementar un
+ * Barra-píldora de descanso, fija sobre el tab bar (IonFooter se usa solo
+ * como contenedor de posicionamiento; el contenido es CARGA propio, sin
+ * IonProgressBar/IonToolbar/IonButton). Deriva el tiempo restante contra un
+ * timestamp objetivo (Date.now() vs endsAt) en vez de decrementar un
  * contador, para sobrevivir re-renders y la app en segundo plano.
  */
 const RestTimer: React.FC<RestTimerProps> = ({ trigger }) => {
@@ -124,6 +127,7 @@ const RestTimer: React.FC<RestTimerProps> = ({ trigger }) => {
   }
 
   const progress = Math.min(1, Math.max(0, 1 - remainingMs / timer.totalMs));
+  const isUrgent = remainingMs <= 5000;
 
   const handleSkip = () => {
     finishedRef.current = true;
@@ -146,30 +150,21 @@ const RestTimer: React.FC<RestTimerProps> = ({ trigger }) => {
   };
 
   return (
-    <IonFooter>
-      <IonProgressBar value={progress} color="tertiary" />
-      <IonToolbar>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            width: '100%',
-          }}
-        >
-          <span style={{ fontVariantNumeric: 'tabular-nums', paddingInlineStart: '1rem' }}>
-            Descanso: {formatMmSs(remainingMs)}
-          </span>
-          <div>
-            <IonButton fill="clear" size="small" onClick={handleAdd30}>
+    <IonFooter className="rest-timer-footer ion-no-border">
+      <div className={`rest-timer-pill${isUrgent ? ' rest-timer-pill-urgent' : ''}`}>
+        <div className="rest-timer-fill" style={{ transform: `scaleX(${1 - progress})` }} />
+        <div className="rest-timer-row">
+          <span className="carga-num rest-timer-label">Descanso: {formatMmSs(remainingMs)}</span>
+          <div className="rest-timer-actions">
+            <button type="button" className="rest-timer-btn" onClick={handleAdd30}>
               +30 s
-            </IonButton>
-            <IonButton fill="clear" size="small" color="medium" onClick={handleSkip}>
+            </button>
+            <button type="button" className="rest-timer-btn rest-timer-btn-skip" onClick={handleSkip}>
               Saltar
-            </IonButton>
+            </button>
           </div>
         </div>
-      </IonToolbar>
+      </div>
     </IonFooter>
   );
 };
