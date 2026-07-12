@@ -46,6 +46,14 @@
   font-weight: 600;
 }
 
+/* Skeleton de carga (3 cards, mismo alto que .rutinas-card-item) */
+.rutinas-skeleton-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 16px;
+}
+
 /* Estado vacío */
 .rutinas-empty {
   display: flex;
@@ -77,13 +85,41 @@
   max-width: 280px;
 }
 
-/* Sheet de plantillas */
+/* Sheet de plantillas -- acabado propio (carga-sheet), como PlateCalculator */
 .templates-sheet {
   --border-radius: var(--app-radius-l);
+  --background: var(--app-bg);
 }
 
-.templates-sheet-content {
-  --background: var(--app-bg);
+.carga-sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 20px 12px;
+}
+
+.carga-sheet-close {
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--app-radius-full);
+  border: 1px solid var(--app-border);
+  background: var(--app-surface-elevated);
+  color: var(--app-text-secondary);
+  font-size: 13px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.templates-sheet-body {
+  padding: 0 20px 28px;
+  overflow-y: auto;
+  max-height: 100%;
 }
 
 .templates-sheet-intro {

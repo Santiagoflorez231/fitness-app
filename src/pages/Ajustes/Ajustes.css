@@ -1,0 +1,110 @@
+/**
+ * Ajustes — página de configuración (CARGA).
+ * Referencia obligatoria: docs/design-carga.md
+ */
+
+.ajustes-content {
+  --background: var(--app-bg);
+}
+
+.ajustes-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 8px 16px 32px;
+}
+
+.ajustes-card {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ajustes-card-text {
+  margin: 0;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--app-text-secondary);
+}
+
+/* Stepper del objetivo semanal: 44px táctil, cifra tabular al centro
+   (misma proporción que la dirección de Rutinas en docs/design-carga.md). */
+.ajustes-stepper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.ajustes-stepper-btn {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--app-radius-full);
+  border: 1px solid var(--app-border);
+  background: var(--app-surface-elevated);
+  color: var(--app-text-primary);
+  font-size: 18px;
+  padding: 0;
+  cursor: pointer;
+  transition: opacity var(--app-dur-fast) var(--app-ease);
+}
+
+.ajustes-stepper-btn:disabled {
+  opacity: 0.35;
+}
+
+.ajustes-stepper-value {
+  min-width: 32px;
+  text-align: center;
+  font-size: 22px;
+  color: var(--app-text-primary);
+}
+
+/* Selectores de píldora (redondeo del coach / barra por defecto). */
+.ajustes-pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ajustes-pill-btn {
+  padding: 8px 14px;
+  border-radius: var(--app-radius-full);
+  border: 1px solid var(--app-border);
+  background: var(--app-surface);
+  color: var(--app-text-primary);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background var(--app-dur-fast) var(--app-ease),
+    color var(--app-dur-fast) var(--app-ease);
+}
+
+.ajustes-pill-btn-active {
+  background: var(--ion-color-primary);
+  border-color: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
+}
+
+/* Acerca de: atribuciones, cuerpo más pequeño que el resto de cards. */
+.ajustes-about-text {
+  margin: 0;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--app-text-secondary);
+}
+
+.ajustes-about-tagline {
+  margin: 0;
+  font-family: 'Archivo', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--app-text-primary);
+}

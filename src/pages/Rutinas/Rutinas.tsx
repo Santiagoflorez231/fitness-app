@@ -16,7 +16,6 @@ import {
   IonList,
   IonModal,
   IonPage,
-  IonSpinner,
   IonTitle,
   IonToolbar,
   useIonToast,
@@ -31,6 +30,7 @@ import {
   instantiateTemplate,
   type RoutineTemplate,
 } from '../../data/routineTemplates';
+import CargaSkeleton from '../../components/CargaSkeleton';
 import type { Routine } from '../../types/routine';
 import './Rutinas.css';
 
@@ -128,21 +128,15 @@ const Rutinas: React.FC = () => {
         </IonHeader>
 
         {loading ? (
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              height: '100%',
-              paddingTop: '4rem',
-            }}
-          >
-            <IonSpinner name="crescent" />
+          <div className="rutinas-skeleton-wrap">
+            <CargaSkeleton variant="card" width="100%" height={76} />
+            <CargaSkeleton variant="card" width="100%" height={76} />
+            <CargaSkeleton variant="card" width="100%" height={76} />
           </div>
         ) : routines.length === 0 ? (
           <div className="rutinas-empty">
             <p className="carga-overline rutinas-empty-overline">Tu pizarra está vacía</p>
-            <p className="rutinas-empty-text">Crea una rutina o parte de una plantilla.</p>
+            <p className="rutinas-empty-text">Ninguna rutina todavía. Monta la primera.</p>
             <div className="rutinas-empty-actions">
               <IonButton expand="block" routerLink="/tabs/rutinas/nueva">
                 Crear rutina
@@ -214,47 +208,48 @@ const Rutinas: React.FC = () => {
           onDidDismiss={() => setShowTemplates(false)}
           initialBreakpoint={0.75}
           breakpoints={[0, 0.5, 0.75]}
-          className="templates-sheet"
+          className="carga-sheet templates-sheet"
         >
-          <IonHeader>
-            <IonToolbar>
-              <IonTitle>Plantillas</IonTitle>
-              <IonButtons slot="end">
-                <IonButton onClick={() => setShowTemplates(false)}>Cerrar</IonButton>
-              </IonButtons>
-            </IonToolbar>
-          </IonHeader>
-          <IonContent className="templates-sheet-content">
-            <div className="ion-padding">
-              <p className="templates-sheet-intro">
-                Parte de una base probada y ajústala a tu medida.
-              </p>
-              <div className="templates-sheet-list">
-                {ROUTINE_TEMPLATES.map((template) => {
-                  const minutes = estimateSessionMinutes(template.exercises);
-                  const exerciseCount = template.exercises.length;
-                  const isCreating = creatingTemplateId === template.id;
-                  return (
-                    <button
-                      key={template.id}
-                      type="button"
-                      className={`template-card${exercisesLoading ? ' template-card-disabled' : ''}`}
-                      onClick={() => handleSelectTemplate(template)}
-                      disabled={exercisesLoading || creatingTemplateId !== null}
-                    >
-                      <h2 className="template-card-name">{template.name}</h2>
-                      <p className="template-card-description">{template.description}</p>
-                      <p className="carga-overline template-card-meta">
-                        {isCreating
-                          ? 'Creando…'
-                          : `${exerciseCount} ${exerciseCount === 1 ? 'ejercicio' : 'ejercicios'} · ~${minutes} min`}
-                      </p>
-                    </button>
-                  );
-                })}
-              </div>
+          <div className="carga-sheet-header">
+            <p className="carga-overline">Plantillas de rutina</p>
+            <button
+              type="button"
+              className="carga-sheet-close"
+              onClick={() => setShowTemplates(false)}
+              aria-label="Cerrar"
+            >
+              ✕
+            </button>
+          </div>
+          <div className="templates-sheet-body">
+            <p className="templates-sheet-intro">
+              Parte de una base probada y ajústala a tu medida.
+            </p>
+            <div className="templates-sheet-list">
+              {ROUTINE_TEMPLATES.map((template) => {
+                const minutes = estimateSessionMinutes(template.exercises);
+                const exerciseCount = template.exercises.length;
+                const isCreating = creatingTemplateId === template.id;
+                return (
+                  <button
+                    key={template.id}
+                    type="button"
+                    className={`template-card${exercisesLoading ? ' template-card-disabled' : ''}`}
+                    onClick={() => handleSelectTemplate(template)}
+                    disabled={exercisesLoading || creatingTemplateId !== null}
+                  >
+                    <h2 className="template-card-name">{template.name}</h2>
+                    <p className="template-card-description">{template.description}</p>
+                    <p className="carga-overline template-card-meta">
+                      {isCreating
+                        ? 'Creando…'
+                        : `${exerciseCount} ${exerciseCount === 1 ? 'ejercicio' : 'ejercicios'} · ~${minutes} min`}
+                    </p>
+                  </button>
+                );
+              })}
             </div>
-          </IonContent>
+          </div>
         </IonModal>
       </IonContent>
     </IonPage>

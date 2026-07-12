@@ -18,6 +18,7 @@ import Rutinas from './pages/Rutinas/Rutinas';
 import RoutineEditor from './pages/RoutineEditor/RoutineEditor';
 import Entrenar from './pages/Entrenar/Entrenar';
 import Progreso from './pages/Progreso/Progreso';
+import Ajustes from './pages/Ajustes/Ajustes';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -94,6 +95,9 @@ const App: React.FC = () => (
               </Route>
               <Route exact path="/tabs/progreso">
                 <Progreso />
+              </Route>
+              <Route exact path="/tabs/ajustes">
+                <Ajustes />
               </Route>
               <Route exact path="/tabs">
                 <Redirect to="/tabs/hoy" />

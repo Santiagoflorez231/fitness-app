@@ -6,6 +6,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import {
   IonButton,
+  IonButtons,
   IonContent,
   IonHeader,
   IonIcon,
@@ -15,7 +16,7 @@ import {
   useIonViewWillEnter,
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
-import { barbellOutline, chevronForward, compassOutline } from 'ionicons/icons';
+import { barbellOutline, chevronForward, compassOutline, settingsOutline } from 'ionicons/icons';
 import { routinesRepo, sessionsRepo } from '../../db';
 import { useProgressData } from '../../hooks/useProgressData';
 import { useWeeklyGoal } from '../../hooks/useWeeklyGoal';
@@ -169,6 +170,11 @@ const Hoy: React.FC = () => {
         <IonHeader className="ion-no-border">
           <IonToolbar>
             <IonTitle>Hoy</IonTitle>
+            <IonButtons slot="end">
+              <IonButton routerLink="/tabs/ajustes" aria-label="Ajustes">
+                <IonIcon slot="icon-only" icon={settingsOutline} />
+              </IonButton>
+            </IonButtons>
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen className="hoy-content">
@@ -279,6 +285,10 @@ const Hoy: React.FC = () => {
                 <IonButton fill="outline" routerLink="/tabs/explorar">
                   <IonIcon icon={compassOutline} slot="start" />
                   Explorar
+                </IonButton>
+                <IonButton fill="outline" routerLink="/tabs/ajustes">
+                  <IonIcon icon={settingsOutline} slot="start" />
+                  Ajustes
                 </IonButton>
               </div>
             </>

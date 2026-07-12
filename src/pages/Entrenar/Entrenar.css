@@ -7,6 +7,14 @@
   --background: var(--app-bg);
 }
 
+/* Skeleton de la fase 'loading' (arranque/resolución de sesión). */
+.entrenar-loading-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+}
+
 /* ---------------------------------------------------------------------- */
 /* Toolbar: nombre de rutina pequeño + cronómetro discreto                */
 /* ---------------------------------------------------------------------- */

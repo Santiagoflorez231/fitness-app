@@ -91,6 +91,9 @@ interface PlateCalculatorProps {
   /** Prefill del peso objetivo (peso del draft actual del ejercicio), si se conoce. */
   initialWeightKg: number | null;
   initialMode?: PlateCalculatorMode;
+  /** Barra inicial al abrir el sheet (kg); por defecto 20. Ajustable en
+   * Ajustes > Barra por defecto (ver src/hooks/usePlateSettings.ts). */
+  defaultBarKg?: number;
 }
 
 /**
@@ -105,10 +108,11 @@ const PlateCalculator: React.FC<PlateCalculatorProps> = ({
   onDismiss,
   initialWeightKg,
   initialMode = 'plates',
+  defaultBarKg = 20,
 }) => {
   const [mode, setMode] = useState<PlateCalculatorMode>(initialMode);
   const [weightInput, setWeightInput] = useState<string>(initialWeightKg != null ? initialWeightKg.toString() : '');
-  const [barKg, setBarKg] = useState<number>(20);
+  const [barKg, setBarKg] = useState<number>(defaultBarKg);
 
   // Re-sincroniza cada vez que el sheet se abre (puede abrirse para otro
   // ejercicio/peso sin que el componente se desmonte).
@@ -116,8 +120,9 @@ const PlateCalculator: React.FC<PlateCalculatorProps> = ({
     if (isOpen) {
       setMode(initialMode);
       setWeightInput(initialWeightKg != null ? initialWeightKg.toString() : '');
+      setBarKg(defaultBarKg);
     }
-  }, [isOpen, initialMode, initialWeightKg]);
+  }, [isOpen, initialMode, initialWeightKg, defaultBarKg]);
 
   const weightKg = Number(weightInput.replace(',', '.'));
   const hasValidWeight = weightInput.trim() !== '' && Number.isFinite(weightKg) && weightKg >= 0;

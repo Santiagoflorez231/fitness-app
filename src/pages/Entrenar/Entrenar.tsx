@@ -7,7 +7,6 @@ import {
   IonHeader,
   IonIcon,
   IonPage,
-  IonSpinner,
   IonTitle,
   IonToolbar,
   useIonViewWillEnter,
@@ -18,7 +17,10 @@ import { routinesRepo, sessionsRepo } from '../../db';
 import { addAdhocBlock, listAdhocBlocks, clearAdhocBlocks, type AdhocBlock } from '../../db/adhocBlocks';
 import { consumeStartExerciseRequest } from '../../db/startExerciseRequest';
 import { useExercises } from '../../hooks/useExercises';
+import { useCoachSettings } from '../../hooks/useCoachSettings';
+import { usePlateSettings } from '../../hooks/usePlateSettings';
 import { estimateSessionMinutes } from '../../data/routineTemplates';
+import CargaSkeleton from '../../components/CargaSkeleton';
 import ExerciseAvatar from '../../components/ExerciseAvatar';
 import SetRow from '../../components/SetRow';
 import RestTimer, { type RestTimerTrigger } from '../../components/RestTimer';
@@ -311,6 +313,11 @@ function parseWeightOrNull(value: string): number | null {
 
 const Entrenar: React.FC = () => {
   const { exercises, loading: exercisesLoading } = useExercises();
+  // Ajustes (R8): redondeo del coach y barra por defecto de la calculadora
+  // de discos, ambos en localStorage (ver hooks). Solo lectura aquí: no
+  // tocan la resolución de series ni la persistencia.
+  const { roundingIncrementKg } = useCoachSettings();
+  const { defaultBarKg } = usePlateSettings();
 
   const [phase, setPhase] = useState<Phase>({ kind: 'loading' });
   const [sets, setSets] = useState<SessionSet[]>([]);
@@ -785,9 +792,11 @@ const Entrenar: React.FC = () => {
             <IonTitle>Entrenar</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent fullscreen>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-            <IonSpinner name="crescent" />
+        <IonContent fullscreen className="entrenar-content">
+          <div className="entrenar-loading-stack">
+            <CargaSkeleton variant="block" height={48} />
+            <CargaSkeleton variant="card" width="100%" height={160} />
+            <CargaSkeleton variant="card" width="100%" height={120} />
           </div>
         </IonContent>
       </IonPage>
@@ -955,6 +964,7 @@ const Entrenar: React.FC = () => {
                   },
                   targetReps: pe.targetReps,
                   targetRpe: COACH_TARGET_RPE,
+                  roundingIncrementKg,
                 })
               : null;
             const isExpanded = expandedKeys.has(pe.key);
@@ -1113,6 +1123,7 @@ const Entrenar: React.FC = () => {
         onDismiss={() => setPlateCalc((previous) => ({ ...previous, open: false }))}
         initialWeightKg={plateCalc.weightKg}
         initialMode={plateCalc.mode}
+        defaultBarKg={defaultBarKg}
       />
 
       <ExerciseHistorySheet

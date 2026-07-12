@@ -24,7 +24,7 @@ import TrainingHeatmap from '../../components/progress/TrainingHeatmap';
 import MuscleBalance from '../../components/progress/MuscleBalance';
 import MuscleHeatmap from '../../components/progress/MuscleHeatmap';
 import StreakGoal from '../../components/progress/StreakGoal';
-import BackupPanel from '../../components/progress/BackupPanel';
+import CargaSkeleton from '../../components/CargaSkeleton';
 import { buildCategoryCatalog, weeklyVolumeBalance } from '../../coach/volume';
 import './Progreso.css';
 
@@ -160,8 +160,15 @@ const Progreso: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen className="progreso-content">
-          <div className="progreso-center">
-            <IonSpinner name="crescent" />
+          <div className="progreso-stack">
+            <h1 className="progreso-title">Progreso</h1>
+            <div className="progreso-tiles">
+              <CargaSkeleton variant="card" width="100%" height={104} />
+              <CargaSkeleton variant="card" width="100%" height={104} />
+            </div>
+            <CargaSkeleton variant="card" width="100%" height={140} />
+            <CargaSkeleton variant="card" width="100%" height={180} />
+            <CargaSkeleton variant="card" width="100%" height={220} />
           </div>
         </IonContent>
       </IonPage>
@@ -182,17 +189,12 @@ const Progreso: React.FC = () => {
           <h1 className="progreso-title">Progreso</h1>
 
           {!hasSessions ? (
-            <>
-              <div className="progreso-empty carga-card">
-                <span className="carga-overline">Cuaderno de resultados</span>
-                <p className="progreso-empty-text">
-                  Aún no hay datos. Termina tu primer entrenamiento y tus cifras aparecerán aquí.
-                </p>
-              </div>
-              {/* El respaldo también sirve para restaurar en un dispositivo nuevo,
-                  antes de haber entrenado. */}
-              <BackupPanel />
-            </>
+            <div className="progreso-empty carga-card">
+              <span className="carga-overline">Cuaderno de resultados</span>
+              <p className="progreso-empty-text">
+                Aún no hay datos. Termina tu primer entrenamiento y tus cifras aparecerán aquí.
+              </p>
+            </div>
           ) : (
             <>
               <div className="progreso-tiles">
@@ -281,8 +283,6 @@ const Progreso: React.FC = () => {
                   </>
                 )}
               </section>
-
-              <BackupPanel />
             </>
           )}
         </div>

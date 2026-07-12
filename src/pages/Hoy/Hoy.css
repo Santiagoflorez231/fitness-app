@@ -131,10 +131,12 @@
 /* --- Accesos rápidos --- */
 .hoy-quick-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
 }
 
 .hoy-quick-actions ion-button {
-  flex: 1;
+  flex: 1 1 auto;
+  min-width: 128px;
   --border-radius: var(--app-radius-full);
 }

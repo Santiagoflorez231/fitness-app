@@ -472,7 +472,7 @@ const Explorar: React.FC = () => {
             {filteredExercises.length === 0 ? (
               <div className="explorar-empty">
                 <IonIcon icon={searchOutline} className="explorar-empty-icon" />
-                <p className="explorar-empty-text">Sin resultados</p>
+                <p className="explorar-empty-text">Nada por aquí. Prueba otro filtro.</p>
                 <button
                   type="button"
                   className="explorar-empty-clear"
