@@ -21,7 +21,13 @@ import { sessionsRepo } from '../../db';
 import { writeStartExerciseRequest } from '../../db/startExerciseRequest';
 import { localCoachAdvisor } from '../../coach/localCoach';
 import type { ProgressVerdict } from '../../coach/types';
+import mediaLocal from '../../data/mediaLocal.json';
 import './ExerciseDetail.css';
+
+/** Fotos locales (free-exercise-db, dominio público) por exerciseId: par de
+ * fotogramas inicio/fin para 344 ejercicios. Descargadas en desarrollo
+ * (scripts/download-media.mjs); en runtime son assets estáticos, cero red. */
+const MEDIA_BY_ID = mediaLocal as Record<string, string[]>;
 
 interface ExerciseDetailParams {
   id: string;
@@ -145,6 +151,23 @@ const ExerciseDetail: React.FC = () => {
           </div>
           <p className="detail-muscle-legend">{muscleLegend}</p>
         </div>
+
+        {(MEDIA_BY_ID[exercise.id]?.length ?? 0) > 0 && (
+          <section className="detail-section">
+            <p className="carga-overline">Ejecución</p>
+            <div className="detail-media">
+              {MEDIA_BY_ID[exercise.id].map((path, index) => (
+                <img
+                  key={path}
+                  className="detail-media-img"
+                  src={`${import.meta.env.BASE_URL}${path}`}
+                  alt={`${exercise.name}: ${index === 0 ? 'posición inicial' : 'posición final'}`}
+                  loading="lazy"
+                />
+              ))}
+            </div>
+          </section>
+        )}
 
         {coachVerdict && (
           <div className={`detail-coach detail-coach-${coachVerdict.state}`}>
