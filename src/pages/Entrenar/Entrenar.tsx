@@ -23,6 +23,7 @@ import RestTimer, { type RestTimerTrigger } from '../../components/RestTimer';
 import PlateCalculator, { type PlateCalculatorMode } from '../../components/PlateCalculator';
 import ExerciseHistorySheet from '../../components/ExerciseHistorySheet';
 import { localCoachAdvisor } from '../../coach/localCoach';
+import { hapticPr, hapticSetDone } from '../../utils/haptics';
 import type { Exercise } from '../../types/exercise';
 import type { Routine, SessionSet, WorkoutSession } from '../../types/routine';
 import './Entrenar.css';
@@ -496,13 +497,18 @@ const Entrenar: React.FC = () => {
     };
     await sessionsRepo.addSet(newSet);
     setSets((previous) => [...previous, newSet]);
+    // Háptico tras persistir (fire-and-forget, nunca bloquea el flujo):
+    // serie normal = golpe seco; PR = notificación de éxito (celebra).
     if (isPR) {
+      void hapticPr();
       const prKey = `${pe.key}#${setNumber}`;
       setPrKeys((previous) => {
         const next = new Set(previous);
         next.add(prKey);
         return next;
       });
+    } else {
+      void hapticSetDone();
     }
 
     const realExercises = phase.plan.filter((item) => !item.isOrphan);
