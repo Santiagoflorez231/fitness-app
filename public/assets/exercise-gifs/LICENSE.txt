@@ -1,0 +1,4 @@
+Exercise GIFs License
+
+Media © Gym Visual (gymvisual.com), redistributed with permission via hasaneyldrm/exercises-dataset.
+GIFs resized to 180×180 pixels. Personal, non-commercial use only. Underlying exercise data licensed under MIT.
