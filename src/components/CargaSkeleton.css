@@ -1,0 +1,48 @@
+/**
+ * CargaSkeleton — placeholder de carga CARGA, reutilizable.
+ * Referencia obligatoria: docs/design-carga.md
+ */
+
+.carga-skeleton {
+  display: block;
+  background: var(--app-surface-elevated);
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-m);
+  animation: carga-skeleton-pulse 1.6s var(--app-ease) infinite;
+}
+
+@keyframes carga-skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carga-skeleton {
+    animation: none;
+    opacity: 0.85;
+  }
+}
+
+/* Fila de lista (Explorar: filas ricas de 72px). */
+.carga-skeleton-row {
+  width: 100%;
+  height: 72px;
+}
+
+/* Card de carril horizontal (120x150 aprox). */
+.carga-skeleton-card {
+  width: 120px;
+  height: 150px;
+}
+
+/* Rectángulo genérico: buscador, chips, cards de familia. */
+.carga-skeleton-block {
+  width: 100%;
+  height: 40px;
+  border-radius: var(--app-radius-s);
+}

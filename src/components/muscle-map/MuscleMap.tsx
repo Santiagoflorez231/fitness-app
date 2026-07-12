@@ -25,14 +25,30 @@ import './MuscleMap.css';
  *    temas) vía `color-mix`. Incluye leyenda mínima poco/mucho.
  */
 
-interface HighlightModeProps {
+interface CommonMapProps {
+  /**
+   * Click en una región (Explorar R6: navegación "por músculo"). Prop
+   * ADITIVA: si no se pasa, las regiones no reciben handlers ni foco — el
+   * comportamiento en Detalle/Progreso (que no la pasan) no cambia.
+   */
+  onRegionClick?: (id: RegionId) => void;
+  /**
+   * Región marcada como "elegida", independiente de `primary`/`secondary`:
+   * se pinta con el mismo relleno sólido primary + un pop de entrada
+   * (mm-region-selected). Pensada para el browse por músculo de Explorar,
+   * donde no hay un ejercicio concreto cuyos músculos resaltar.
+   */
+  selected?: RegionId;
+}
+
+interface HighlightModeProps extends CommonMapProps {
   mode: 'highlight';
   primary: RegionId[];
   secondary: RegionId[];
   isCardio: boolean;
 }
 
-interface HeatModeProps {
+interface HeatModeProps extends CommonMapProps {
   mode: 'heat';
   intensityByRegion: Partial<Record<RegionId, number>>;
 }
@@ -378,14 +394,20 @@ function buildVisuals(props: MuscleMapProps): Map<RegionId, RegionVisual> {
 
   if (props.mode === 'heat') {
     ALL_REGION_IDS.forEach((id) => map.set(id, heatVisual(props.intensityByRegion[id])));
-    return map;
+  } else {
+    // Highlight (incluye cardio: sin regiones primarias/secundarias, todo
+    // queda inactivo y el tratamiento propio de CardioPulse cubre la lectura).
+    ALL_REGION_IDS.forEach((id) => map.set(id, INACTIVE_VISUAL));
+    props.secondary.forEach((id) => map.set(id, SECONDARY_VISUAL));
+    props.primary.forEach((id) => map.set(id, PRIMARY_VISUAL));
   }
 
-  // Highlight (incluye cardio: sin regiones primarias/secundarias, todo
-  // queda inactivo y el tratamiento propio de CardioPulse cubre la lectura).
-  ALL_REGION_IDS.forEach((id) => map.set(id, INACTIVE_VISUAL));
-  props.secondary.forEach((id) => map.set(id, SECONDARY_VISUAL));
-  props.primary.forEach((id) => map.set(id, PRIMARY_VISUAL));
+  // `selected` es independiente del modo: pisa lo anterior con el mismo
+  // relleno sólido primary (buscamos "elegido", no "músculo entrenado").
+  if (props.selected) {
+    map.set(props.selected, PRIMARY_VISUAL);
+  }
+
   return map;
 }
 
@@ -408,10 +430,21 @@ interface PanelProps {
   regions: RegionShapeDef[];
   visuals: Map<RegionId, RegionVisual>;
   isCardio: boolean;
+  onRegionClick?: (id: RegionId) => void;
+  selected?: RegionId;
 }
 
-function Panel({ view, regions, visuals, isCardio }: PanelProps) {
+function Panel({ view, regions, visuals, isCardio, onRegionClick, selected }: PanelProps) {
   const decorLineD = view === 'front' ? FRONT_DECOR_LINE_D : BACK_DECOR_LINE_D;
+  const clickable = Boolean(onRegionClick);
+
+  const handleKeyDown = (id: RegionId) => (event: React.KeyboardEvent<SVGGElement>) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      onRegionClick?.(id);
+    }
+  };
+
   return (
     <div className="mm-panel">
       <svg
@@ -430,8 +463,19 @@ function Panel({ view, regions, visuals, isCardio }: PanelProps) {
         <path className="mm-decor-line" d={decorLineD} aria-hidden="true" />
         {regions.map((def) => {
           const visual = visuals.get(def.id) ?? INACTIVE_VISUAL;
+          const isSelected = selected === def.id;
+          const className = `mm-region${clickable ? ' mm-region-clickable' : ''}${isSelected ? ' mm-region-selected' : ''}`;
           return (
-            <g key={def.id} data-region={def.id} className="mm-region">
+            <g
+              key={def.id}
+              data-region={def.id}
+              className={className}
+              role={clickable ? 'button' : undefined}
+              tabIndex={clickable ? 0 : undefined}
+              aria-pressed={clickable ? isSelected : undefined}
+              onClick={clickable ? () => onRegionClick?.(def.id) : undefined}
+              onKeyDown={clickable ? handleKeyDown(def.id) : undefined}
+            >
               <title>{REGION_LABEL[def.id]}</title>
               {def.shapes.map((d, index) => (
                 <path
@@ -469,8 +513,22 @@ const MuscleMap: React.FC<MuscleMapProps> = (props) => {
   return (
     <div className="muscle-map">
       <div className="mm-panels">
-        <Panel view="front" regions={FRONT_REGIONS} visuals={visuals} isCardio={isCardio} />
-        <Panel view="back" regions={BACK_REGIONS} visuals={visuals} isCardio={isCardio} />
+        <Panel
+          view="front"
+          regions={FRONT_REGIONS}
+          visuals={visuals}
+          isCardio={isCardio}
+          onRegionClick={props.onRegionClick}
+          selected={props.selected}
+        />
+        <Panel
+          view="back"
+          regions={BACK_REGIONS}
+          visuals={visuals}
+          isCardio={isCardio}
+          onRegionClick={props.onRegionClick}
+          selected={props.selected}
+        />
       </div>
       {props.mode === 'heat' && <HeatLegend />}
     </div>

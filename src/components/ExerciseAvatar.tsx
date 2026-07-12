@@ -76,19 +76,29 @@ interface ExerciseAvatarProps {
    * real del ejercicio en vez de las iniciales; el duotono queda de fallback
    * (id sin media o imagen que falla al cargar). */
   exerciseId?: string;
+  /** Forma del contenedor: 'circle' (por defecto, sin cambios) o 'square'
+   * (esquinas radius-m en vez de píldora — cards ricas de Explorar, R6).
+   * Prop ADITIVA: los llamadores existentes no la pasan y siguen viendo el
+   * círculo de siempre. */
+  shape?: 'circle' | 'square';
 }
 
-/** Avatar circular: miniatura real del ejercicio si existe (M2), o duotono de
- * iniciales del target sobre el color de la familia muscular. */
-const ExerciseAvatar: React.FC<ExerciseAvatarProps> = ({ target, category, size = 40, exerciseId }) => {
+/** Avatar circular (o de esquinas radius-m con shape="square"): miniatura
+ * real del ejercicio si existe (M2), o duotono de iniciales del target sobre
+ * el color de la familia muscular. */
+const ExerciseAvatar: React.FC<ExerciseAvatarProps> = ({ target, category, size = 40, exerciseId, shape = 'circle' }) => {
   const [imgFailed, setImgFailed] = useState(false);
   const thumb = exerciseId !== undefined ? MEDIA_GYM[exerciseId]?.thumb : undefined;
   const backgroundColor = colorForCategory(category);
   const color = textColorForCategory(category);
   const initials = initialsForTarget(target);
+  const radius = shape === 'square' ? 'var(--app-radius-m)' : 'var(--app-radius-full)';
 
   return (
-    <IonAvatar style={{ width: `${size}px`, height: `${size}px` }} aria-hidden="true">
+    <IonAvatar
+      style={{ width: `${size}px`, height: `${size}px`, '--border-radius': radius } as React.CSSProperties}
+      aria-hidden="true"
+    >
       {thumb && !imgFailed ? (
         <img
           src={`${import.meta.env.BASE_URL}${thumb}`}
@@ -98,7 +108,7 @@ const ExerciseAvatar: React.FC<ExerciseAvatarProps> = ({ target, category, size 
           style={{
             width: '100%',
             height: '100%',
-            borderRadius: 'var(--app-radius-full)',
+            borderRadius: radius,
             objectFit: 'cover',
             border: '1px solid var(--app-border)',
             // Las miniaturas Gymvisual tienen fondo blanco: en tema oscuro se
@@ -112,7 +122,7 @@ const ExerciseAvatar: React.FC<ExerciseAvatarProps> = ({ target, category, size 
           style={{
             width: '100%',
             height: '100%',
-            borderRadius: 'var(--app-radius-full)',
+            borderRadius: radius,
             backgroundColor,
             display: 'flex',
             alignItems: 'center',

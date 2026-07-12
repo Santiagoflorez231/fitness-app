@@ -74,6 +74,31 @@ function buildEmptyWeeks(now: number): WeekVolume[] {
   return weeks;
 }
 
+/**
+ * Agrega series por ejercicio (setCount desc). Si `sets` viene de sesiones
+ * más recientes primero (contrato de sessionsRepo.listFinished()), la
+ * primera aparición de cada exerciseId conserva el snapshot de nombre más
+ * reciente. Exportada para que src/hooks/useMostUsedExercises.ts (carril
+ * "Más usados por ti" de Explorar, R6) reutilice el mismo criterio sin
+ * duplicar la lógica.
+ */
+export function buildExerciseHistory(sets: SessionSet[]): ExerciseHistoryEntry[] {
+  const historyMap = new Map<string, ExerciseHistoryEntry>();
+  sets.forEach((set) => {
+    const existing = historyMap.get(set.exerciseId);
+    if (existing) {
+      existing.setCount += 1;
+    } else {
+      historyMap.set(set.exerciseId, {
+        exerciseId: set.exerciseId,
+        exerciseName: set.exerciseName,
+        setCount: 1,
+      });
+    }
+  });
+  return Array.from(historyMap.values()).sort((a, b) => b.setCount - a.setCount);
+}
+
 /** Rejilla de días vacía: HEATMAP_WEEKS semanas ISO (lunes-domingo) hasta la actual, ascendente. */
 function buildEmptyDays(now: number): DayVolume[] {
   const currentWeekStart = startOfIsoWeekLocal(now);
@@ -164,22 +189,7 @@ export function useProgressData(): ProgressData {
       const lastWorkoutAt = sessions[0]?.finishedAt ?? null;
 
       // Ejercicios únicos con >=1 serie (sesiones terminadas), setCount desc.
-      // Como `sessions` viene más reciente primero, la primera aparición de
-      // cada exerciseId trae el snapshot de nombre más reciente.
-      const historyMap = new Map<string, ExerciseHistoryEntry>();
-      allSets.forEach((set) => {
-        const existing = historyMap.get(set.exerciseId);
-        if (existing) {
-          existing.setCount += 1;
-        } else {
-          historyMap.set(set.exerciseId, {
-            exerciseId: set.exerciseId,
-            exerciseName: set.exerciseName,
-            setCount: 1,
-          });
-        }
-      });
-      const exercisesList = Array.from(historyMap.values()).sort((a, b) => b.setCount - a.setCount);
+      const exercisesList = buildExerciseHistory(allSets);
 
       // Series de la semana ISO actual (balance de volumen por familia, src/coach/volume.ts).
       const currentWeekSetsList = allSets.filter((set) => startOfIsoWeekLocal(set.completedAt) === currentWeekStart);

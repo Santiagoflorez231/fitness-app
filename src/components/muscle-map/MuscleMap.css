@@ -67,6 +67,41 @@
 }
 
 /* ---------------------------------------------------------------------- */
+/* Regiones clicables (Explorar R6: "Por músculo"). Aditivo — solo aplica  */
+/* cuando MuscleMap recibe onRegionClick (Detalle/Progreso no lo pasan).   */
+/* ---------------------------------------------------------------------- */
+.mm-region-clickable {
+  cursor: pointer;
+}
+
+.mm-region-clickable:focus-visible {
+  outline: 2px solid var(--ion-color-primary);
+  outline-offset: 2px;
+}
+
+/* Región "elegida" en el browse: mismo pop que un chip activo (.97 -> 1). */
+.mm-region-selected {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: mm-region-pop var(--app-dur-fast) var(--app-ease-pop) both;
+}
+
+@keyframes mm-region-pop {
+  from {
+    transform: scale(0.97);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mm-region-selected {
+    animation: none;
+  }
+}
+
+/* ---------------------------------------------------------------------- */
 /* Tratamiento cardio: la silueta "respira" en vez de quedar apagada, más  */
 /* un icono de corazón latiendo con ondas de pulso sobre el pecho (frontal).*/
 /* ---------------------------------------------------------------------- */
