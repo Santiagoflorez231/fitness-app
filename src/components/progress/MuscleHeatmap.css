@@ -1,0 +1,24 @@
+/**
+ * MuscleHeatmap — panel de mapa de calor muscular semanal (Progreso).
+ * Referencia: docs/design-carga.md. Complementa a MuscleBalance.css (mismo
+ * patrón de carga-card + overline).
+ */
+.progreso-heatmap {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.progreso-heatmap > .carga-overline {
+  align-self: flex-start;
+}
+
+.progreso-heatmap-empty {
+  margin: 8px 0 4px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 14px;
+  color: var(--app-text-secondary);
+  text-align: center;
+}
