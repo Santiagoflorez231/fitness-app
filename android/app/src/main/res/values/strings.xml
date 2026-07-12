@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">CARGA</string>
+    <string name="title_activity_main">CARGA</string>
+    <string name="package_name">com.santi.fitnessapp</string>
+    <string name="custom_url_scheme">com.santi.fitnessapp</string>
+</resources>

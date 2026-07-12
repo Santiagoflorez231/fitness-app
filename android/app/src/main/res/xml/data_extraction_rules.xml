@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Excluye la base de datos SQLite (y el resto de datos locales) del backup en
+  la nube y de la transferencia de dispositivo a dispositivo de Android.
+  Recomendado por el README de @capacitor-community/sqlite para evitar que
+  Android intente respaldar/restaurar el archivo de la BD por su cuenta.
+-->
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude domain="root" />
+        <exclude domain="database" />
+        <exclude domain="sharedpref" />
+        <exclude domain="external" />
+    </cloud-backup>
+    <device-transfer>
+        <exclude domain="root" />
+        <exclude domain="database" />
+        <exclude domain="sharedpref" />
+        <exclude domain="external" />
+    </device-transfer>
+</data-extraction-rules>
