@@ -1,0 +1,2 @@
+Source: free-exercise-db by yuhonas (https://github.com/yuhonas/free-exercise-db)
+License: Public Domain (Unlicense)
