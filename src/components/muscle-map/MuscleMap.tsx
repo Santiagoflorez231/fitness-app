@@ -97,39 +97,49 @@ function ovalPts(cx: number, cy: number, rx: number, ry: number, count = 10): Pt
 // Se define solo el lado derecho (de la coronilla a la entrepierna); el lado
 // izquierdo se obtiene reflejando y reutilizando esos mismos puntos.
 // ---------------------------------------------------------------------------
+// Canon anatómico estilizado sobre viewBox 0 0 100 212 (alto de figura 202):
+// cabeza ≈ 1/8 del alto (y 4→28), hombros a y≈41 (ancho biacromial ≈ 2
+// cabezas), codos a la altura de la cintura (y≈82), muñecas a la altura de
+// la entrepierna (y≈105, mitad de la figura), rodillas a y≈152.
 const HEAD_TOP: Pt = [50, 4];
 
 const RIGHT_SIDE: Pt[] = [
-  [60, 6], // cabeza, sien derecha
-  [62, 14], // cabeza, lateral derecho
-  [58, 22], // mandíbula derecha
-  [55, 27], // base del cuello derecho
-  [58, 29], // trapecio/hombro derecho (arranque)
-  [79, 33], // hombro, borde exterior derecho
-  [83, 40], // brazo superior, tope exterior
-  [85, 63], // codo, borde exterior (bíceps/tríceps)
-  [82, 87], // muñeca, borde exterior
-  [85, 95], // mano, bulto exterior
-  [81, 103], // punta de los dedos
-  [74, 100], // mano, borde interior
-  [72, 88], // muñeca, borde interior
-  [75, 64], // codo, borde interior
-  [65, 42], // axila (curva cóncava hacia el torso)
-  [69, 52], // costado del pecho derecho
-  [61, 67], // cintura derecha
-  [69, 79], // cadera, borde exterior derecho
-  [70, 105], // muslo, bulto exterior
-  [64, 148], // rodilla, borde exterior derecho
-  [67, 170], // pantorrilla, bulto exterior
-  [61, 193], // tobillo, borde exterior derecho
-  [68, 201], // talón/pie, borde exterior
-  [58, 206], // punta del pie derecho
-  [54, 199], // pie, borde interior
-  [56, 191], // tobillo, borde interior
-  [53, 166], // pantorrilla, borde interior
-  [55, 148], // rodilla, borde interior derecho
-  [57, 108], // muslo, borde interior
-  [52, 88], // entrepierna derecha
+  [56, 7], // sien derecha
+  [58.5, 16], // lateral de la cabeza
+  [55, 25], // mandíbula
+  [53, 29], // lateral del cuello
+  [54, 34], // base del cuello
+  [64, 38], // pendiente del trapecio
+  [73, 41], // punta del hombro (acromion)
+  [78, 47], // deltoides, borde exterior
+  [78, 60], // brazo superior, exterior
+  [79, 81], // codo, exterior
+  [77, 95], // antebrazo, exterior
+  [74, 106], // muñeca, exterior
+  [76, 113], // mano, exterior
+  [72, 122], // punta de los dedos
+  [69, 113], // mano, interior
+  [68, 104], // muñeca, interior
+  [69, 92], // antebrazo, interior
+  [70, 81], // codo, interior
+  [69, 62], // brazo superior, interior
+  [66, 52], // axila (curva cóncava)
+  [66, 57], // costado del pecho
+  [61, 76], // cintura
+  [66, 90], // cadera, exterior
+  [65, 102], // cadera baja / muslo alto
+  [63, 120], // muslo, bulto exterior
+  [59, 152], // rodilla, exterior
+  [62, 168], // gemelo, bulto exterior
+  [56, 194], // tobillo, exterior
+  [59, 201], // talón
+  [55, 206], // punta del pie
+  [51.5, 204], // pie, interior
+  [52, 193], // tobillo, interior
+  [53, 172], // gemelo, interior
+  [54.5, 152], // rodilla, interior
+  [53, 124], // muslo, interior
+  [51, 105], // entrepierna
 ];
 
 const LEFT_SIDE: Pt[] = [...RIGHT_SIDE].reverse().map(mirrorPt);
@@ -140,8 +150,8 @@ const BODY_OUTLINE_D = smoothClosedPath(BODY_OUTLINE);
 
 // Líneas decorativas sutiles (línea alba / columna) — puramente estéticas,
 // no son regiones interactivas.
-const FRONT_DECOR_LINE_D = 'M 50 37 Q 48.5 62 50 84';
-const BACK_DECOR_LINE_D = 'M 50 27 Q 48.5 60 50 90';
+const FRONT_DECOR_LINE_D = 'M 50 42 Q 49.3 68 50 92';
+const BACK_DECOR_LINE_D = 'M 50 34 Q 49.3 64 50 94';
 
 interface RegionShapeDef {
   id: RegionId;
@@ -162,110 +172,137 @@ function pairedRegion(id: RegionId, rightPoints: readonly Pt[]): RegionShapeDef 
 // Cada región es una forma orgánica (path suavizado) que evoca el músculo
 // y encaja dentro del contorno del cuerpo; no busca precisión médica.
 const NECK_PTS: Pt[] = [
-  [44, 24],
-  [56, 24],
-  [57, 30],
-  [50, 32],
-  [43, 30],
+  [46, 29],
+  [54, 29],
+  [55, 37],
+  [50, 39],
+  [45, 37],
 ];
 
-const SHOULDER_R_PTS: Pt[] = ovalPts(75, 35, 10, 8, 10);
+// Deltoides: casquete redondeado sobre el hombro, DENTRO del contorno y con
+// un pelo de separación respecto al pectoral para que no se fundan al
+// resaltarse ambos.
+const SHOULDER_R_PTS: Pt[] = [
+  [66.5, 41],
+  [72, 41],
+  [76.5, 45.5],
+  [76, 52],
+  [71.5, 55],
+  [67.5, 47.5],
+];
+// Pectoral derecho: gota que nace en el esternón y cae hacia la axila.
 const CHEST_R_PTS: Pt[] = [
-  [50, 36],
-  [65, 37],
-  [71, 47],
-  [65, 57],
-  [54, 59],
-  [50, 50],
+  [51, 42.5],
+  [61.5, 43.5],
+  [64.5, 50],
+  [63, 57],
+  [55.5, 60],
+  [51, 57],
 ];
 const ABS_PTS: Pt[] = [
-  [41, 58],
-  [59, 58],
-  [61, 70],
-  [58, 85],
-  [50, 88],
-  [42, 85],
-  [39, 70],
+  [44, 62],
+  [56, 62],
+  [58, 74],
+  [56, 88],
+  [50, 93],
+  [44, 88],
+  [42, 74],
 ];
 const OBLIQUE_R_PTS: Pt[] = [
-  [61, 60],
-  [68, 63],
-  [66, 80],
-  [60, 84],
-  [57, 72],
-  [58, 62],
+  [58, 63],
+  [64, 60],
+  [64, 76],
+  [60, 87],
+  [57, 76],
 ];
-const BICEP_R_PTS: Pt[] = ovalPts(83, 50, 7, 15, 10);
-const FOREARM_R_PTS: Pt[] = ovalPts(80, 76, 6, 17, 10);
+// Brazo: bíceps entre hombro (y≈52) y codo (y≈81); antebrazo hasta la muñeca.
+const BICEP_R_PTS: Pt[] = ovalPts(73.5, 67, 4.5, 10, 12);
+const FOREARM_R_PTS: Pt[] = [
+  [70, 84],
+  [75, 86],
+  [74, 96],
+  [71.5, 104],
+  [69.5, 96],
+  [69, 87],
+];
+// Cuádriceps: huso frontal del muslo, cadera→rodilla.
 const QUAD_R_PTS: Pt[] = [
-  [69, 96],
-  [70, 128],
-  [65, 146],
-  [57, 144],
-  [58, 120],
-  [61, 98],
+  [55, 108],
+  [62, 104],
+  [64, 122],
+  [61, 146],
+  [56, 147],
+  [53, 126],
 ];
+// Aductores: franja interna alta entre ambos muslos.
 const ADDUCTOR_PTS: Pt[] = [
-  [46, 96],
-  [54, 96],
-  [55, 130],
-  [50, 140],
-  [45, 130],
+  [46, 105],
+  [54, 105],
+  [55, 122],
+  [50, 130],
+  [45, 122],
 ];
+// Frontal: tibial/gemelo visto de frente.
 const CALF_R_PTS: Pt[] = [
-  [63, 152],
-  [67, 170],
-  [63, 193],
-  [55, 191],
-  [56, 168],
-  [58, 152],
+  [56, 155],
+  [61, 158],
+  [61.5, 172],
+  [57, 190],
+  [54.5, 176],
+  [55, 161],
 ];
 
+// Trapecio: cometa desde la nuca entre las escápulas.
 const TRAPS_PTS: Pt[] = [
-  [50, 24],
-  [64, 33],
-  [50, 50],
-  [36, 33],
+  [50, 31],
+  [61, 38],
+  [54, 56],
+  [50, 62],
+  [46, 56],
+  [39, 38],
 ];
 const UPPERBACK_PTS: Pt[] = [
-  [38, 44],
-  [62, 44],
-  [64, 58],
-  [60, 63],
-  [40, 63],
-  [36, 58],
+  [40, 45],
+  [60, 45],
+  [63, 56],
+  [58, 63],
+  [42, 63],
+  [37, 56],
 ];
+// Dorsal: ala que cae de la axila a la cintura.
 const LATS_R_PTS: Pt[] = [
-  [66, 44],
-  [71, 54],
-  [66, 68],
-  [57, 64],
-  [59, 50],
-  [62, 44],
+  [63, 55],
+  [66, 60],
+  [63, 74],
+  [55, 82],
+  [53, 68],
+  [57, 57],
 ];
 const LOWERBACK_PTS: Pt[] = [
-  [39, 72],
-  [61, 72],
-  [62, 84],
-  [50, 88],
-  [38, 84],
+  [45, 77],
+  [55, 77],
+  [57, 86],
+  [50, 92],
+  [43, 86],
 ];
-const GLUTES_PTS: Pt[] = [
-  [34, 88],
-  [50, 83],
-  [66, 88],
-  [67, 100],
-  [50, 105],
-  [33, 100],
+// Glúteo derecho: redondeado, de la cadera al pliegue.
+const GLUTE_R_PTS: Pt[] = [
+  [52, 94],
+  [62, 92],
+  [65, 100],
+  [61, 110],
+  [53, 111],
+  [50, 102],
 ];
-const TRICEP_R_PTS: Pt[] = ovalPts(83, 50, 7, 15, 10);
+const TRICEP_R_PTS: Pt[] = ovalPts(73.5, 67, 4.5, 10, 12);
+// Femoral: huso posterior del muslo.
 const HAMSTRING_R_PTS: Pt[] = [
-  [68, 100],
-  [69, 130],
-  [63, 146],
-  [55, 143],
-  [57, 118],
-  [60, 100],
+  [55, 108],
+  [62, 106],
+  [64, 126],
+  [60, 148],
+  [56, 148],
+  [53, 128],
 ];
 
 const FRONT_REGIONS: RegionShapeDef[] = [
@@ -284,11 +321,12 @@ const FRONT_REGIONS: RegionShapeDef[] = [
 const BACK_REGIONS: RegionShapeDef[] = [
   centerRegion('neck', NECK_PTS),
   pairedRegion('shoulders', SHOULDER_R_PTS),
-  centerRegion('traps', TRAPS_PTS),
+  // upperback antes que traps para que la cometa del trapecio quede encima.
   centerRegion('upperback', UPPERBACK_PTS),
   pairedRegion('lats', LATS_R_PTS),
+  centerRegion('traps', TRAPS_PTS),
   centerRegion('lowerback', LOWERBACK_PTS),
-  centerRegion('glutes', GLUTES_PTS),
+  pairedRegion('glutes', GLUTE_R_PTS),
   pairedRegion('triceps', TRICEP_R_PTS),
   pairedRegion('forearms', FOREARM_R_PTS),
   pairedRegion('hamstrings', HAMSTRING_R_PTS),
