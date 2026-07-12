@@ -116,17 +116,19 @@ UI (en Progreso, R4): barras duotono por familia con la zona coloreada
 
 ### Datos que hacen falta
 - e1RM por serie: derivable de `session_sets` ya existentes (peso, reps). ✔
-- RPE por serie: **columna nueva** (migración v3). Hoy Entrenar ya tiene el
-  concepto de RPE precargado; A1/A2 lo aprovechan cuando exista la columna.
+- RPE por serie: **la columna `session_sets.rpe REAL` YA EXISTE** y ya se
+  persiste hoy (SetRow tiene el selector de RPE; `sessionSetToParams` la
+  guarda). A1/A2 pueden leerla sin migración. ✔ (Corrección 2026-07-07: no
+  hace falta migrar rpe, al contrario de lo que decía la primera versión.)
 - Nota de sesión + flag molestia: migración v3 (corpus futuro para el LLM).
 
 ### Migración v3 (persistencia)
 ```sql
-ALTER TABLE session_sets ADD COLUMN rpe REAL;          -- 6.0–10.0, nullable
 ALTER TABLE sessions     ADD COLUMN note TEXT;          -- nota libre, nullable
 ALTER TABLE session_sets ADD COLUMN discomfort INTEGER; -- 0/1, nullable
 ```
-Aditiva y retrocompatible (mismo patrón que v2). Actualizar
+Aditiva y retrocompatible (mismo patrón que v2). `rpe` ya no forma parte de
+v3 porque ya está en el esquema. Actualizar
 `persistence-schema.md`, `schema_migrations`, tipos `SessionSet`/`WorkoutSession`
 y repos. **No** alterar la lógica QA-endurecida existente (setsForPlanExercise,
 submitting, sessionFinishedRef, rowCount, addSet inmediato, RestTimer).

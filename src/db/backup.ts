@@ -6,7 +6,10 @@
  * expuestos por routinesRepo/sessionsRepo, nunca SQL directo.
  *
  * `importBackup()` es ADITIVO por diseño (docs/persistence-schema.md no
- * contempla borrado desde la UI) y NUNCA borra datos existentes:
+ * contempla borrado desde la UI). No borra ni pisa sesiones ni series
+ * existentes; las rutinas SÍ se sobrescriben por id (upsert last-write-wins,
+ * ver detalle abajo), así que re-importar un respaldo viejo puede revertir
+ * ediciones locales de una rutina:
  *   - Rutinas: `routinesRepo.save()`, que ya es upsert por id — este es el
  *     comportamiento preexistente de save(), no se ha tocado su semántica.
  *     Una rutina importada con el mismo id que una ya guardada localmente
@@ -75,10 +78,10 @@ function isRoutineExerciseShape(value: unknown): value is RoutineExercise {
     typeof value.id === 'string' &&
     typeof value.exerciseId === 'string' &&
     typeof value.exerciseName === 'string' &&
-    typeof value.position === 'number' &&
-    typeof value.targetSets === 'number' &&
-    typeof value.targetReps === 'number' &&
-    typeof value.restSeconds === 'number' &&
+    Number.isFinite(value.position) &&
+    Number.isFinite(value.targetSets) &&
+    Number.isFinite(value.targetReps) &&
+    Number.isFinite(value.restSeconds) &&
     (value.notes === undefined || typeof value.notes === 'string')
   );
 }
@@ -88,9 +91,9 @@ function isRoutineShape(value: unknown): value is Routine {
   return (
     typeof value.id === 'string' &&
     typeof value.name === 'string' &&
-    typeof value.position === 'number' &&
+    Number.isFinite(value.position) &&
     typeof value.archived === 'boolean' &&
-    typeof value.createdAt === 'number' &&
+    Number.isFinite(value.createdAt) &&
     Array.isArray(value.exercises) &&
     value.exercises.every(isRoutineExerciseShape)
   );
@@ -102,8 +105,12 @@ function isWorkoutSessionShape(value: unknown): value is WorkoutSession {
     typeof value.id === 'string' &&
     (value.routineId === null || typeof value.routineId === 'string') &&
     typeof value.routineName === 'string' &&
-    typeof value.startedAt === 'number' &&
-    (value.finishedAt === null || typeof value.finishedAt === 'number') &&
+    Number.isFinite(value.startedAt) &&
+    // Un respaldo SOLO contiene sesiones terminadas (exportBackup usa
+    // listFinished()). Exigir finishedAt finito rechaza de paso una sesión
+    // activa (finishedAt: null) colada en un archivo editado a mano, que si
+    // no secuestraría el slot de "única sesión activa" (idx_one_active).
+    Number.isFinite(value.finishedAt) &&
     (value.notes === undefined || typeof value.notes === 'string')
   );
 }
@@ -115,11 +122,21 @@ function isSessionSetShape(value: unknown): value is SessionSet {
     typeof value.sessionId === 'string' &&
     typeof value.exerciseId === 'string' &&
     typeof value.exerciseName === 'string' &&
+    // Mismos invariantes numéricos que blinda el flujo normal (SetRow: reps
+    // entero > 0). El import es el único camino que los esquivaba: sin esto,
+    // reps:NaN / weightKg:Infinity / negativos entrarían y envenenarían
+    // volumen, heatmap y PR (weightKg*reps) sin forma de borrarlos desde la UI.
     typeof value.setNumber === 'number' &&
+    Number.isInteger(value.setNumber) &&
+    value.setNumber > 0 &&
     typeof value.weightKg === 'number' &&
+    Number.isFinite(value.weightKg) &&
+    value.weightKg >= 0 &&
     typeof value.reps === 'number' &&
-    (value.rpe === undefined || typeof value.rpe === 'number') &&
-    typeof value.completedAt === 'number' &&
+    Number.isInteger(value.reps) &&
+    value.reps > 0 &&
+    (value.rpe === undefined || Number.isFinite(value.rpe)) &&
+    Number.isFinite(value.completedAt) &&
     (value.routineExerciseId === undefined || typeof value.routineExerciseId === 'string')
   );
 }
@@ -170,6 +187,18 @@ export async function importBackup(json: unknown): Promise<ImportResult> {
     sets.length !== json.sets.length
   ) {
     return { ok: false, error: 'El respaldo contiene filas con formato inesperado; no se ha importado nada.' };
+  }
+
+  // Integridad referencial: toda serie debe apuntar a una sesión incluida en
+  // el propio respaldo. Un respaldo bien formado exporta sesiones y series
+  // juntas; una serie huérfana (sessionId inexistente) haría FALLAR el INSERT
+  // por la FK de session_sets — `OR IGNORE` NO cubre violaciones de FOREIGN
+  // KEY —, lanzando a mitad del loop y dejando un import a medias. Se
+  // comprueba ANTES de escribir nada, así que si falla no se ha tocado la DB.
+  // Mismo espíritu que el guard de acceptedSessionIds en migrateFromLocalStorage.
+  const importedSessionIds = new Set(sessions.map((session) => session.id));
+  if (sets.some((set) => !importedSessionIds.has(set.sessionId))) {
+    return { ok: false, error: 'El respaldo contiene series sin su sesión; no se ha importado nada.' };
   }
 
   // Rutinas: save() ya es upsert por id (comportamiento preexistente, sin cambios).

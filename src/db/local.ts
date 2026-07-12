@@ -167,7 +167,15 @@ export class LocalSessionsRepo implements SessionsRepo {
     return true;
   }
 
-  /** Igual que addSessionIfNotExists, para una serie. */
+  /**
+   * Igual que addSessionIfNotExists, para una serie.
+   * OJO: localStorage no tiene claves foráneas, así que —a diferencia de la
+   * implementación SQLite— esto NO rechaza una serie huérfana (sessionId
+   * inexistente). No es un problema hoy porque este repo está retirado
+   * (index.ts cablea solo SQLiteRepo) y porque importBackup ya valida la
+   * integridad referencial antes de llamar aquí. Si algún día se reconecta
+   * este repo, replicar ese guard.
+   */
   async addSetIfNotExists(set: SessionSet): Promise<boolean> {
     const sets = readSets();
     if (sets.some((item) => item.id === set.id)) {
