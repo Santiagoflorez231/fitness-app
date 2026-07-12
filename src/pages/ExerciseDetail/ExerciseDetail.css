@@ -47,32 +47,14 @@
   margin-bottom: 12px;
 }
 
-.detail-muscles {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.detail-muscle-primary,
-.detail-muscle-secondary {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 14px;
-  border-radius: var(--app-radius-full);
+/* Mini-leyenda bajo los chips: "Primario: Pecho · Secundario: Tríceps, Hombros" */
+.detail-muscle-legend {
+  margin: 0;
   font-family: 'IBM Plex Sans', sans-serif;
-  font-weight: 600;
   font-size: 13px;
-  text-transform: capitalize;
-}
-
-.detail-muscle-primary {
-  background: var(--ion-color-primary);
-  color: var(--ion-color-primary-contrast);
-}
-
-.detail-muscle-secondary {
-  border: 1px solid var(--app-border);
+  font-weight: 500;
   color: var(--app-text-secondary);
+  text-align: center;
 }
 
 /* Instrucciones: grid [número | texto], numeración colgada en el margen */

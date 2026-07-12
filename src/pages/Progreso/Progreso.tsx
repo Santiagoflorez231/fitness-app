@@ -22,6 +22,7 @@ import E1rmChart, { type E1rmPoint } from '../../components/charts/E1rmChart';
 import CountUpNumber from '../../components/CountUpNumber';
 import TrainingHeatmap from '../../components/progress/TrainingHeatmap';
 import MuscleBalance from '../../components/progress/MuscleBalance';
+import MuscleHeatmap from '../../components/progress/MuscleHeatmap';
 import StreakGoal from '../../components/progress/StreakGoal';
 import BackupPanel from '../../components/progress/BackupPanel';
 import { buildCategoryCatalog, weeklyVolumeBalance } from '../../coach/volume';
@@ -222,6 +223,10 @@ const Progreso: React.FC = () => {
               />
 
               {!exercisesLoading && <MuscleBalance balance={balance} />}
+
+              {!exercisesLoading && (
+                <MuscleHeatmap currentWeekSets={currentWeekSets} exercises={exercises} />
+              )}
 
               <TrainingHeatmap days={heatmapDays} sessionsInWindow={sessionsInHeatmapWindow} />
 

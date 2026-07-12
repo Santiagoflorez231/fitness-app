@@ -1,0 +1,163 @@
+/**
+ * MuscleMap — silueta SVG de dos vistas (frontal/dorsal), CARGA.
+ * Referencia: docs/design-carga.md. Transición de relleno CSS puro
+ * (--app-dur-base); prefers-reduced-motion anula --app-dur-* globalmente
+ * (src/theme/carga.css) y aquí además apaga las animaciones de keyframes
+ * (pulso cardio) que no dependen de esas variables.
+ */
+
+.muscle-map {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.mm-panels {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+  width: 100%;
+}
+
+.mm-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 1 1 130px;
+  min-width: 110px;
+  max-width: 210px;
+}
+
+.mm-svg {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.mm-caption {
+  font-size: 11px;
+}
+
+.mm-decor {
+  fill: var(--app-border);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.mm-region {
+  cursor: default;
+}
+
+.mm-shape {
+  transition:
+    fill var(--app-dur-base) var(--app-ease),
+    stroke var(--app-dur-base) var(--app-ease);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Tratamiento cardio: la silueta "respira" en vez de quedar apagada, más  */
+/* un icono de corazón latiendo con ondas de pulso sobre el pecho (frontal).*/
+/* ---------------------------------------------------------------------- */
+.mm-svg--cardio .mm-shape {
+  animation: mm-body-breathe 2.4s var(--app-ease) infinite;
+}
+
+@keyframes mm-body-breathe {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.82;
+  }
+}
+
+.mm-cardio-heart {
+  fill: var(--ion-color-primary);
+  transform-origin: 50px 44px;
+  animation: mm-heartbeat 1.1s var(--app-ease) infinite;
+}
+
+.mm-cardio-ring {
+  fill: none;
+  stroke: var(--ion-color-primary);
+  stroke-width: 1.5;
+  opacity: 0;
+  transform-origin: 50px 44px;
+  animation: mm-ring-pulse 1.8s var(--app-ease) infinite;
+}
+
+.mm-cardio-ring--delay {
+  animation-delay: 0.6s;
+}
+
+@keyframes mm-heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(1.18);
+  }
+  30% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.12);
+  }
+  60% {
+    transform: scale(1);
+  }
+}
+
+@keyframes mm-ring-pulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mm-svg--cardio .mm-shape,
+  .mm-cardio-heart,
+  .mm-cardio-ring {
+    animation: none;
+  }
+}
+
+/* ---------------------------------------------------------------------- */
+/* Leyenda de calor (Progreso)                                            */
+/* ---------------------------------------------------------------------- */
+.mm-legend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mm-legend-label {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 11px;
+  color: var(--app-text-secondary);
+}
+
+.mm-legend-bar {
+  width: 96px;
+  height: 8px;
+  border-radius: var(--app-radius-full);
+  background: linear-gradient(
+    to right,
+    color-mix(in oklch, var(--app-data) 18%, var(--app-surface-elevated)),
+    var(--app-data)
+  );
+  border: 1px solid var(--app-border);
+}

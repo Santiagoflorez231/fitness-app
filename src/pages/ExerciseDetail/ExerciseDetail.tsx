@@ -12,7 +12,9 @@ import {
 } from '@ionic/react';
 import { alertCircleOutline } from 'ionicons/icons';
 import { useExercises } from '../../hooks/useExercises';
-import ExerciseAvatar, { capitalize } from '../../components/ExerciseAvatar';
+import { capitalize } from '../../components/ExerciseAvatar';
+import MuscleMap from '../../components/muscle-map/MuscleMap';
+import { musclesForExercise, REGION_LABEL } from '../../components/muscle-map/muscleRegions';
 import './ExerciseDetail.css';
 
 interface ExerciseDetailParams {
@@ -69,11 +71,17 @@ const ExerciseDetail: React.FC = () => {
     );
   }
 
-  // El músculo objetivo/secundario principal aparece duplicado dentro de
-  // secondary_muscles en el dataset; se filtra para no repetir el chip.
-  const secondaryMuscles = exercise.secondary_muscles.filter(
-    (muscle) => muscle !== exercise.muscle_group,
-  );
+  const { primary, secondary, isCardio } = musclesForExercise(exercise);
+  const primaryLabel = primary.map((regionId) => REGION_LABEL[regionId]).join(', ');
+  const secondaryLabel = secondary.map((regionId) => REGION_LABEL[regionId]).join(', ');
+  const legendParts: string[] = [];
+  if (primaryLabel) {
+    legendParts.push(`Primario: ${primaryLabel}`);
+  }
+  if (secondaryLabel) {
+    legendParts.push(`Secundario: ${secondaryLabel}`);
+  }
+  const muscleLegend = isCardio ? 'Cardiovascular' : legendParts.join(' · ') || 'Sin músculo registrado';
 
   return (
     <IonPage>
@@ -86,25 +94,14 @@ const ExerciseDetail: React.FC = () => {
       </IonHeader>
       <IonContent fullscreen className="ion-padding">
         <div className="detail-header">
-          <ExerciseAvatar target={exercise.target} category={exercise.category} size={72} />
+          <MuscleMap mode="highlight" primary={primary} secondary={secondary} isCardio={isCardio} />
           <h1 className="detail-name">{exercise.name}</h1>
           <div className="detail-tags">
             <span className="detail-tag">{capitalize(exercise.category)}</span>
             <span className="detail-tag">{capitalize(exercise.equipment)}</span>
           </div>
+          <p className="detail-muscle-legend">{muscleLegend}</p>
         </div>
-
-        <section className="detail-section">
-          <p className="carga-overline">Músculos</p>
-          <div className="detail-muscles">
-            <span className="detail-muscle-primary">{capitalize(exercise.muscle_group)}</span>
-            {secondaryMuscles.map((muscle) => (
-              <span className="detail-muscle-secondary" key={muscle}>
-                {capitalize(muscle)}
-              </span>
-            ))}
-          </div>
-        </section>
 
         <section className="detail-section">
           <p className="carga-overline">Instrucciones</p>
