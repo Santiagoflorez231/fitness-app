@@ -255,6 +255,7 @@ const Explorar: React.FC = () => {
                           target={exercise.target}
                           category={exercise.category}
                           size={44}
+                          exerciseId={exercise.id}
                         />
                         <IonLabel className="ion-text-wrap" style={{ marginInlineStart: '12px' }}>
                           <h2 className="explorar-row-name">{exercise.name}</h2>

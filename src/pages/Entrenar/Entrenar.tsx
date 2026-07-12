@@ -991,7 +991,12 @@ const Entrenar: React.FC = () => {
                     className="entrenar-card-heading"
                     onClick={() => openHistory(pe.exerciseId, pe.exerciseName)}
                   >
-                    <ExerciseAvatar target={pe.target} category={pe.category} size={isCurrentCard ? 40 : 32} />
+                    <ExerciseAvatar
+                      target={pe.target}
+                      category={pe.category}
+                      size={isCurrentCard ? 40 : 32}
+                      exerciseId={pe.exerciseId}
+                    />
                     <span className={`entrenar-card-name${isCurrentCard ? ' entrenar-card-name-current' : ''}`}>
                       {pe.exerciseName}
                     </span>

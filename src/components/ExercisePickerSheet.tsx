@@ -74,7 +74,7 @@ const ExercisePickerSheet: React.FC<ExercisePickerSheetProps> = ({ isOpen, onDis
             {results.map((exercise) => (
               <li key={exercise.id}>
                 <button type="button" className="exercise-picker-row" onClick={() => onPick(exercise)}>
-                  <ExerciseAvatar target={exercise.target} category={exercise.category} size={40} />
+                  <ExerciseAvatar target={exercise.target} category={exercise.category} size={40} exerciseId={exercise.id} />
                   <span className="exercise-picker-row-info">
                     <span className="exercise-picker-row-name">{exercise.name}</span>
                     <span className="exercise-picker-row-meta">{capitalize(exercise.category)}</span>

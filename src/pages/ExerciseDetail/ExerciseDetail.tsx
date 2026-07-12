@@ -22,12 +22,42 @@ import { writeStartExerciseRequest } from '../../db/startExerciseRequest';
 import { localCoachAdvisor } from '../../coach/localCoach';
 import type { ProgressVerdict } from '../../coach/types';
 import mediaLocal from '../../data/mediaLocal.json';
+import mediaGym from '../../data/mediaGym.json';
 import './ExerciseDetail.css';
 
 /** Fotos locales (free-exercise-db, dominio público) por exerciseId: par de
  * fotogramas inicio/fin para 344 ejercicios. Descargadas en desarrollo
  * (scripts/download-media.mjs); en runtime son assets estáticos, cero red. */
 const MEDIA_BY_ID = mediaLocal as Record<string, string[]>;
+
+/** GIF animado + thumb 180×180 por exerciseId (Gymvisual vía dataset, M1):
+ * cobertura 100% del catálogo, assets locales, cero red. */
+const GYM_BY_ID = mediaGym as Record<string, { thumb: string; gif: string }>;
+
+function prefersReducedMotion(): boolean {
+  return typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches === true;
+}
+
+/** GIF héroe del ejercicio: animado por defecto; tap alterna GIF/fotograma.
+ * Con prefers-reduced-motion arranca quieto (el tap permite animarlo). */
+function ExerciseGifHero({ exerciseId, name }: { exerciseId: string; name: string }) {
+  const media = GYM_BY_ID[exerciseId];
+  const [playing, setPlaying] = useState(() => !prefersReducedMotion());
+  if (!media) {
+    return null;
+  }
+  return (
+    <button
+      type="button"
+      className="detail-gif"
+      onClick={() => setPlaying((value) => !value)}
+      aria-label={playing ? `Pausar animación de ${name}` : `Reproducir animación de ${name}`}
+    >
+      <img src={`${import.meta.env.BASE_URL}${playing ? media.gif : media.thumb}`} alt={`Ejecución de ${name}`} />
+      {!playing && <span className="detail-gif-paused carga-overline">Tocar para animar</span>}
+    </button>
+  );
+}
 
 interface ExerciseDetailParams {
   id: string;
@@ -143,7 +173,7 @@ const ExerciseDetail: React.FC = () => {
       </IonHeader>
       <IonContent fullscreen className="ion-padding detail-content">
         <div className="detail-header">
-          <MuscleMap mode="highlight" primary={primary} secondary={secondary} isCardio={isCardio} />
+          <ExerciseGifHero exerciseId={exercise.id} name={exercise.name} />
           <h1 className="detail-name">{exercise.name}</h1>
           <div className="detail-tags">
             <span className="detail-tag">{capitalize(exercise.category)}</span>
@@ -151,6 +181,11 @@ const ExerciseDetail: React.FC = () => {
           </div>
           <p className="detail-muscle-legend">{muscleLegend}</p>
         </div>
+
+        <section className="detail-section">
+          <p className="carga-overline">Músculos</p>
+          <MuscleMap mode="highlight" primary={primary} secondary={secondary} isCardio={isCardio} />
+        </section>
 
         {(MEDIA_BY_ID[exercise.id]?.length ?? 0) > 0 && (
           <section className="detail-section">

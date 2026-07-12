@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { IonAvatar } from '@ionic/react';
+import mediaGym from '../data/mediaGym.json';
 
 /**
  * Familia muscular derivada de `category`, usada para el duotono del avatar.
@@ -6,6 +8,9 @@ import { IonAvatar } from '@ionic/react';
  * definidas en src/theme/carga.css (con override de tema en prefers-color-scheme).
  */
 export type AvatarFamily = 'empuje' | 'tiron' | 'pierna' | 'core' | 'brazos' | 'cardio';
+
+/** Miniaturas 180×180 por exerciseId (Gymvisual vía dataset, M1). */
+const MEDIA_GYM = mediaGym as Record<string, { thumb: string; gif: string }>;
 
 const FAMILY_BY_CATEGORY: Record<string, AvatarFamily> = {
   chest: 'empuje',
@@ -67,32 +72,58 @@ interface ExerciseAvatarProps {
   category: string;
   /** Tamaño en píxeles del círculo. Por defecto 40 (tamaño de lista). */
   size?: number;
+  /** Si se indica y hay miniatura local (mediaGym), el avatar muestra la foto
+   * real del ejercicio en vez de las iniciales; el duotono queda de fallback
+   * (id sin media o imagen que falla al cargar). */
+  exerciseId?: string;
 }
 
-/** Avatar circular duotono: iniciales del target sobre fondo de la familia muscular de la categoría. */
-const ExerciseAvatar: React.FC<ExerciseAvatarProps> = ({ target, category, size = 40 }) => {
+/** Avatar circular: miniatura real del ejercicio si existe (M2), o duotono de
+ * iniciales del target sobre el color de la familia muscular. */
+const ExerciseAvatar: React.FC<ExerciseAvatarProps> = ({ target, category, size = 40, exerciseId }) => {
+  const [imgFailed, setImgFailed] = useState(false);
+  const thumb = exerciseId !== undefined ? MEDIA_GYM[exerciseId]?.thumb : undefined;
   const backgroundColor = colorForCategory(category);
   const color = textColorForCategory(category);
   const initials = initialsForTarget(target);
 
   return (
     <IonAvatar style={{ width: `${size}px`, height: `${size}px` }} aria-hidden="true">
-      <div
-        className="carga-num"
-        style={{
-          width: '100%',
-          height: '100%',
-          borderRadius: 'var(--app-radius-full)',
-          backgroundColor,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color,
-          fontSize: `${size * 0.36}px`,
-        }}
-      >
-        {initials}
-      </div>
+      {thumb && !imgFailed ? (
+        <img
+          src={`${import.meta.env.BASE_URL}${thumb}`}
+          alt=""
+          loading="lazy"
+          onError={() => setImgFailed(true)}
+          style={{
+            width: '100%',
+            height: '100%',
+            borderRadius: 'var(--app-radius-full)',
+            objectFit: 'cover',
+            border: '1px solid var(--app-border)',
+            // Las miniaturas Gymvisual tienen fondo blanco: en tema oscuro se
+            // integran mejor con un fondo claro fijo bajo el recorte circular.
+            backgroundColor: '#FFFFFF',
+          }}
+        />
+      ) : (
+        <div
+          className="carga-num"
+          style={{
+            width: '100%',
+            height: '100%',
+            borderRadius: 'var(--app-radius-full)',
+            backgroundColor,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color,
+            fontSize: `${size * 0.36}px`,
+          }}
+        >
+          {initials}
+        </div>
+      )}
     </IonAvatar>
   );
 };

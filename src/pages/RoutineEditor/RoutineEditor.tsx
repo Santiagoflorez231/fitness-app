@@ -350,6 +350,7 @@ const RoutineEditor: React.FC = () => {
                           <ExerciseAvatar
                             target={exerciseData?.target ?? ''}
                             category={exerciseData?.category ?? ''}
+                            exerciseId={exercise.exerciseId}
                           />
                           <IonLabel className="ion-text-wrap editor-exercise-label">
                             <h2 className="editor-exercise-name">{exercise.exerciseName}</h2>
@@ -430,7 +431,7 @@ const RoutineEditor: React.FC = () => {
                   detail={false}
                   onClick={() => handleAddExercise(exercise)}
                 >
-                  <ExerciseAvatar target={exercise.target} category={exercise.category} size={44} />
+                  <ExerciseAvatar target={exercise.target} category={exercise.category} size={44} exerciseId={exercise.id} />
                   <IonLabel className="ion-text-wrap" style={{ marginInlineStart: '12px' }}>
                     <h2 className="picker-row-name">{exercise.name}</h2>
                     <p className="picker-row-meta">
