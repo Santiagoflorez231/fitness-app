@@ -30,6 +30,9 @@ interface SetRowProps {
    * "valor fantasma" tocable que copia sus valores a los inputs (patrón
    * Strong/Hevy de referencia rápida). */
   ghost?: SetRowGhost;
+  /** Sugerencia de carga del Coach (A1, por RPE): chip tocable que copia el
+   * peso sugerido al input. El padre solo la pasa a la fila pendiente. */
+  suggestion?: { weightKg: number };
 }
 
 function formatEsNum(value: number): string {
@@ -46,6 +49,7 @@ const SetRow: React.FC<SetRowProps> = ({
   onComplete,
   bestE1rmKg,
   ghost,
+  suggestion,
 }) => {
   const [weight, setWeight] = useState(defaultWeightKg);
   const [reps, setReps] = useState(defaultReps);
@@ -127,6 +131,15 @@ const SetRow: React.FC<SetRowProps> = ({
     repsDirty.current = true;
     setWeight(ghost.weightKg.toString());
     setReps(ghost.reps.toString());
+  };
+
+  /** Copia el peso sugerido por el Coach al input de peso (solo peso). */
+  const handleUseSuggestion = () => {
+    if (isDisabled || !suggestion) {
+      return;
+    }
+    weightDirty.current = true;
+    setWeight(suggestion.weightKg.toString());
   };
 
   const weightForPct = isCompleted ? completed.weightKg : Number(weight.replace(',', '.'));
@@ -249,10 +262,24 @@ const SetRow: React.FC<SetRowProps> = ({
         </button>
       </div>
 
-      {ghost && (
-        <button type="button" className="setrow-ghost" disabled={isDisabled} onClick={handleUseGhost}>
-          Anterior: {formatEsNum(ghost.weightKg)} × {ghost.reps}
-        </button>
+      {(ghost || suggestion) && (
+        <div className="setrow-hints">
+          {ghost && (
+            <button type="button" className="setrow-ghost" disabled={isDisabled} onClick={handleUseGhost}>
+              Anterior: {formatEsNum(ghost.weightKg)} × {ghost.reps}
+            </button>
+          )}
+          {suggestion && (
+            <button
+              type="button"
+              className="setrow-suggestion"
+              disabled={isDisabled}
+              onClick={handleUseSuggestion}
+            >
+              Sugerido: {formatEsNum(suggestion.weightKg)} kg
+            </button>
+          )}
+        </div>
       )}
     </div>
   );

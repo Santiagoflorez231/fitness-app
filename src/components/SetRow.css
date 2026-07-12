@@ -142,10 +142,16 @@
   }
 }
 
+/* Pistas bajo la fila: valor fantasma (B) + sugerencia del Coach (A1). */
+.setrow-hints {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 12px;
+  margin-inline-start: 26px;
+}
+
 /* Valor fantasma -- ver docs/design-carga.md, punto B de la ampliación. */
 .setrow-ghost {
-  align-self: flex-start;
-  margin-inline-start: 26px;
   border: none;
   background: none;
   padding: 2px 4px;
@@ -158,6 +164,26 @@
 }
 
 .setrow-ghost:disabled {
+  cursor: default;
+  text-decoration: none;
+  opacity: 0.6;
+}
+
+/* Sugerencia del Coach (A1): misma forma que el fantasma pero en color de
+   dato/acento, para distinguir "lo que hiciste" de "lo que sugiere el coach". */
+.setrow-suggestion {
+  border: none;
+  background: none;
+  padding: 2px 4px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 12px;
+  color: var(--app-accent);
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.setrow-suggestion:disabled {
   cursor: default;
   text-decoration: none;
   opacity: 0.6;

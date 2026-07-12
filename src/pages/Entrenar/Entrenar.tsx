@@ -22,12 +22,16 @@ import SetRow from '../../components/SetRow';
 import RestTimer, { type RestTimerTrigger } from '../../components/RestTimer';
 import PlateCalculator, { type PlateCalculatorMode } from '../../components/PlateCalculator';
 import ExerciseHistorySheet from '../../components/ExerciseHistorySheet';
+import { localCoachAdvisor } from '../../coach/localCoach';
 import type { Exercise } from '../../types/exercise';
 import type { Routine, SessionSet, WorkoutSession } from '../../types/routine';
 import './Entrenar.css';
 
 const TWELVE_HOURS_MS = 12 * 60 * 60 * 1000;
 const REST_TIMER_STORAGE_KEY = 'fitness.restTimer';
+/** RPE objetivo por defecto de una serie de trabajo (no hay RPE objetivo por
+ * rutina en el modelo de datos); alimenta la sugerencia de carga del Coach. */
+const COACH_TARGET_RPE = 8;
 
 /** Un ejercicio a mostrar en la vista de entrenamiento: viene del plan de la
  * rutina en el momento de iniciar/retomar la sesión, o -si la rutina cambió o
@@ -713,6 +717,20 @@ const Entrenar: React.FC = () => {
             const rowCount = baseRowCount + (extraRows[pe.key] ?? 0);
 
             const historyEntry = history[pe.exerciseId];
+            // Sugerencia de carga del Coach (A1) desde la última serie previa a
+            // esta sesión; devuelve null si esa serie no tenía RPE (sin ruido).
+            // Puramente informativa: no toca la resolución de series ni la persistencia.
+            const coachSuggestion = historyEntry?.last
+              ? localCoachAdvisor.suggestNextLoad({
+                  lastSet: {
+                    weightKg: historyEntry.last.weightKg,
+                    reps: historyEntry.last.reps,
+                    rpe: historyEntry.last.rpe,
+                  },
+                  targetReps: pe.targetReps,
+                  targetRpe: COACH_TARGET_RPE,
+                })
+              : null;
             const isExpanded = expandedKeys.has(pe.key);
             const isCurrentCard = currentPe?.key === pe.key;
             const doneCount = setsForExercise.filter((s) => s.setNumber <= pe.targetSets).length;
@@ -810,6 +828,11 @@ const Entrenar: React.FC = () => {
                             defaultReps={draft.reps}
                             bestE1rmKg={historyEntry?.bestE1rm}
                             ghost={ghostSet ? { weightKg: ghostSet.weightKg, reps: ghostSet.reps } : undefined}
+                            suggestion={
+                              coachSuggestion && setNumber === pendingSetNumber
+                                ? { weightKg: coachSuggestion.weightKg }
+                                : undefined
+                            }
                             onComplete={(weightKg, reps, rpe) => handleCompleteSet(pe, setNumber, weightKg, reps, rpe)}
                           />
                           {prKeys.has(prKey) && <span className="pr-pop entrenar-pr-chip">PR</span>}
