@@ -319,6 +319,7 @@ const Entrenar: React.FC = () => {
   const [pendingRoutine, setPendingRoutine] = useState<Routine | null>(null);
   const [restTrigger, setRestTrigger] = useState<RestTimerTrigger | null>(null);
   const [pendingFinishRemaining, setPendingFinishRemaining] = useState<number | null>(null);
+  const [confirmEmptyFinish, setConfirmEmptyFinish] = useState(false);
   const [summary, setSummary] = useState<{ completedSets: number; volumeKg: number } | null>(null);
   const [nowTick, setNowTick] = useState<number>(() => Date.now());
 
@@ -454,36 +455,66 @@ const Entrenar: React.FC = () => {
     await enterWorkout(session, [], null, block?.key);
   };
 
+  /** Guardia de reentrancia (QA Bloque B, MAYOR 2): useIonViewWillEnter puede
+   * disparar bootstraps solapados (cambio rápido de tabs con el init de SQLite
+   * aún en vuelo); el segundo leería un getActive() obsoleto y podría pisar la
+   * fase con datos viejos. Con la guardia, el bootstrap en curso termina y
+   * deja la fase correcta; los reentrantes se descartan. */
+  const bootstrappingRef = useRef(false);
+
   const bootstrap = async (): Promise<void> => {
-    setPhase({ kind: 'loading' });
-    const active = await sessionsRepo.getActive();
-    if (!active) {
-      // Sin sesión activa: consumimos carga.startExercise aquí (leer +
-      // borrar siempre). Si resuelve a un ejercicio real, arrancamos una
-      // sesión libre con él ya dentro; si no, seguimos a elegir rutina.
-      const startRequest = consumeStartExerciseRequest();
-      const startExercise = startRequest ? exercises.find((item) => item.id === startRequest.exerciseId) : undefined;
-      if (startExercise) {
-        await startFreeSession(startExercise);
+    if (bootstrappingRef.current) {
+      return;
+    }
+    bootstrappingRef.current = true;
+    try {
+      setPhase({ kind: 'loading' });
+      const active = await sessionsRepo.getActive();
+      if (!active) {
+        // Sin sesión activa: consumimos carga.startExercise aquí (leer +
+        // borrar siempre). Si resuelve a un ejercicio real, arrancamos una
+        // sesión libre con él ya dentro; si no, seguimos a elegir rutina.
+        const startRequest = consumeStartExerciseRequest();
+        const startExercise = startRequest ? exercises.find((item) => item.id === startRequest.exerciseId) : undefined;
+        if (startExercise) {
+          try {
+            await startFreeSession(startExercise);
+          } catch (error) {
+            // start() rechazado (p. ej. apareció una sesión activa entre el
+            // getActive() de arriba y el start). Re-sincroniza UI<->BD en vez
+            // de dejar un unhandled rejection (QA Bloque B, MAYOR 1).
+            console.warn('[Entrenar] start de sesión libre rechazado; re-sincronizando.', error);
+            const nowActive = await sessionsRepo.getActive();
+            if (nowActive) {
+              const routine = nowActive.session.routineId ? await routinesRepo.get(nowActive.session.routineId) : null;
+              await enterWorkout(nowActive.session, nowActive.sets, routine);
+            } else {
+              const routines = await routinesRepo.list();
+              setPhase({ kind: 'choose-routine', routines });
+            }
+          }
+          return;
+        }
+        const routines = await routinesRepo.list();
+        setPhase({ kind: 'choose-routine', routines });
         return;
       }
-      const routines = await routinesRepo.list();
-      setPhase({ kind: 'choose-routine', routines });
-      return;
+      const age = Date.now() - active.session.startedAt;
+      if (age > TWELVE_HOURS_MS) {
+        // Decisión: NO consumimos carga.startExercise en esta rama. Con una
+        // sesión abandonada por resolver, la petición se deja intacta hasta
+        // que el usuario la resuelva (retomar o cerrar) -- handleResumeAbandoned
+        // la consume al retomar; handleCloseAbandoned llama a bootstrap() de
+        // nuevo al cerrar, que la consumirá entonces desde la rama `!active`.
+        setPhase({ kind: 'confirm-abandoned', session: active.session, sets: active.sets });
+        return;
+      }
+      const routine = active.session.routineId ? await routinesRepo.get(active.session.routineId) : null;
+      const newBlockKey = consumePendingStartExercise(active.session.id);
+      await enterWorkout(active.session, active.sets, routine, newBlockKey);
+    } finally {
+      bootstrappingRef.current = false;
     }
-    const age = Date.now() - active.session.startedAt;
-    if (age > TWELVE_HOURS_MS) {
-      // Decisión: NO consumimos carga.startExercise en esta rama. Con una
-      // sesión abandonada por resolver, la petición se deja intacta hasta
-      // que el usuario la resuelva (retomar o cerrar) -- handleResumeAbandoned
-      // la consume al retomar; handleCloseAbandoned llama a bootstrap() de
-      // nuevo al cerrar, que la consumirá entonces desde la rama `!active`.
-      setPhase({ kind: 'confirm-abandoned', session: active.session, sets: active.sets });
-      return;
-    }
-    const routine = active.session.routineId ? await routinesRepo.get(active.session.routineId) : null;
-    const newBlockKey = consumePendingStartExercise(active.session.id);
-    await enterWorkout(active.session, active.sets, routine, newBlockKey);
   };
 
   useEffect(() => {
@@ -520,7 +551,15 @@ const Entrenar: React.FC = () => {
       startedAt: Date.now(),
       finishedAt: null,
     };
-    await sessionsRepo.start(session);
+    try {
+      await sessionsRepo.start(session);
+    } catch (error) {
+      // Ya hay una sesión activa (doble arranque / carrera): re-sincroniza en
+      // vez de dejar un unhandled rejection (QA Bloque B, MAYOR 1).
+      console.warn('[Entrenar] start de rutina rechazado; re-sincronizando.', error);
+      await bootstrap();
+      return;
+    }
     const plan = buildPlan(routine, [], exercises);
     const historyMap = await fetchHistoryMap(plan);
     setHistory(historyMap);
@@ -580,11 +619,15 @@ const Entrenar: React.FC = () => {
     // PR en vivo (aditivo, no afecta a la persistencia): máximo histórico
     // previo a esta sesión (history map, cargado una vez al empezar) más el
     // máximo ya registrado de este ejercicio EN esta sesión, antes de esta serie.
-    const historicalMax = history[pe.exerciseId]?.maxWeightKg ?? 0;
+    // Si el historial de un bloque ad-hoc recién añadido aún no cargó
+    // (entry undefined), NO se declara PR: mejor callar que celebrar en falso
+    // contra un histórico que no hemos leído. QA Bloque B, MENOR.
+    const historyEntry = history[pe.exerciseId];
+    const historicalMax = historyEntry?.maxWeightKg ?? 0;
     const sessionMaxSoFar = sets
       .filter((s) => s.exerciseId === pe.exerciseId)
       .reduce((max, s) => Math.max(max, s.weightKg), 0);
-    const isPR = weightKg > Math.max(historicalMax, sessionMaxSoFar);
+    const isPR = historyEntry !== undefined && weightKg > Math.max(historicalMax, sessionMaxSoFar);
 
     const newSet: SessionSet = {
       id: crypto.randomUUID(),
@@ -626,6 +669,13 @@ const Entrenar: React.FC = () => {
 
   const handleFinishRequest = () => {
     if (phase.kind !== 'workout') {
+      return;
+    }
+    // Sesión sin una sola serie registrada (p. ej. sesión libre vacía):
+    // confirmar antes de finalizar, para no contaminar el historial con
+    // sesiones basura de 0 series. QA Bloque B, MENOR.
+    if (sets.length === 0) {
+      setConfirmEmptyFinish(true);
       return;
     }
     const remaining = countRemaining(phase.plan, sets);
@@ -678,9 +728,23 @@ const Entrenar: React.FC = () => {
     setExtraRows((previous) => ({ ...previous, [pe.key]: (previous[pe.key] ?? 0) + 1 }));
   };
 
-  /** Card "Entrenamiento libre" en choose-routine: sesión sin rutina, vacía. */
-  const handleStartFreeSession = () => {
-    void startFreeSession();
+  /** Card "Entrenamiento libre" en choose-routine: sesión sin rutina, vacía.
+   * Guardia en vuelo + catch: un doble-tap no crea dos sesiones ni deja un
+   * unhandled rejection (QA Bloque B, MAYOR 1). */
+  const startingFreeRef = useRef(false);
+  const handleStartFreeSession = async () => {
+    if (startingFreeRef.current) {
+      return;
+    }
+    startingFreeRef.current = true;
+    try {
+      await startFreeSession();
+    } catch (error) {
+      console.warn('[Entrenar] start de sesión libre rechazado; re-sincronizando.', error);
+      await bootstrap();
+    } finally {
+      startingFreeRef.current = false;
+    }
   };
 
   /** "+ Ejercicio" en caliente (picker): añade `exercise` como bloque ad-hoc
@@ -693,7 +757,11 @@ const Entrenar: React.FC = () => {
     }
     const block = addAdhocBlock(phase.session.id, exercise);
     const newPe = planExerciseFromAdhocBlock(block);
-    setPhase({ kind: 'workout', session: phase.session, plan: [...phase.plan, newPe] });
+    // Update funcional: dos altas rápidas no deben partir del plan viejo del
+    // closure (perdería el bloque anterior en memoria). QA Bloque B, MENOR.
+    setPhase((previous) =>
+      previous.kind === 'workout' ? { ...previous, plan: [...previous.plan, newPe] } : previous,
+    );
     setExpandedKeys((previous) => {
       const next = new Set(previous);
       next.add(newPe.key);
@@ -740,7 +808,7 @@ const Entrenar: React.FC = () => {
             <button
               type="button"
               className="carga-card entrenar-choose-card entrenar-choose-free"
-              onClick={handleStartFreeSession}
+              onClick={() => void handleStartFreeSession()}
             >
               <h2 className="entrenar-choose-card-name">Entrenamiento libre</h2>
               <p className="entrenar-choose-free-desc">Sin guion. Añade ejercicios sobre la marcha.</p>
@@ -1064,6 +1132,24 @@ const Entrenar: React.FC = () => {
           { text: 'Terminar', role: 'destructive', handler: () => void finishSession() },
         ]}
         onDidDismiss={() => setPendingFinishRemaining(null)}
+      />
+
+      <IonAlert
+        isOpen={confirmEmptyFinish}
+        header="Sesión sin series"
+        message="No registraste ninguna serie. ¿Terminar de todos modos?"
+        buttons={[
+          { text: 'Seguir entrenando', role: 'cancel', handler: () => setConfirmEmptyFinish(false) },
+          {
+            text: 'Terminar',
+            role: 'destructive',
+            handler: () => {
+              setConfirmEmptyFinish(false);
+              void finishSession();
+            },
+          },
+        ]}
+        onDidDismiss={() => setConfirmEmptyFinish(false)}
       />
     </IonPage>
   );
