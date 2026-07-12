@@ -1,0 +1,54 @@
+/**
+ * BackupPanel — export/import de respaldo JSON (Progreso, feature 4).
+ */
+.progreso-backup {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.progreso-backup-text {
+  margin: 0;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--app-text-secondary);
+}
+
+.progreso-backup-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.progreso-backup-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 40px;
+  padding: 0 14px;
+  border-radius: var(--app-radius-s);
+  border: none;
+  background: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  transition: opacity var(--app-dur-fast) var(--app-ease);
+}
+
+.progreso-backup-btn-outline {
+  background: transparent;
+  border: 1px solid var(--app-border);
+  color: var(--app-text-primary);
+}
+
+.progreso-backup-btn:disabled {
+  opacity: 0.6;
+}
+
+.progreso-backup-file-input {
+  display: none;
+}

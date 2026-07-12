@@ -52,3 +52,10 @@ export function formatShortDateEs(ts: number): string {
   const month = (date.getMonth() + 1).toString().padStart(2, '0');
   return `${day}/${month}`;
 }
+
+/** 00:00 hora local del día calendario al que pertenece `ts` (para agregados diarios, ej. el heatmap de Progreso). */
+export function startOfDayLocal(ts: number): number {
+  const date = new Date(ts);
+  date.setHours(0, 0, 0, 0);
+  return date.getTime();
+}

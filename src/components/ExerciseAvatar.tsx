@@ -5,7 +5,7 @@ import { IonAvatar } from '@ionic/react';
  * Ver docs/design-carga.md — variables --carga-avatar-<familia>-bg/text
  * definidas en src/theme/carga.css (con override de tema en prefers-color-scheme).
  */
-type AvatarFamily = 'empuje' | 'tiron' | 'pierna' | 'core' | 'brazos' | 'cardio';
+export type AvatarFamily = 'empuje' | 'tiron' | 'pierna' | 'core' | 'brazos' | 'cardio';
 
 const FAMILY_BY_CATEGORY: Record<string, AvatarFamily> = {
   chest: 'empuje',
@@ -23,7 +23,12 @@ const FAMILY_BY_CATEGORY: Record<string, AvatarFamily> = {
 /** Familia por defecto para categorías fuera del dataset conocido. */
 const DEFAULT_FAMILY: AvatarFamily = 'brazos';
 
-function familyForCategory(category: string): AvatarFamily {
+/**
+ * Familia muscular de una categoría del dataset. Exportada para que
+ * src/coach/volume.ts (balance de volumen semanal, Progreso R4) reutilice
+ * exactamente el mismo mapeo que los avatares en vez de duplicarlo.
+ */
+export function familyForCategory(category: string): AvatarFamily {
   return FAMILY_BY_CATEGORY[category.trim().toLowerCase()] ?? DEFAULT_FAMILY;
 }
 

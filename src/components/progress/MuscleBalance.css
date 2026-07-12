@@ -1,0 +1,82 @@
+/**
+ * MuscleBalance — barras horizontales duotono por familia muscular.
+ * Referencia: docs/design-carga.md + docs/roadmap-avanzado.md (A3).
+ * Insignia de familia = mismo duotono que ExerciseAvatar (identidad visual
+ * compartida); relleno de la barra = color de ZONA (warning/success/danger
+ * suave), la información realmente accionable.
+ */
+.progreso-balance {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.progreso-balance-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.progreso-balance-row {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 10px;
+  align-items: center;
+}
+
+.progreso-balance-badge {
+  grid-row: 1 / span 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  padding: 0 8px;
+  border-radius: var(--app-radius-s);
+  font-family: 'Archivo', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.progreso-balance-track {
+  height: 10px;
+  border-radius: var(--app-radius-full);
+  background: var(--app-border);
+  overflow: hidden;
+}
+
+.progreso-balance-fill {
+  height: 100%;
+  border-radius: var(--app-radius-full);
+  transform-origin: left;
+  transition: transform var(--app-dur-base) var(--app-ease);
+}
+
+.progreso-balance-fill[data-zone="low"] {
+  background: var(--ion-color-warning);
+}
+
+.progreso-balance-fill[data-zone="ok"] {
+  background: var(--ion-color-success);
+}
+
+.progreso-balance-fill[data-zone="high"] {
+  background: color-mix(in oklch, var(--ion-color-danger) 65%, transparent);
+}
+
+.progreso-balance-fill[data-zone="neutral"] {
+  background: var(--app-data);
+}
+
+.progreso-balance-hint {
+  grid-column: 2;
+  margin-top: 4px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 12.5px;
+  color: var(--app-text-secondary);
+}

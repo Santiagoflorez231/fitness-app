@@ -1,0 +1,96 @@
+/**
+ * TrainingHeatmap — calendario de entrenamientos tipo GitHub-contributions.
+ * Referencia: docs/design-carga.md (Progreso, feature 4). Intensidad en
+ * --app-data mezclado con la superficie (color-mix), consistente en claro
+ * y oscuro sin duplicar tokens.
+ */
+.progreso-heatmap {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.progreso-heatmap-body {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.progreso-heatmap-day-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 0 0 auto;
+  padding-top: 0;
+}
+
+.progreso-heatmap-day-labels span {
+  width: 12px;
+  height: 12px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 9px;
+  line-height: 12px;
+  color: var(--app-text-secondary);
+  text-align: center;
+}
+
+.progreso-heatmap-grid {
+  display: flex;
+  gap: 3px;
+}
+
+.progreso-heatmap-week {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.progreso-heatmap-cell {
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  border: none;
+  border-radius: 3px;
+  background: var(--app-border);
+  cursor: pointer;
+  transition: transform var(--app-dur-fast) var(--app-ease);
+}
+
+.progreso-heatmap-cell[data-level="1"] {
+  background: color-mix(in oklch, var(--app-data) 28%, var(--app-surface));
+}
+
+.progreso-heatmap-cell[data-level="2"] {
+  background: color-mix(in oklch, var(--app-data) 52%, var(--app-surface));
+}
+
+.progreso-heatmap-cell[data-level="3"] {
+  background: color-mix(in oklch, var(--app-data) 76%, var(--app-surface));
+}
+
+.progreso-heatmap-cell[data-level="4"] {
+  background: var(--app-data);
+}
+
+.progreso-heatmap-cell[data-selected="true"] {
+  transform: scale(1.25);
+  box-shadow: 0 0 0 1.5px var(--app-text-primary);
+}
+
+.progreso-heatmap-selected {
+  min-height: 16px;
+  margin: 0;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--app-text-primary);
+}
+
+.progreso-heatmap-remark {
+  margin: 0;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px;
+  color: var(--app-text-secondary);
+}

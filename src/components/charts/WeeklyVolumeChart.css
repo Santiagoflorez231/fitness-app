@@ -1,0 +1,24 @@
+/**
+ * Entrada de las barras del gráfico de volumen semanal — CSS puro
+ * (transform, transform-origin abajo), escalonada 25ms por barra. Se
+ * aplica solo la primera vez (Progreso.tsx controla `animateEntrance`).
+ * Referencia: docs/design-carga.md, sección "Progreso".
+ */
+@keyframes chart-bar-grow {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+.chart-bar-enter {
+  animation: chart-bar-grow var(--app-dur-base) var(--app-ease) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chart-bar-enter {
+    animation-duration: 0ms;
+  }
+}

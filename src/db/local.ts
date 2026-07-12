@@ -92,6 +92,11 @@ export class LocalRoutinesRepo implements RoutinesRepo {
     routines[index] = { ...routines[index], archived: true };
     writeRoutines(routines);
   }
+
+  /** Todas las rutinas (activas + archivadas), para respaldo/export. Implementación retirada (ver cabecera del archivo), solo por compatibilidad de tipos con RoutinesRepo. */
+  async listAll(): Promise<Routine[]> {
+    return readRoutines().sort((a, b) => a.position - b.position);
+  }
 }
 
 export class LocalSessionsRepo implements SessionsRepo {
@@ -149,5 +154,27 @@ export class LocalSessionsRepo implements SessionsRepo {
     return readSets()
       .filter((set) => set.exerciseId === exerciseId)
       .sort((a, b) => a.completedAt - b.completedAt);
+  }
+
+  /** Insert-if-not-exists para respaldo/import. Implementación retirada (ver cabecera del archivo), solo por compatibilidad de tipos con SessionsRepo. */
+  async addSessionIfNotExists(session: WorkoutSession): Promise<boolean> {
+    const sessions = readSessions();
+    if (sessions.some((item) => item.id === session.id)) {
+      return false;
+    }
+    sessions.push(session);
+    writeSessions(sessions);
+    return true;
+  }
+
+  /** Igual que addSessionIfNotExists, para una serie. */
+  async addSetIfNotExists(set: SessionSet): Promise<boolean> {
+    const sets = readSets();
+    if (sets.some((item) => item.id === set.id)) {
+      return false;
+    }
+    sets.push(set);
+    writeSets(sets);
+    return true;
   }
 }

@@ -42,6 +42,21 @@ h3,
 /* Utilidades CARGA                                                       */
 /* ---------------------------------------------------------------------- */
 
+/* Solo lectores de pantalla: oculta visualmente sin sacar del árbol de
+   accesibilidad (usado por CountUpNumber para exponer el valor final mientras
+   la cifra visible se anima). */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* Etiquetas/overlines: Archivo 800, 12px, mayúsculas, tracking +12% */
 .carga-overline {
   font-family: 'Archivo', sans-serif;

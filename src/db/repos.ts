@@ -17,6 +17,12 @@ export interface RoutinesRepo {
   save(routine: Routine): Promise<void>;
   /** Soft-delete: marca archived=true; el historial de sesiones se conserva. */
   archive(id: string): Promise<void>;
+  /**
+   * Todas las rutinas, incluidas las archivadas (para respaldo/export,
+   * src/db/backup.ts). Método ADITIVO: no reemplaza a list(), que sigue
+   * devolviendo solo las activas.
+   */
+  listAll(): Promise<Routine[]>;
 }
 
 export interface ActiveSession {
@@ -40,4 +46,15 @@ export interface SessionsRepo {
   getSets(sessionId: string): Promise<SessionSet[]>;
   /** Historial de series de un ejercicio (para PRs/progreso), ascendente por fecha. */
   listSetsByExercise(exerciseId: string): Promise<SessionSet[]>;
+  /**
+   * Inserta la sesión SOLO si su id no existe ya (idempotente, `INSERT OR
+   * IGNORE`). Para importar respaldos sin pisar datos existentes
+   * (src/db/backup.ts) — método ADITIVO, no reemplaza a `start()`, que
+   * sigue siendo el único punto de entrada para arrancar un entrenamiento
+   * real (valida "una sola sesión activa"). Devuelve true si insertó una
+   * fila nueva, false si el id ya existía.
+   */
+  addSessionIfNotExists(session: WorkoutSession): Promise<boolean>;
+  /** Igual que addSessionIfNotExists, pero para una serie (session_sets). */
+  addSetIfNotExists(set: SessionSet): Promise<boolean>;
 }

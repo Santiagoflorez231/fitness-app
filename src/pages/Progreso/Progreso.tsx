@@ -1,18 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
-  IonCard,
-  IonCardContent,
-  IonCardSubtitle,
-  IonCardTitle,
-  IonCol,
   IonContent,
-  IonGrid,
   IonHeader,
-  IonIcon,
-  IonItem,
-  IonLabel,
   IonPage,
-  IonRow,
   IonSelect,
   IonSelectOption,
   IonSpinner,
@@ -20,14 +10,22 @@ import {
   IonToolbar,
   useIonViewWillEnter,
 } from '@ionic/react';
-import { trendingUp } from 'ionicons/icons';
 import { sessionsRepo } from '../../db';
 import { useProgressData } from '../../hooks/useProgressData';
+import { useWeeklyGoal } from '../../hooks/useWeeklyGoal';
+import { useExercises } from '../../hooks/useExercises';
 import type { SessionSet } from '../../types/routine';
 import { formatDayMonthEs, formatShortDateEs } from '../../utils/dates';
 import { formatKg } from '../../components/charts/chartTheme';
 import WeeklyVolumeChart from '../../components/charts/WeeklyVolumeChart';
 import E1rmChart, { type E1rmPoint } from '../../components/charts/E1rmChart';
+import CountUpNumber from '../../components/CountUpNumber';
+import TrainingHeatmap from '../../components/progress/TrainingHeatmap';
+import MuscleBalance from '../../components/progress/MuscleBalance';
+import StreakGoal from '../../components/progress/StreakGoal';
+import BackupPanel from '../../components/progress/BackupPanel';
+import { buildCategoryCatalog, weeklyVolumeBalance } from '../../coach/volume';
+import './Progreso.css';
 
 const WEIGHT_FORMATTER = new Intl.NumberFormat('es-ES', { maximumFractionDigits: 1 });
 
@@ -80,7 +78,20 @@ function computeE1rmBySession(sets: SessionSet[]): E1rmPoint[] {
 }
 
 const Progreso: React.FC = () => {
-  const { loading, volumeByWeek, statsHeadline, exercisesWithHistory, refetch } = useProgressData();
+  const {
+    loading,
+    volumeByWeek,
+    statsHeadline,
+    exercisesWithHistory,
+    currentWeekSets,
+    heatmapDays,
+    sessionsInHeatmapWindow,
+    sessionsThisWeek,
+    weekStreak,
+    refetch,
+  } = useProgressData();
+  const { weeklyGoal, setWeeklyGoal } = useWeeklyGoal();
+  const { exercises, loading: exercisesLoading } = useExercises();
 
   const [selectedExerciseId, setSelectedExerciseId] = useState<string | null>(null);
   const [exerciseSets, setExerciseSets] = useState<SessionSet[]>([]);
@@ -90,11 +101,20 @@ const Progreso: React.FC = () => {
   // sin esto, el panel de PR/1RM quedaba con datos viejos tras entrenar ese
   // ejercicio y volver, aunque los tiles y el volumen sí se refrescaban.
   const [reloadNonce, setReloadNonce] = useState(0);
+  // El gráfico de volumen anima su entrada (scaleY escalonada) SOLO la primera
+  // vez que hay datos; en refetch/reentradas a la vista no se repite.
+  const [chartAnimated, setChartAnimated] = useState(false);
 
   useIonViewWillEnter(() => {
     refetch();
     setReloadNonce((n) => n + 1);
   });
+
+  useEffect(() => {
+    if (!loading && volumeByWeek.length > 0 && !chartAnimated) {
+      setChartAnimated(true);
+    }
+  }, [loading, volumeByWeek, chartAnimated]);
 
   // Si el ejercicio elegido deja de tener historial (recarga de datos), se limpia la selección.
   useEffect(() => {
@@ -121,20 +141,25 @@ const Progreso: React.FC = () => {
     };
   }, [selectedExerciseId, reloadNonce]);
 
+  // Catálogo exerciseId -> category (para el balance de volumen por familia).
+  const catalog = useMemo(() => buildCategoryCatalog(exercises), [exercises]);
+  const balance = useMemo(() => weeklyVolumeBalance(currentWeekSets, catalog), [currentWeekSets, catalog]);
+
   const pr = useMemo(() => findPr(exerciseSets), [exerciseSets]);
   const e1rmSeries = useMemo(() => computeE1rmBySession(exerciseSets), [exerciseSets]);
   const selectedExerciseName = exercisesWithHistory.find((e) => e.exerciseId === selectedExerciseId)?.exerciseName;
+  const currentWeekStart = volumeByWeek[volumeByWeek.length - 1]?.weekStart ?? 0;
 
   if (loading) {
     return (
       <IonPage>
-        <IonHeader>
+        <IonHeader className="ion-no-border">
           <IonToolbar>
             <IonTitle>Progreso</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent fullscreen>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+        <IonContent fullscreen className="progreso-content">
+          <div className="progreso-center">
             <IonSpinner name="crescent" />
           </div>
         </IonContent>
@@ -146,110 +171,116 @@ const Progreso: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
+      <IonHeader className="ion-no-border" translucent>
         <IonToolbar>
           <IonTitle>Progreso</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
-        {!hasSessions ? (
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: '100%',
-              textAlign: 'center',
-              padding: '2rem',
-              gap: '0.5rem',
-            }}
-          >
-            <IonIcon icon={trendingUp} style={{ fontSize: '4rem' }} color="medium" />
-            <p>Aún no hay datos: termina tu primer entrenamiento</p>
-          </div>
-        ) : (
-          <div className="ion-padding">
-            <IonGrid style={{ padding: 0 }}>
-              <IonRow>
-                <IonCol size="6">
-                  <IonCard style={{ margin: 0, height: '100%' }}>
-                    <IonCardContent>
-                      <IonCardSubtitle style={{ marginBottom: '0.4rem' }}>Volumen esta semana</IonCardSubtitle>
-                      <div style={{ fontSize: '1.6rem', fontWeight: 700 }}>
-                        {formatKg(statsHeadline.currentWeekVolumeKg)}
-                      </div>
-                    </IonCardContent>
-                  </IonCard>
-                </IonCol>
-                <IonCol size="6">
-                  <IonCard style={{ margin: 0, height: '100%' }}>
-                    <IonCardContent>
-                      <IonCardSubtitle style={{ marginBottom: '0.4rem' }}>Sesiones · 4 semanas</IonCardSubtitle>
-                      <div style={{ fontSize: '1.6rem', fontWeight: 700 }}>{statsHeadline.sessionsLast4Weeks}</div>
-                      <div style={{ fontSize: '0.8rem', color: 'var(--ion-color-medium)', marginTop: '0.2rem' }}>
-                        {statsHeadline.lastWorkoutAt !== null
-                          ? `Último: ${formatDayMonthEs(statsHeadline.lastWorkoutAt)}`
-                          : 'Sin entrenamientos'}
-                      </div>
-                    </IonCardContent>
-                  </IonCard>
-                </IonCol>
-              </IonRow>
-            </IonGrid>
+      <IonContent fullscreen className="progreso-content">
+        <div className="progreso-stack">
+          <h1 className="progreso-title">Progreso</h1>
 
-            <h2>Volumen semanal (kg)</h2>
-            <WeeklyVolumeChart data={volumeByWeek} />
-
-            <h2 style={{ marginTop: '1.5rem' }}>PRs por ejercicio</h2>
-            <IonItem lines="none" style={{ '--padding-start': '0' } as React.CSSProperties}>
-              <IonLabel>Ejercicio</IonLabel>
-              <IonSelect
-                interface="popover"
-                placeholder="Selecciona un ejercicio"
-                value={selectedExerciseId ?? undefined}
-                onIonChange={(e) => setSelectedExerciseId(e.detail.value as string)}
-              >
-                {exercisesWithHistory.map((exercise) => (
-                  <IonSelectOption key={exercise.exerciseId} value={exercise.exerciseId}>
-                    {exercise.exerciseName}
-                  </IonSelectOption>
-                ))}
-              </IonSelect>
-            </IonItem>
-
-            {!selectedExerciseId ? (
-              <p style={{ color: 'var(--ion-color-medium)', textAlign: 'center', padding: '1.5rem 0' }}>
-                Elige un ejercicio para ver sus PRs
-              </p>
-            ) : exerciseSetsLoading ? (
-              <div style={{ display: 'flex', justifyContent: 'center', padding: '1.5rem 0' }}>
-                <IonSpinner name="crescent" />
+          {!hasSessions ? (
+            <>
+              <div className="progreso-empty carga-card">
+                <span className="carga-overline">Cuaderno de resultados</span>
+                <p className="progreso-empty-text">
+                  Aún no hay datos. Termina tu primer entrenamiento y tus cifras aparecerán aquí.
+                </p>
               </div>
-            ) : (
-              <>
-                {pr && (
-                  <IonCard>
-                    <IonCardContent>
-                      <IonCardTitle style={{ fontSize: '1.1rem', marginBottom: '0.4rem' }}>
-                        {WEIGHT_FORMATTER.format(pr.weightKg)} kg × {pr.reps} reps
-                      </IonCardTitle>
-                      <div style={{ color: 'var(--ion-color-medium)', fontSize: '0.85rem' }}>
-                        {formatDayMonthEs(pr.completedAt)}
-                      </div>
-                      <div style={{ marginTop: '0.5rem', fontWeight: 600 }}>
-                        1RM estimado: {formatKg(estimateOneRepMax(pr.weightKg, pr.reps))}
-                      </div>
-                    </IonCardContent>
-                  </IonCard>
-                )}
+              {/* El respaldo también sirve para restaurar en un dispositivo nuevo,
+                  antes de haber entrenado. */}
+              <BackupPanel />
+            </>
+          ) : (
+            <>
+              <div className="progreso-tiles">
+                <div className="progreso-tile carga-card">
+                  <span className="carga-overline">Volumen · esta semana</span>
+                  <CountUpNumber
+                    className="progreso-tile-value"
+                    value={statsHeadline.currentWeekVolumeKg}
+                    format={formatKg}
+                  />
+                </div>
+                <div className="progreso-tile carga-card">
+                  <span className="carga-overline">Sesiones · 4 semanas</span>
+                  <CountUpNumber className="progreso-tile-value" value={statsHeadline.sessionsLast4Weeks} />
+                  <span className="progreso-tile-sub">
+                    {statsHeadline.lastWorkoutAt !== null
+                      ? `Último: ${formatDayMonthEs(statsHeadline.lastWorkoutAt)}`
+                      : 'Sin entrenamientos'}
+                  </span>
+                </div>
+              </div>
 
-                <h2>Evolución 1RM estimado</h2>
-                <E1rmChart data={e1rmSeries} exerciseName={selectedExerciseName} />
-              </>
-            )}
-          </div>
-        )}
+              <StreakGoal
+                weekStreak={weekStreak}
+                sessionsThisWeek={sessionsThisWeek}
+                weeklyGoal={weeklyGoal}
+                onChangeGoal={setWeeklyGoal}
+              />
+
+              {!exercisesLoading && <MuscleBalance balance={balance} />}
+
+              <TrainingHeatmap days={heatmapDays} sessionsInWindow={sessionsInHeatmapWindow} />
+
+              <section className="progreso-section">
+                <span className="carga-overline">Volumen · 12 semanas</span>
+                <WeeklyVolumeChart
+                  data={volumeByWeek}
+                  currentWeekStart={currentWeekStart}
+                  animateEntrance={!chartAnimated}
+                />
+              </section>
+
+              <section className="progreso-section">
+                <span className="carga-overline">PRs por ejercicio</span>
+                <IonSelect
+                  className="progreso-exercise-select"
+                  interface="popover"
+                  placeholder="Selecciona un ejercicio"
+                  value={selectedExerciseId ?? undefined}
+                  onIonChange={(e) => setSelectedExerciseId(e.detail.value as string)}
+                >
+                  {exercisesWithHistory.map((exercise) => (
+                    <IonSelectOption key={exercise.exerciseId} value={exercise.exerciseId}>
+                      {exercise.exerciseName}
+                    </IonSelectOption>
+                  ))}
+                </IonSelect>
+
+                {!selectedExerciseId ? (
+                  <p className="progreso-hint">Elige un ejercicio para ver su récord y evolución.</p>
+                ) : exerciseSetsLoading ? (
+                  <div className="progreso-center progreso-center-sm">
+                    <IonSpinner name="crescent" />
+                  </div>
+                ) : (
+                  <>
+                    {pr && (
+                      <div className="progreso-pr carga-card">
+                        <span className="carga-overline">Récord</span>
+                        <div className="carga-num progreso-pr-value">
+                          {WEIGHT_FORMATTER.format(pr.weightKg)}
+                          <span className="progreso-pr-unit"> kg</span>
+                          <span className="progreso-pr-reps"> × {pr.reps}</span>
+                        </div>
+                        <div className="progreso-pr-meta">
+                          {formatDayMonthEs(pr.completedAt)} · 1RM est. {formatKg(estimateOneRepMax(pr.weightKg, pr.reps))}
+                        </div>
+                      </div>
+                    )}
+                    <div className="progreso-chart-label carga-overline">Evolución 1RM estimado</div>
+                    <E1rmChart data={e1rmSeries} exerciseName={selectedExerciseName} />
+                  </>
+                )}
+              </section>
+
+              <BackupPanel />
+            </>
+          )}
+        </div>
       </IonContent>
     </IonPage>
   );

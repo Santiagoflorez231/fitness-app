@@ -1,0 +1,137 @@
+/* Progreso — "cuaderno de resultados" (docs/design-carga.md).
+   La página compone paneles que traen su propio CSS (progress/*.css); aquí
+   solo van el esqueleto, las tiles hero y los remates de sección. */
+
+.progreso-content {
+  --background: var(--app-bg);
+}
+
+.progreso-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 8px 16px 32px;
+}
+
+.progreso-title {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 900;
+  font-size: 30px;
+  letter-spacing: -0.02em;
+  color: var(--app-text-primary);
+  margin: 8px 0 0;
+}
+
+.progreso-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.progreso-center-sm {
+  height: auto;
+  padding: 24px 0;
+}
+
+/* --- Estado vacío --- */
+.progreso-empty {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+}
+
+.progreso-empty-text {
+  margin: 0;
+  color: var(--app-text-secondary);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+/* --- Tiles hero --- */
+.progreso-tiles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.progreso-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px;
+  min-height: 104px;
+}
+
+.progreso-tile-value {
+  display: block;
+  font-size: 40px;
+  line-height: 1;
+  color: var(--app-text-primary);
+}
+
+.progreso-tile-sub {
+  margin-top: auto;
+  font-size: 13px;
+  color: var(--app-text-secondary);
+}
+
+/* --- Secciones con gráfico/selector --- */
+.progreso-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.progreso-exercise-select {
+  --padding-start: 12px;
+  --padding-end: 12px;
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-m, 14px);
+  font-size: 15px;
+  min-height: 48px;
+}
+
+.progreso-hint {
+  margin: 0;
+  padding: 20px 0;
+  text-align: center;
+  color: var(--app-text-secondary);
+  font-size: 14px;
+}
+
+.progreso-chart-label {
+  margin-top: 4px;
+}
+
+/* --- Récord (PR) --- */
+.progreso-pr {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+}
+
+.progreso-pr-value {
+  font-size: 34px;
+  line-height: 1.05;
+  color: var(--app-text-primary);
+}
+
+.progreso-pr-unit {
+  font-size: 40%;
+  color: var(--app-text-secondary);
+  font-weight: 800;
+}
+
+.progreso-pr-reps {
+  color: var(--ion-color-primary);
+}
+
+.progreso-pr-meta {
+  font-size: 13px;
+  color: var(--app-text-secondary);
+  font-variant-numeric: tabular-nums;
+}

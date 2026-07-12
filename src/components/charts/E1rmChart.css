@@ -1,0 +1,24 @@
+/**
+ * Línea de evolución del e1RM "dibujada" con stroke-dashoffset (600ms),
+ * CSS puro. Referencia: docs/design-carga.md, sección "Progreso". El
+ * wrapper se remonta (key en E1rmChart.tsx) cada vez que cambian los
+ * datos, para que la animación se repita en cada selección de ejercicio.
+ */
+.chart-line-draw-wrap .recharts-line-curve {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+  animation: chart-line-draw 600ms var(--app-ease) forwards;
+}
+
+@keyframes chart-line-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chart-line-draw-wrap .recharts-line-curve {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}

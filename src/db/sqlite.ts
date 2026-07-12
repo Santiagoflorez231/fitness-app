@@ -225,6 +225,22 @@ const SESSION_SET_UPSERT_SQL = `
     routine_exercise_id = excluded.routine_exercise_id;
 `;
 
+// --- Respaldo (src/db/backup.ts): insert-if-not-exists, ADITIVO -----------
+// A diferencia de los *_UPSERT_SQL de arriba (que pisan filas existentes,
+// usados por el flujo normal de la app), importar un respaldo NUNCA debe
+// sobrescribir una sesión/serie que ya esté guardada localmente. `INSERT OR
+// IGNORE` no toca la fila si el id (PRIMARY KEY) ya existe.
+const SESSION_INSERT_IGNORE_SQL = `
+  INSERT OR IGNORE INTO sessions (id, routine_id, routine_name, started_at, finished_at, notes)
+  VALUES (?, ?, ?, ?, ?, ?);
+`;
+
+const SESSION_SET_INSERT_IGNORE_SQL = `
+  INSERT OR IGNORE INTO session_sets
+    (id, session_id, exercise_id, exercise_name, set_number, weight_kg, reps, rpe, completed_at, routine_exercise_id)
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+`;
+
 // ---------------------------------------------------------------------------
 // Mapeos dominio <-> fila (camelCase <-> snake_case)
 // ---------------------------------------------------------------------------
@@ -541,6 +557,13 @@ export class SQLiteRoutinesRepo implements RoutinesRepo {
     return routine;
   }
 
+  /** Todas las rutinas (activas + archivadas), para respaldo/export (src/db/backup.ts). */
+  async listAll(): Promise<Routine[]> {
+    const db = await getDb();
+    const routineRows = await queryRows<RoutineRow>(db, 'SELECT * FROM routines ORDER BY position ASC;');
+    return this.attachExercises(db, routineRows);
+  }
+
   private async attachExercises(db: SQLiteDBConnection, routineRows: RoutineRow[]): Promise<Routine[]> {
     if (routineRows.length === 0) {
       return [];
@@ -651,5 +674,26 @@ export class SQLiteSessionsRepo implements SessionsRepo {
       [exerciseId]
     );
     return rows.map(sessionSetRowToDomain);
+  }
+
+  /**
+   * ADITIVO — solo para src/db/backup.ts (importar respaldo). Inserta la
+   * sesión únicamente si su id no existe ya; nunca pisa una fila existente
+   * (a diferencia de start(), que además valida "una sola sesión activa" y
+   * es el único camino para arrancar un entrenamiento real).
+   */
+  async addSessionIfNotExists(session: WorkoutSession): Promise<boolean> {
+    const db = await getDb();
+    const result = await db.run(SESSION_INSERT_IGNORE_SQL, sessionToParams(session));
+    await persistWebStore();
+    return (result.changes?.changes ?? 0) > 0;
+  }
+
+  /** ADITIVO — igual que addSessionIfNotExists, para una serie (session_sets). */
+  async addSetIfNotExists(set: SessionSet): Promise<boolean> {
+    const db = await getDb();
+    const result = await db.run(SESSION_SET_INSERT_IGNORE_SQL, sessionSetToParams(set));
+    await persistWebStore();
+    return (result.changes?.changes ?? 0) > 0;
   }
 }
