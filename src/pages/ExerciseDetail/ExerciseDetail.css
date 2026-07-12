@@ -57,6 +57,41 @@
   text-align: center;
 }
 
+/* Veredicto del Coach (A2): tarjeta con acento por estado en el borde izquierdo */
+.detail-coach {
+  margin: 0 0 28px;
+  padding: 14px 16px;
+  border-radius: var(--app-radius-m);
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-left-width: 3px;
+}
+
+.detail-coach .carga-overline {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.detail-coach-message {
+  margin: 0;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--app-text-primary);
+}
+
+.detail-coach-regress {
+  border-left-color: var(--ion-color-danger);
+}
+
+.detail-coach-plateau {
+  border-left-color: var(--ion-color-warning);
+}
+
+.detail-coach-progress {
+  border-left-color: var(--ion-color-success);
+}
+
 /* Instrucciones: grid [número | texto], numeración colgada en el margen */
 .detail-steps {
   list-style: none;

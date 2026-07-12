@@ -44,9 +44,11 @@
   font-size: 11px;
 }
 
-.mm-decor {
-  fill: var(--app-border);
-  opacity: 0.55;
+.mm-decor-line {
+  fill: none;
+  stroke: var(--app-border);
+  stroke-width: 1;
+  opacity: 0.6;
   pointer-events: none;
 }
 
@@ -58,6 +60,10 @@
   transition:
     fill var(--app-dur-base) var(--app-ease),
     stroke var(--app-dur-base) var(--app-ease);
+}
+
+.mm-body-outline {
+  pointer-events: none;
 }
 
 /* ---------------------------------------------------------------------- */
