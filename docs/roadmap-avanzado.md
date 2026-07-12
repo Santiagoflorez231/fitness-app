@@ -114,21 +114,23 @@ UI (en Progreso, R4): barras duotono por familia con la zona coloreada
 (low = warning, ok = success/dato, high = danger suave) y remate honesto:
 «Empuje 18 · en rango. Tirón 8 · justo. Súbele.»
 
-### Datos que hacen falta
-- e1RM por serie: derivable de `session_sets` ya existentes (peso, reps). ✔
-- RPE por serie: **la columna `session_sets.rpe REAL` YA EXISTE** y ya se
-  persiste hoy (SetRow tiene el selector de RPE; `sessionSetToParams` la
-  guarda). A1/A2 pueden leerla sin migración. ✔ (Corrección 2026-07-07: no
-  hace falta migrar rpe, al contrario de lo que decía la primera versión.)
-- Nota de sesión + flag molestia: migración v3 (corpus futuro para el LLM).
+### Datos que hacen falta — NINGUNA MIGRACIÓN (corrección 2026-07-12)
+El esquema actual ya cubre todo lo que necesitan A1/A2/A3:
+- e1RM por serie: derivable de `session_sets` (peso, reps). ✔
+- RPE por serie: `session_sets.rpe REAL` **ya existe y se persiste** (SetRow
+  tiene el selector; `sessionSetToParams` lo guarda). ✔
+- Nota de sesión: `sessions.notes TEXT` **ya existe** (usada por `finish()`). ✔
 
-### Migración v3 (persistencia)
+Por tanto **el Bloque A es código puramente aditivo, sin tocar el esquema**.
+
+### Migración v3 — DIFERIDA (solo si algún día se añade la UI de molestia)
+El único campo que no existe es `session_sets.discomfort` (flag de molestia),
+que era corpus futuro para el LLM, no lo consume ningún cálculo del Coach. Se
+añade solo cuando se construya esa UI:
 ```sql
-ALTER TABLE sessions     ADD COLUMN note TEXT;          -- nota libre, nullable
 ALTER TABLE session_sets ADD COLUMN discomfort INTEGER; -- 0/1, nullable
 ```
-Aditiva y retrocompatible (mismo patrón que v2). `rpe` ya no forma parte de
-v3 porque ya está en el esquema. Actualizar
+Aditiva y retrocompatible (mismo patrón que v2). No bloquea el Bloque A. Actualizar
 `persistence-schema.md`, `schema_migrations`, tipos `SessionSet`/`WorkoutSession`
 y repos. **No** alterar la lógica QA-endurecida existente (setsForPlanExercise,
 submitting, sessionFinishedRef, rowCount, addSet inmediato, RestTimer).
