@@ -69,6 +69,20 @@
   margin: 0;
 }
 
+/* Card "Entrenamiento libre": destacada con borde primary, como la card
+   actual en la lista de ejercicios (mismo lenguaje visual). */
+.entrenar-choose-free {
+  border-color: var(--ion-color-primary);
+  border-width: 1.5px;
+}
+
+.entrenar-choose-free-desc {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 14px;
+  color: var(--app-text-secondary);
+  margin: 0;
+}
+
 .entrenar-empty {
   display: flex;
   flex-direction: column;
@@ -77,6 +91,12 @@
   gap: 12px;
   padding: 64px 24px 24px;
   text-align: center;
+}
+
+/* Variante del estado vacío para incrustar dentro de entrenar-choose-list
+   (sin rutinas todavía, pero ya con la card de sesión libre encima). */
+.entrenar-empty-inline {
+  padding: 32px 16px 8px;
 }
 
 .entrenar-empty-icon {
@@ -264,6 +284,46 @@
   font-size: 13px;
   color: var(--ion-color-primary);
   cursor: pointer;
+}
+
+/* "+ Ejercicio" en caliente: cierra la lista de bloques, siempre visible. */
+.entrenar-add-exercise {
+  margin-top: 4px;
+  border: 1.5px dashed var(--app-border);
+  border-radius: var(--app-radius-m);
+  background: none;
+  padding: 14px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--ion-color-primary);
+  cursor: pointer;
+  transition:
+    border-color var(--app-dur-fast) var(--app-ease),
+    background var(--app-dur-fast) var(--app-ease);
+}
+
+.entrenar-add-exercise:active {
+  border-color: var(--ion-color-primary);
+  background: var(--app-surface-elevated);
+}
+
+/* Variante hero: estado vacío de sesión libre, botón protagonista. */
+.entrenar-add-exercise-hero {
+  width: 100%;
+  max-width: 280px;
+  padding: 16px;
+  font-size: 15px;
+  border-radius: var(--app-radius-full);
+  border-style: solid;
+  border-color: var(--ion-color-primary);
+  background: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
+}
+
+.entrenar-add-exercise-hero:active {
+  background: var(--ion-color-primary);
+  transform: scale(0.98);
 }
 
 /* ---------------------------------------------------------------------- */

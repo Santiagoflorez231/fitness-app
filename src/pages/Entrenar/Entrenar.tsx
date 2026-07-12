@@ -15,6 +15,8 @@ import {
 } from '@ionic/react';
 import { barbell, chevronDown, chevronUp } from 'ionicons/icons';
 import { routinesRepo, sessionsRepo } from '../../db';
+import { addAdhocBlock, listAdhocBlocks, clearAdhocBlocks, type AdhocBlock } from '../../db/adhocBlocks';
+import { consumeStartExerciseRequest } from '../../db/startExerciseRequest';
 import { useExercises } from '../../hooks/useExercises';
 import { estimateSessionMinutes } from '../../data/routineTemplates';
 import ExerciseAvatar from '../../components/ExerciseAvatar';
@@ -22,6 +24,7 @@ import SetRow from '../../components/SetRow';
 import RestTimer, { type RestTimerTrigger } from '../../components/RestTimer';
 import PlateCalculator, { type PlateCalculatorMode } from '../../components/PlateCalculator';
 import ExerciseHistorySheet from '../../components/ExerciseHistorySheet';
+import ExercisePickerSheet from '../../components/ExercisePickerSheet';
 import { localCoachAdvisor } from '../../coach/localCoach';
 import { hapticPr, hapticSetDone } from '../../utils/haptics';
 import type { Exercise } from '../../types/exercise';
@@ -123,11 +126,35 @@ function setsForPlanExercise(plan: PlanExercise[], pe: PlanExercise, sets: Sessi
   });
 }
 
+/** Convierte un bloque ad-hoc persistido (src/db/adhocBlocks.ts) en el
+ * PlanExercise real equivalente: misma forma que un bloque de rutina, con
+ * `key` = `block.key` (así setsForPlanExercise lo resuelve sin ningún caso
+ * especial, vía `routineExerciseId === pe.key` en las series que genere). */
+function planExerciseFromAdhocBlock(block: AdhocBlock): PlanExercise {
+  return {
+    key: block.key,
+    exerciseId: block.exerciseId,
+    exerciseName: block.exerciseName,
+    target: block.target,
+    category: block.category,
+    targetSets: block.targetSets,
+    targetReps: block.targetReps,
+    restSeconds: block.restSeconds,
+    isOrphan: false,
+  };
+}
+
 /** Construye el plan de trabajo de una sesión: ejercicios de la rutina (si
- * todavía existe) más, al final, los ejercicios "huérfanos" que tienen series
- * registradas en esta sesión pero ya no están en la rutina (o la rutina se
- * borró) — nunca se pierden datos ya registrados. */
-function buildPlan(routine: Routine | null, existingSets: SessionSet[], allExercises: Exercise[]): PlanExercise[] {
+ * todavía existe), luego los bloques ad-hoc (ejercicios añadidos en caliente,
+ * ver src/db/adhocBlocks.ts) y, al final, los ejercicios "huérfanos" que
+ * tienen series registradas en esta sesión pero no resuelven a ningún bloque
+ * real vigente (ni de rutina ni ad-hoc) — nunca se pierden datos registrados. */
+function buildPlan(
+  routine: Routine | null,
+  existingSets: SessionSet[],
+  allExercises: Exercise[],
+  adhocBlocks: AdhocBlock[] = [],
+): PlanExercise[] {
   const plan: PlanExercise[] = (routine?.exercises ?? [])
     .slice()
     .sort((a, b) => a.position - b.position)
@@ -145,6 +172,13 @@ function buildPlan(routine: Routine | null, existingSets: SessionSet[], allExerc
         isOrphan: false,
       };
     });
+
+  // Bloques ad-hoc: se appendean como bloques reales, en el orden en que se
+  // añadieron. A partir de aquí `plan` (rutina + ad-hoc) es la base contra la
+  // que se calcula qué series son huérfanas más abajo.
+  adhocBlocks.forEach((block) => {
+    plan.push(planExerciseFromAdhocBlock(block));
+  });
 
   // Un set "resuelve" a un bloque real si su routineExerciseId apunta a uno
   // de ellos, o -en filas legacy sin routineExerciseId- si su exerciseId
@@ -191,28 +225,35 @@ interface HistoryEntry {
 
 type HistoryMap = Record<string, HistoryEntry>;
 
+/** Historial (antes de esta sesión) de un único ejercicio. Extraído de
+ * fetchHistoryMap para poder recalcular la entrada de UN ejercicio cuando se
+ * añade un bloque ad-hoc a una sesión ya en curso, sin recalcular el resto. */
+async function fetchHistoryEntry(exerciseId: string): Promise<HistoryEntry> {
+  const history = await sessionsRepo.listSetsByExercise(exerciseId);
+  const last = history[history.length - 1];
+  const maxWeightKg = history.reduce((max, s) => Math.max(max, s.weightKg), 0);
+  const bestE1rm = history.reduce((max, s) => Math.max(max, epleyE1rm(s.weightKg, s.reps)), 0);
+  const previousSessionBySetNumber: Record<number, SessionSet> = {};
+  if (last) {
+    history
+      .filter((s) => s.sessionId === last.sessionId)
+      .forEach((s) => {
+        previousSessionBySetNumber[s.setNumber] = s;
+      });
+  }
+  return { last, maxWeightKg, bestE1rm, previousSessionBySetNumber };
+}
+
 /** Historial de cada ejercicio real del plan (se ignoran los huérfanos: no
  * tienen filas nuevas). Se calcula una única vez al iniciar/retomar la
- * sesión, así que "antes de esta sesión" es literal para todo su contenido. */
+ * sesión, así que "antes de esta sesión" es literal para todo su contenido.
+ * Cubre también los bloques ad-hoc: son bloques reales (isOrphan: false) del
+ * plan igual que los de rutina, así que su historial se carga aquí gratis. */
 async function fetchHistoryMap(plan: PlanExercise[]): Promise<HistoryMap> {
   const entries = await Promise.all(
     plan
       .filter((pe) => !pe.isOrphan)
-      .map(async (pe): Promise<[string, HistoryEntry]> => {
-        const history = await sessionsRepo.listSetsByExercise(pe.exerciseId);
-        const last = history[history.length - 1];
-        const maxWeightKg = history.reduce((max, s) => Math.max(max, s.weightKg), 0);
-        const bestE1rm = history.reduce((max, s) => Math.max(max, epleyE1rm(s.weightKg, s.reps)), 0);
-        const previousSessionBySetNumber: Record<number, SessionSet> = {};
-        if (last) {
-          history
-            .filter((s) => s.sessionId === last.sessionId)
-            .forEach((s) => {
-              previousSessionBySetNumber[s.setNumber] = s;
-            });
-        }
-        return [pe.exerciseId, { last, maxWeightKg, bestE1rm, previousSessionBySetNumber }];
-      }),
+      .map(async (pe): Promise<[string, HistoryEntry]> => [pe.exerciseId, await fetchHistoryEntry(pe.exerciseId)]),
   );
   return Object.fromEntries(entries);
 }
@@ -297,6 +338,8 @@ const Entrenar: React.FC = () => {
     exerciseId: null,
     exerciseName: '',
   });
+  // Picker "+ Ejercicio": añadir un bloque ad-hoc a la sesión en curso.
+  const [pickerOpen, setPickerOpen] = useState(false);
 
   const [enterNonce, setEnterNonce] = useState(0);
   useIonViewWillEnter(() => {
@@ -354,28 +397,93 @@ const Entrenar: React.FC = () => {
     prevCurrentKeyRef.current = key;
   }, [phase.kind, currentPe]);
 
+  /** Construye el plan (rutina + bloques ad-hoc ya persistidos de esa
+   * sesión) y entra en fase workout. Punto de entrada único para "ya sé qué
+   * sesión y qué rutina toca mostrar" -- usado por bootstrap (sesión activa
+   * vigente) y por handleResumeAbandoned (retomar una sesión abandonada).
+   * `expandKey`, si se indica, expande esa card además de la que auto-expanda
+   * el efecto de "ejercicio actual". */
+  const enterWorkout = async (
+    session: WorkoutSession,
+    existingSets: SessionSet[],
+    routine: Routine | null,
+    expandKey?: string,
+  ): Promise<void> => {
+    const adhocBlocks = listAdhocBlocks(session.id);
+    const plan = buildPlan(routine, existingSets, exercises, adhocBlocks);
+    const historyMap = await fetchHistoryMap(plan);
+    setHistory(historyMap);
+    setSets(existingSets);
+    sessionFinishedRef.current = false;
+    setExtraRows({});
+    setPrKeys(new Set());
+    setPhase({ kind: 'workout', session, plan });
+    if (expandKey) {
+      setExpandedKeys((previous) => {
+        const next = new Set(previous);
+        next.add(expandKey);
+        return next;
+      });
+    }
+  };
+
+  /** Si hay una petición "COMENZAR desde Detalle" pendiente (carga.startExercise,
+   * ver src/db/startExerciseRequest.ts) Y resuelve a un ejercicio real, la
+   * consume (leer + borrar, siempre) y persiste su bloque ad-hoc en
+   * `sessionId`. Devuelve la key del bloque nuevo (para expandirlo), o
+   * undefined si no había petición o no resolvió a ningún ejercicio conocido. */
+  const consumePendingStartExercise = (sessionId: string): string | undefined => {
+    const request = consumeStartExerciseRequest();
+    const exercise = request ? exercises.find((item) => item.id === request.exerciseId) : undefined;
+    return exercise ? addAdhocBlock(sessionId, exercise).key : undefined;
+  };
+
+  /** Arranca una sesión libre (routineId null, "Sesión libre") vacía o, si se
+   * indica `initialExercise`, con ese ejercicio ya dentro como bloque ad-hoc
+   * (COMENZAR desde Detalle sin sesión activa). */
+  const startFreeSession = async (initialExercise?: Exercise): Promise<void> => {
+    const session: WorkoutSession = {
+      id: crypto.randomUUID(),
+      routineId: null,
+      routineName: 'Sesión libre',
+      startedAt: Date.now(),
+      finishedAt: null,
+    };
+    await sessionsRepo.start(session);
+    const block = initialExercise ? addAdhocBlock(session.id, initialExercise) : null;
+    await enterWorkout(session, [], null, block?.key);
+  };
+
   const bootstrap = async (): Promise<void> => {
     setPhase({ kind: 'loading' });
     const active = await sessionsRepo.getActive();
     if (!active) {
+      // Sin sesión activa: consumimos carga.startExercise aquí (leer +
+      // borrar siempre). Si resuelve a un ejercicio real, arrancamos una
+      // sesión libre con él ya dentro; si no, seguimos a elegir rutina.
+      const startRequest = consumeStartExerciseRequest();
+      const startExercise = startRequest ? exercises.find((item) => item.id === startRequest.exerciseId) : undefined;
+      if (startExercise) {
+        await startFreeSession(startExercise);
+        return;
+      }
       const routines = await routinesRepo.list();
       setPhase({ kind: 'choose-routine', routines });
       return;
     }
     const age = Date.now() - active.session.startedAt;
     if (age > TWELVE_HOURS_MS) {
+      // Decisión: NO consumimos carga.startExercise en esta rama. Con una
+      // sesión abandonada por resolver, la petición se deja intacta hasta
+      // que el usuario la resuelva (retomar o cerrar) -- handleResumeAbandoned
+      // la consume al retomar; handleCloseAbandoned llama a bootstrap() de
+      // nuevo al cerrar, que la consumirá entonces desde la rama `!active`.
       setPhase({ kind: 'confirm-abandoned', session: active.session, sets: active.sets });
       return;
     }
     const routine = active.session.routineId ? await routinesRepo.get(active.session.routineId) : null;
-    const plan = buildPlan(routine, active.sets, exercises);
-    const historyMap = await fetchHistoryMap(plan);
-    setHistory(historyMap);
-    setSets(active.sets);
-    sessionFinishedRef.current = false;
-    setExtraRows({});
-    setPrKeys(new Set());
-    setPhase({ kind: 'workout', session: active.session, plan });
+    const newBlockKey = consumePendingStartExercise(active.session.id);
+    await enterWorkout(active.session, active.sets, routine, newBlockKey);
   };
 
   useEffect(() => {
@@ -429,14 +537,10 @@ const Entrenar: React.FC = () => {
     }
     const { session, sets: existingSets } = phase;
     const routine = session.routineId ? await routinesRepo.get(session.routineId) : null;
-    const plan = buildPlan(routine, existingSets, exercises);
-    const historyMap = await fetchHistoryMap(plan);
-    setHistory(historyMap);
-    setSets(existingSets);
-    sessionFinishedRef.current = false;
-    setExtraRows({});
-    setPrKeys(new Set());
-    setPhase({ kind: 'workout', session, plan });
+    // La sesión abandonada queda resuelta (retomada): si había una petición
+    // "COMENZAR desde Detalle" pendiente, se consume ahora.
+    const newBlockKey = consumePendingStartExercise(session.id);
+    await enterWorkout(session, existingSets, routine, newBlockKey);
   };
 
   const handleCloseAbandoned = async () => {
@@ -447,6 +551,7 @@ const Entrenar: React.FC = () => {
     const finishedAt =
       existingSets.length > 0 ? Math.max(...existingSets.map((s) => s.completedAt)) : session.startedAt;
     await sessionsRepo.finish(session.id, finishedAt);
+    clearAdhocBlocks(session.id);
     await bootstrap();
   };
 
@@ -541,6 +646,7 @@ const Entrenar: React.FC = () => {
     sessionFinishedRef.current = true;
     const finishedAt = Date.now();
     await sessionsRepo.finish(phase.session.id, finishedAt);
+    clearAdhocBlocks(phase.session.id);
     localStorage.removeItem(REST_TIMER_STORAGE_KEY);
     setRestTrigger(null);
     const volumeKg = sets.reduce((sum, s) => sum + s.weightKg * s.reps, 0);
@@ -570,6 +676,32 @@ const Entrenar: React.FC = () => {
    * mirando solo targetSets) y no toca la fórmula protegida de rowCount. */
   const handleAddExtraRow = (pe: PlanExercise) => {
     setExtraRows((previous) => ({ ...previous, [pe.key]: (previous[pe.key] ?? 0) + 1 }));
+  };
+
+  /** Card "Entrenamiento libre" en choose-routine: sesión sin rutina, vacía. */
+  const handleStartFreeSession = () => {
+    void startFreeSession();
+  };
+
+  /** "+ Ejercicio" en caliente (picker): añade `exercise` como bloque ad-hoc
+   * al final del plan de la sesión en curso, lo expande y precarga su
+   * historial (chip/ghost/%1RM del Coach funcionan igual que en un bloque de
+   * rutina, ver fetchHistoryEntry). Puramente aditivo sobre `phase.plan`. */
+  const handleAddAdhocExercise = async (exercise: Exercise) => {
+    if (phase.kind !== 'workout') {
+      return;
+    }
+    const block = addAdhocBlock(phase.session.id, exercise);
+    const newPe = planExerciseFromAdhocBlock(block);
+    setPhase({ kind: 'workout', session: phase.session, plan: [...phase.plan, newPe] });
+    setExpandedKeys((previous) => {
+      const next = new Set(previous);
+      next.add(newPe.key);
+      return next;
+    });
+    setPickerOpen(false);
+    const entry = await fetchHistoryEntry(exercise.id);
+    setHistory((previous) => ({ ...previous, [exercise.id]: entry }));
   };
 
   const openPlates = (weightKg: number | null) => setPlateCalc({ open: true, weightKg, mode: 'plates' });
@@ -603,39 +735,45 @@ const Entrenar: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen className="entrenar-content">
-          {phase.routines.length === 0 ? (
-            <div className="entrenar-empty">
-              <IonIcon icon={barbell} className="entrenar-empty-icon" />
-              <p className="carga-overline">Sin rutinas todavía</p>
-              <p className="entrenar-empty-text">Crea una rutina para empezar a entrenar.</p>
-              <IonButton routerLink="/tabs/rutinas">Ir a rutinas</IonButton>
-            </div>
-          ) : (
-            <>
-              <p className="carga-overline entrenar-choose-overline">Elige tu carga</p>
-              <div className="entrenar-choose-list">
-                {phase.routines.map((routine) => {
-                  const exerciseCount = routine.exercises.length;
-                  const setCount = routine.exercises.reduce((sum, e) => sum + e.targetSets, 0);
-                  const minutes = estimateSessionMinutes(routine.exercises);
-                  return (
-                    <button
-                      type="button"
-                      key={routine.id}
-                      className="carga-card entrenar-choose-card"
-                      onClick={() => setPendingRoutine(routine)}
-                    >
-                      <h2 className="entrenar-choose-card-name">{routine.name}</h2>
-                      <p className="carga-overline entrenar-choose-card-meta">
-                        {exerciseCount} {exerciseCount === 1 ? 'ejercicio' : 'ejercicios'} · ~{setCount}{' '}
-                        {setCount === 1 ? 'serie' : 'series'} · ~{minutes} min
-                      </p>
-                    </button>
-                  );
-                })}
+          <p className="carga-overline entrenar-choose-overline">Elige tu carga</p>
+          <div className="entrenar-choose-list">
+            <button
+              type="button"
+              className="carga-card entrenar-choose-card entrenar-choose-free"
+              onClick={handleStartFreeSession}
+            >
+              <h2 className="entrenar-choose-card-name">Entrenamiento libre</h2>
+              <p className="entrenar-choose-free-desc">Sin guion. Añade ejercicios sobre la marcha.</p>
+            </button>
+
+            {phase.routines.length === 0 ? (
+              <div className="entrenar-empty entrenar-empty-inline">
+                <IonIcon icon={barbell} className="entrenar-empty-icon" />
+                <p className="entrenar-empty-text">Crea una rutina para repetirla cada vez que entrenes.</p>
+                <IonButton routerLink="/tabs/rutinas">Ir a rutinas</IonButton>
               </div>
-            </>
-          )}
+            ) : (
+              phase.routines.map((routine) => {
+                const exerciseCount = routine.exercises.length;
+                const setCount = routine.exercises.reduce((sum, e) => sum + e.targetSets, 0);
+                const minutes = estimateSessionMinutes(routine.exercises);
+                return (
+                  <button
+                    type="button"
+                    key={routine.id}
+                    className="carga-card entrenar-choose-card"
+                    onClick={() => setPendingRoutine(routine)}
+                  >
+                    <h2 className="entrenar-choose-card-name">{routine.name}</h2>
+                    <p className="carga-overline entrenar-choose-card-meta">
+                      {exerciseCount} {exerciseCount === 1 ? 'ejercicio' : 'ejercicios'} · ~{setCount}{' '}
+                      {setCount === 1 ? 'serie' : 'series'} · ~{minutes} min
+                    </p>
+                  </button>
+                );
+              })
+            )}
+          </div>
 
           <IonAlert
             isOpen={pendingRoutine !== null}
@@ -710,6 +848,20 @@ const Entrenar: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen className="entrenar-content">
+        {phase.plan.length === 0 ? (
+          <div className="entrenar-empty">
+            <IonIcon icon={barbell} className="entrenar-empty-icon" />
+            <p className="carga-overline">Sesión libre</p>
+            <p className="entrenar-empty-text">Sin guion. Añade tu primer ejercicio.</p>
+            <button
+              type="button"
+              className="entrenar-add-exercise entrenar-add-exercise-hero"
+              onClick={() => setPickerOpen(true)}
+            >
+              + Ejercicio
+            </button>
+          </div>
+        ) : (
         <div className="entrenar-list">
           {phase.plan.map((pe) => {
             const setsForExercise = setsForPlanExercise(phase.plan, pe, sets);
@@ -855,7 +1007,11 @@ const Entrenar: React.FC = () => {
               </div>
             );
           })}
+          <button type="button" className="entrenar-add-exercise" onClick={() => setPickerOpen(true)}>
+            + Ejercicio
+          </button>
         </div>
+        )}
 
         {summary && (
           <div className="entrenar-summary-backdrop" role="alertdialog" aria-modal="true">
@@ -891,6 +1047,12 @@ const Entrenar: React.FC = () => {
         onDismiss={() => setHistorySheet((previous) => ({ ...previous, open: false }))}
         exerciseId={historySheet.exerciseId}
         exerciseName={historySheet.exerciseName}
+      />
+
+      <ExercisePickerSheet
+        isOpen={pickerOpen}
+        onDismiss={() => setPickerOpen(false)}
+        onPick={(exercise) => void handleAddAdhocExercise(exercise)}
       />
 
       <IonAlert

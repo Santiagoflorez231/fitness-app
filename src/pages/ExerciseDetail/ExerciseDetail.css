@@ -3,6 +3,11 @@
  * Referencia obligatoria: docs/design-carga.md
  */
 
+/* Espacio para que el footer fijo (botón Comenzar) no tape el último paso. */
+.detail-content {
+  --padding-bottom: 100px;
+}
+
 .detail-header {
   display: flex;
   flex-direction: column;
@@ -157,4 +162,34 @@
   font-size: 15px;
   color: var(--app-text-secondary);
   margin: 0;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Botón COMENZAR -- pill naranja fija abajo (IonFooter como contenedor,   */
+/* contenido propio, igual patrón que RestTimer).                         */
+/* ---------------------------------------------------------------------- */
+
+.detail-start-footer {
+  background: transparent;
+}
+
+.detail-start-btn {
+  display: block;
+  width: calc(100% - 32px);
+  margin: 0 16px calc(12px + env(safe-area-inset-bottom, 0px));
+  border: none;
+  border-radius: var(--app-radius-full);
+  background: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 16px;
+  cursor: pointer;
+  box-shadow: var(--app-shadow-float);
+  transition: transform var(--app-dur-fast) var(--app-ease);
+}
+
+.detail-start-btn:active {
+  transform: scale(0.98);
 }

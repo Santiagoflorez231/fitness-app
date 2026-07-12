@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import {
   IonBackButton,
   IonButton,
   IonButtons,
   IonContent,
+  IonFooter,
   IonHeader,
   IonIcon,
   IonPage,
@@ -17,6 +18,7 @@ import { capitalize } from '../../components/ExerciseAvatar';
 import MuscleMap from '../../components/muscle-map/MuscleMap';
 import { musclesForExercise, REGION_LABEL } from '../../components/muscle-map/muscleRegions';
 import { sessionsRepo } from '../../db';
+import { writeStartExerciseRequest } from '../../db/startExerciseRequest';
 import { localCoachAdvisor } from '../../coach/localCoach';
 import type { ProgressVerdict } from '../../coach/types';
 import './ExerciseDetail.css';
@@ -29,6 +31,7 @@ const STEP_STAGGER_MS = 30;
 
 const ExerciseDetail: React.FC = () => {
   const { id } = useParams<ExerciseDetailParams>();
+  const routerHistory = useHistory();
   const { exercises, loading } = useExercises();
   const [coachVerdict, setCoachVerdict] = useState<ProgressVerdict | null>(null);
 
@@ -115,6 +118,14 @@ const ExerciseDetail: React.FC = () => {
   }
   const muscleLegend = isCardio ? 'Cardiovascular' : legendParts.join(' · ') || 'Sin músculo registrado';
 
+  // Botón COMENZAR: deja la petición en localStorage y navega a Entrenar,
+  // que la consume al entrar (ver src/db/startExerciseRequest.ts). Se
+  // muestra siempre, también para ejercicios cardio -- también se registran.
+  const handleStart = () => {
+    writeStartExerciseRequest(exercise.id);
+    routerHistory.push('/tabs/entrenar');
+  };
+
   return (
     <IonPage>
       <IonHeader>
@@ -124,7 +135,7 @@ const ExerciseDetail: React.FC = () => {
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen className="ion-padding">
+      <IonContent fullscreen className="ion-padding detail-content">
         <div className="detail-header">
           <MuscleMap mode="highlight" primary={primary} secondary={secondary} isCardio={isCardio} />
           <h1 className="detail-name">{exercise.name}</h1>
@@ -158,6 +169,12 @@ const ExerciseDetail: React.FC = () => {
           </ol>
         </section>
       </IonContent>
+
+      <IonFooter className="detail-start-footer ion-no-border">
+        <button type="button" className="detail-start-btn" onClick={handleStart}>
+          Comenzar
+        </button>
+      </IonFooter>
     </IonPage>
   );
 };

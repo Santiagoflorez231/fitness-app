@@ -1,0 +1,124 @@
+/**
+ * ExercisePickerSheet -- sheet CARGA para añadir un ejercicio en caliente.
+ * Acabado propio (sin chrome estándar de Ionic): IonModal solo como
+ * contenedor del sheet.
+ * Referencia obligatoria: docs/design-carga.md
+ */
+
+.exercise-picker-sheet {
+  --border-radius: var(--app-radius-l);
+  --background: var(--app-bg);
+}
+
+.carga-sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 20px 12px;
+}
+
+.carga-sheet-close {
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--app-radius-full);
+  border: 1px solid var(--app-border);
+  background: var(--app-surface-elevated);
+  color: var(--app-text-secondary);
+  font-size: 13px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.exercise-picker-body {
+  padding: 0 20px 20px;
+  overflow-y: auto;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.exercise-picker-search {
+  width: 100%;
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-s);
+  background: var(--app-surface);
+  color: var(--app-text-primary);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 15px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  flex: 0 0 auto;
+}
+
+.exercise-picker-search:focus {
+  outline: none;
+  border-color: var(--ion-color-primary);
+}
+
+.exercise-picker-search::placeholder {
+  color: var(--app-text-secondary);
+}
+
+.exercise-picker-empty {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 14px;
+  color: var(--app-text-secondary);
+  margin: 8px 0;
+}
+
+.exercise-picker-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow-y: auto;
+}
+
+.exercise-picker-row {
+  width: 100%;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: none;
+  background: none;
+  padding: 6px 4px;
+  text-align: left;
+  cursor: pointer;
+  border-radius: var(--app-radius-s);
+}
+
+.exercise-picker-row:active {
+  background: var(--app-surface-elevated);
+}
+
+.exercise-picker-row-info {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.exercise-picker-row-name {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--app-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.exercise-picker-row-meta {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 12px;
+  color: var(--app-text-secondary);
+}
