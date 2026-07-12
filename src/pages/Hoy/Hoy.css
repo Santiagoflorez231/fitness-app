@@ -1,0 +1,140 @@
+/* Hoy — pantalla de entrada (docs/design-carga.md, R7). Composición
+   vertical de cards existentes (StreakGoal, TrainingHeatmap) + piezas
+   propias (próxima sesión, nudge del coach, última marca). */
+
+.hoy-content {
+  --background: var(--app-bg);
+}
+
+.hoy-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 8px 16px 32px;
+}
+
+/* --- Cabecera: saludo por hora + fecha larga --- */
+.hoy-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 8px 0 0;
+}
+
+.hoy-title {
+  margin: 0;
+}
+
+/* --- Estado vacío (onboarding) --- */
+.hoy-empty {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+}
+
+.hoy-empty-text {
+  margin: 0;
+  color: var(--app-text-secondary);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+/* --- Tu próxima sesión --- */
+.hoy-next {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+}
+
+.hoy-next-name {
+  margin: 2px 0 0;
+}
+
+.hoy-next-meta {
+  margin: 0 0 8px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 14px;
+  color: var(--app-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.hoy-next-cta {
+  margin-top: 4px;
+}
+
+/* --- Nudge del Coach: acento warning en el borde izquierdo, igual que
+   .detail-coach en ExerciseDetail.css --- */
+.hoy-nudge {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-left-width: 3px;
+  border-left-color: var(--ion-color-warning);
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.hoy-nudge-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hoy-nudge-text {
+  margin: 0;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--app-text-primary);
+}
+
+.hoy-nudge-icon {
+  flex-shrink: 0;
+  font-size: 18px;
+  color: var(--app-text-secondary);
+}
+
+/* --- Última marca (PR simplificado) --- */
+.hoy-pr {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+}
+
+.hoy-pr-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.hoy-pr-text {
+  margin: 0;
+  font-family: 'Archivo', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--app-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* --- Accesos rápidos --- */
+.hoy-quick-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.hoy-quick-actions ion-button {
+  flex: 1;
+  --border-radius: var(--app-radius-full);
+}

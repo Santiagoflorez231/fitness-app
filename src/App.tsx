@@ -10,7 +10,8 @@ import {
   setupIonicReact,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { barbell, list, stopwatch, trendingUp } from 'ionicons/icons';
+import { barbell, list, stopwatch, todayOutline, trendingUp } from 'ionicons/icons';
+import Hoy from './pages/Hoy/Hoy';
 import Explorar from './pages/Explorar/Explorar';
 import ExerciseDetail from './pages/ExerciseDetail/ExerciseDetail';
 import Rutinas from './pages/Rutinas/Rutinas';
@@ -65,11 +66,14 @@ const App: React.FC = () => (
     <IonReactRouter>
       <IonRouterOutlet>
         <Route exact path="/">
-          <Redirect to="/tabs/explorar" />
+          <Redirect to="/tabs/hoy" />
         </Route>
         <Route path="/tabs">
           <IonTabs>
             <IonRouterOutlet>
+              <Route exact path="/tabs/hoy">
+                <Hoy />
+              </Route>
               <Route exact path="/tabs/explorar">
                 <Explorar />
               </Route>
@@ -92,10 +96,14 @@ const App: React.FC = () => (
                 <Progreso />
               </Route>
               <Route exact path="/tabs">
-                <Redirect to="/tabs/explorar" />
+                <Redirect to="/tabs/hoy" />
               </Route>
             </IonRouterOutlet>
             <IonTabBar slot="bottom">
+              <IonTabButton tab="hoy" href="/tabs/hoy">
+                <IonIcon icon={todayOutline} />
+                <IonLabel>Hoy</IonLabel>
+              </IonTabButton>
               <IonTabButton tab="explorar" href="/tabs/explorar">
                 <IonIcon icon={barbell} />
                 <IonLabel>Explorar</IonLabel>
