@@ -7,6 +7,16 @@
  *
  * Se ejecuta automáticamente en "postinstall" para no depender de un paso
  * manual sin rastro; es seguro correrlo varias veces (sobrescribe).
+ *
+ * ⚠️ ACOPLAMIENTO DE VERSIÓN (bug real, 2026-07-12): el pegamento JS de
+ * sql.js viene PRECOMPILADO dentro del dist de jeep-sqlite, así que el wasm
+ * copiado debe ser de la MISMA versión de sql.js con la que se construyó
+ * jeep-sqlite — no la que npm resuelva más nueva. package.json fija sql.js
+ * EXACTO (1.11.0 para jeep-sqlite 2.8.0). Síntoma si se desalinea: todas
+ * las páginas con BD se cuelgan en skeleton y la consola muestra
+ * "WebAssembly.instantiate LinkError: function import requires a callable".
+ * Si actualizas jeep-sqlite, re-alinea el pin y prueba en NAVEGADOR REAL
+ * (no basta HTTP 200).
  */
 import fs from 'fs';
 import path from 'path';
