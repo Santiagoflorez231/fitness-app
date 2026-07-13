@@ -43,7 +43,7 @@ const COACH_TARGET_RPE = 8;
 /** Un ejercicio a mostrar en la vista de entrenamiento: viene del plan de la
  * rutina en el momento de iniciar/retomar la sesión, o -si la rutina cambió o
  * se borró mientras tanto- se reconstruye desde los sets ya registrados. */
-interface PlanExercise {
+export interface PlanExercise {
   key: string;
   exerciseId: string;
   exerciseName: string;
@@ -91,7 +91,7 @@ function epleyE1rm(weightKg: number, reps: number): number {
 /** true si `s` pertenece a alguno de los bloques REALES (no huérfanos) de
  * `realBlocks`: por routineExerciseId si lo tiene, o -en filas legacy sin
  * routineExerciseId- por exerciseId compartido con cualquiera de ellos. */
-function resolvesToRealBlock(realBlocks: PlanExercise[], s: SessionSet): boolean {
+export function resolvesToRealBlock(realBlocks: PlanExercise[], s: SessionSet): boolean {
   if (s.routineExerciseId != null) {
     return realBlocks.some((pe) => pe.key === s.routineExerciseId);
   }
@@ -112,7 +112,7 @@ function resolvesToRealBlock(realBlocks: PlanExercise[], s: SessionSet): boolean
  *   nunca series que ya pertenecen a un bloque real, aunque compartan
  *   exerciseId con el huérfano (p. ej. el bloque original de esas series se
  *   borró pero la rutina tiene hoy otro bloque distinto del mismo ejercicio). */
-function setsForPlanExercise(plan: PlanExercise[], pe: PlanExercise, sets: SessionSet[]): SessionSet[] {
+export function setsForPlanExercise(plan: PlanExercise[], pe: PlanExercise, sets: SessionSet[]): SessionSet[] {
   const realBlocks = plan.filter((item) => !item.isOrphan);
 
   if (pe.isOrphan) {
@@ -152,7 +152,7 @@ function planExerciseFromAdhocBlock(block: AdhocBlock): PlanExercise {
  * ver src/db/adhocBlocks.ts) y, al final, los ejercicios "huérfanos" que
  * tienen series registradas en esta sesión pero no resuelven a ningún bloque
  * real vigente (ni de rutina ni ad-hoc) — nunca se pierden datos registrados. */
-function buildPlan(
+export function buildPlan(
   routine: Routine | null,
   existingSets: SessionSet[],
   allExercises: Exercise[],
