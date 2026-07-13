@@ -174,3 +174,99 @@
   opacity: 0.5;
   pointer-events: none;
 }
+
+/* Wizard "Crear para mí" -- mismo acabado de sheet propio (carga-sheet). */
+.wizard-sheet {
+  --border-radius: var(--app-radius-l);
+  --background: var(--app-bg);
+}
+
+.wizard-back-btn {
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--app-radius-full);
+  border: 1px solid var(--app-border);
+  background: var(--app-surface-elevated);
+  color: var(--app-text-primary);
+  font-size: 16px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.wizard-sheet-body {
+  padding: 0 20px 28px;
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+.wizard-step-overline {
+  margin: 0 0 6px;
+}
+
+.wizard-step-title {
+  margin: 0 0 18px;
+}
+
+.wizard-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.wizard-chip-row-stacked {
+  flex-direction: column;
+}
+
+.wizard-chip {
+  padding: 12px 18px;
+  border-radius: var(--app-radius-full);
+  border: 1px solid var(--app-border);
+  background: var(--app-surface);
+  color: var(--app-text-primary);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition:
+    background var(--app-dur-fast) var(--app-ease),
+    color var(--app-dur-fast) var(--app-ease),
+    transform var(--app-dur-fast) var(--app-ease);
+}
+
+.wizard-chip:active {
+  transform: scale(0.97);
+}
+
+.wizard-chip-active {
+  background: var(--ion-color-primary);
+  border-color: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
+}
+
+.wizard-chip-wide {
+  width: 100%;
+  text-align: center;
+  border-radius: var(--app-radius-m);
+  padding: 16px 18px;
+}
+
+.wizard-chip-disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.wizard-split-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.wizard-split-active {
+  border-color: var(--ion-color-primary);
+  box-shadow: 0 0 0 1px var(--ion-color-primary) inset;
+}

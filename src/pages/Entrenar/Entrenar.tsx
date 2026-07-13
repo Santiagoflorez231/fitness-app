@@ -28,6 +28,7 @@ import PlateCalculator, { type PlateCalculatorMode } from '../../components/Plat
 import ExerciseHistorySheet from '../../components/ExerciseHistorySheet';
 import ExercisePickerSheet from '../../components/ExercisePickerSheet';
 import { localCoachAdvisor } from '../../coach/localCoach';
+import { templateNarrator } from '../../coach/sessionNarrator';
 import { hapticPr, hapticSetDone } from '../../utils/haptics';
 import type { Exercise } from '../../types/exercise';
 import type { Routine, SessionSet, WorkoutSession } from '../../types/routine';
@@ -327,7 +328,7 @@ const Entrenar: React.FC = () => {
   const [restTrigger, setRestTrigger] = useState<RestTimerTrigger | null>(null);
   const [pendingFinishRemaining, setPendingFinishRemaining] = useState<number | null>(null);
   const [confirmEmptyFinish, setConfirmEmptyFinish] = useState(false);
-  const [summary, setSummary] = useState<{ completedSets: number; volumeKg: number } | null>(null);
+  const [summary, setSummary] = useState<{ completedSets: number; volumeKg: number; narrative: string } | null>(null);
   const [nowTick, setNowTick] = useState<number>(() => Date.now());
 
   // Estado visual/aditivo (no afecta a la persistencia ni a la resolución de
@@ -702,12 +703,22 @@ const Entrenar: React.FC = () => {
     // finish está en curso o mientras se muestra el resumen.
     sessionFinishedRef.current = true;
     const finishedAt = Date.now();
-    await sessionsRepo.finish(phase.session.id, finishedAt);
+    // Volumen y narrativa del Coach (SessionNarrator, R9) se calculan ANTES
+    // del await porque la narrativa viaja como `notes` de sessionsRepo.finish;
+    // el resto del orden (un único await, luego clearAdhocBlocks/localStorage/
+    // setRestTrigger) no cambia.
+    const volumeKg = sets.reduce((sum, s) => sum + s.weightKg * s.reps, 0);
+    const narrative = templateNarrator.summarize({
+      durationMs: finishedAt - phase.session.startedAt,
+      sets: sets.map((s) => ({ exerciseName: s.exerciseName, weightKg: s.weightKg, reps: s.reps, rpe: s.rpe })),
+      prCount: prKeys.size,
+      volumeKg,
+    });
+    await sessionsRepo.finish(phase.session.id, finishedAt, narrative);
     clearAdhocBlocks(phase.session.id);
     localStorage.removeItem(REST_TIMER_STORAGE_KEY);
     setRestTrigger(null);
-    const volumeKg = sets.reduce((sum, s) => sum + s.weightKg * s.reps, 0);
-    setSummary({ completedSets: sets.length, volumeKg });
+    setSummary({ completedSets: sets.length, volumeKg, narrative });
     setPendingFinishRemaining(null);
   };
 
@@ -1107,7 +1118,7 @@ const Entrenar: React.FC = () => {
                 {formatEsNum(summary.volumeKg)}
                 <span className="entrenar-summary-unit">kg</span>
               </div>
-              <p className="entrenar-summary-tagline">Trabajo hecho.</p>
+              <p className="entrenar-summary-tagline">{summary.narrative}</p>
               <button type="button" className="entrenar-summary-btn" onClick={handleSummaryDismiss}>
                 Aceptar
               </button>

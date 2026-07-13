@@ -21,7 +21,7 @@ import {
   useIonToast,
   useIonViewWillEnter,
 } from '@ionic/react';
-import { add, archiveOutline, copyOutline } from 'ionicons/icons';
+import { add, archiveOutline, chevronBackOutline, copyOutline, sparklesOutline } from 'ionicons/icons';
 import { routinesRepo } from '../../db';
 import { useExercises } from '../../hooks/useExercises';
 import {
@@ -30,9 +30,32 @@ import {
   instantiateTemplate,
   type RoutineTemplate,
 } from '../../data/routineTemplates';
+import {
+  generatePlan,
+  type DaysPerWeek,
+  type EquipmentTier,
+  type RoutineSplit,
+} from '../../coach/routineGenerator';
 import CargaSkeleton from '../../components/CargaSkeleton';
 import type { Routine } from '../../types/routine';
 import './Rutinas.css';
+
+/** Días por semana ofrecidos en el paso 1 del wizard (RoutineIntent.daysPerWeek). */
+const WIZARD_DAYS_OPTIONS: DaysPerWeek[] = [2, 3, 4, 5];
+
+/** Splits ofrecidos en el paso 2, con la descripción a una línea (tono CARGA). */
+const WIZARD_SPLIT_OPTIONS: { value: RoutineSplit; name: string; description: string }[] = [
+  { value: 'fullbody', name: 'Full Body', description: 'Todo el cuerpo cada sesión. Ideal a 2-3 días.' },
+  { value: 'ppl', name: 'Empuje / Tirón / Pierna', description: 'Un patrón de movimiento por día. Para 3-6 días.' },
+  { value: 'torso-pierna', name: 'Torso / Pierna', description: 'Tren superior e inferior alternados.' },
+];
+
+/** Niveles de equipo ofrecidos en el paso 3 (RoutineIntent.equipment). */
+const WIZARD_EQUIPMENT_OPTIONS: { value: EquipmentTier; label: string }[] = [
+  { value: 'gym', label: 'Gimnasio completo' },
+  { value: 'basico', label: 'Básico: barra y mancuernas' },
+  { value: 'casa', label: 'Casa: peso corporal y mancuernas' },
+];
 
 /** Total de series objetivo de una rutina (suma de targetSets de sus ejercicios). */
 function totalTargetSets(routine: Routine): number {
@@ -44,6 +67,11 @@ const Rutinas: React.FC = () => {
   const [pendingArchiveId, setPendingArchiveId] = useState<string | null>(null);
   const [showTemplates, setShowTemplates] = useState(false);
   const [creatingTemplateId, setCreatingTemplateId] = useState<string | null>(null);
+  const [showWizard, setShowWizard] = useState(false);
+  const [wizardStep, setWizardStep] = useState<1 | 2 | 3>(1);
+  const [wizardDays, setWizardDays] = useState<DaysPerWeek | null>(null);
+  const [wizardSplit, setWizardSplit] = useState<RoutineSplit | null>(null);
+  const [wizardGenerating, setWizardGenerating] = useState(false);
   const listRef = useRef<HTMLIonListElement>(null);
   const { exercises: allExercises, loading: exercisesLoading } = useExercises();
   const [presentToast] = useIonToast();
@@ -104,6 +132,57 @@ const Rutinas: React.FC = () => {
     }
   };
 
+  /** Cierra el wizard "Crear para mí" y limpia sus 3 pasos (estado local,
+   * sin rutas -- se reinicia siempre al cerrar, se haya completado o no). */
+  const closeWizard = () => {
+    setShowWizard(false);
+    setWizardStep(1);
+    setWizardDays(null);
+    setWizardSplit(null);
+  };
+
+  const handleWizardPickDays = (days: DaysPerWeek) => {
+    setWizardDays(days);
+    setWizardStep(2);
+  };
+
+  const handleWizardPickSplit = (split: RoutineSplit) => {
+    setWizardSplit(split);
+    setWizardStep(3);
+  };
+
+  const handleWizardPickEquipment = async (equipment: EquipmentTier) => {
+    if (wizardDays === null || wizardSplit === null || wizardGenerating || exercisesLoading) {
+      return;
+    }
+    setWizardGenerating(true);
+    try {
+      const plan = generatePlan({ daysPerWeek: wizardDays, split: wizardSplit, equipment }, allExercises);
+      if (!plan || plan.length === 0) {
+        await presentToast({
+          message: 'No se pudieron generar rutinas con esa combinación.',
+          duration: 2500,
+          color: 'danger',
+        });
+        return;
+      }
+      const existing = await routinesRepo.list();
+      const basePosition = existing.reduce((max, item) => Math.max(max, item.position), -1) + 1;
+      await Promise.all(
+        plan.map((routine, index) => routinesRepo.save({ ...routine, position: basePosition + index })),
+      );
+      closeWizard();
+      loadRoutines();
+      await presentToast({
+        message: `${plan.length} ${plan.length === 1 ? 'rutina creada' : 'rutinas creadas'}. Ajústalas a tu gusto.`,
+        duration: 2800,
+        color: 'success',
+      });
+    } finally {
+      setWizardGenerating(false);
+    }
+  };
+
   const loading = routines === null;
   const pendingRoutine = routines?.find((routine) => routine.id === pendingArchiveId) ?? null;
 
@@ -113,6 +192,10 @@ const Rutinas: React.FC = () => {
         <IonToolbar>
           <IonTitle>Rutinas</IonTitle>
           <IonButtons slot="end">
+            <IonButton className="rutinas-templates-button" fill="clear" onClick={() => setShowWizard(true)}>
+              <IonIcon icon={sparklesOutline} slot="start" />
+              Crear para mí
+            </IonButton>
             <IonButton className="rutinas-templates-button" fill="clear" onClick={() => setShowTemplates(true)}>
               <IonIcon icon={copyOutline} slot="start" />
               Plantillas
@@ -249,6 +332,92 @@ const Rutinas: React.FC = () => {
                 );
               })}
             </div>
+          </div>
+        </IonModal>
+
+        <IonModal
+          isOpen={showWizard}
+          onDidDismiss={closeWizard}
+          initialBreakpoint={0.75}
+          breakpoints={[0, 0.5, 0.75]}
+          className="carga-sheet wizard-sheet"
+        >
+          <div className="carga-sheet-header">
+            {wizardStep > 1 ? (
+              <button
+                type="button"
+                className="wizard-back-btn"
+                onClick={() => setWizardStep((step) => (step === 3 ? 2 : 1))}
+                aria-label="Paso anterior"
+              >
+                <IonIcon icon={chevronBackOutline} />
+              </button>
+            ) : (
+              <p className="carga-overline">Crear rutina para mí</p>
+            )}
+            <button type="button" className="carga-sheet-close" onClick={closeWizard} aria-label="Cerrar">
+              ✕
+            </button>
+          </div>
+          <div className="wizard-sheet-body">
+            {wizardStep === 1 && (
+              <div className="wizard-step">
+                <p className="carga-overline wizard-step-overline">Paso 1 de 3</p>
+                <h2 className="wizard-step-title">¿Cuántos días a la semana?</h2>
+                <div className="wizard-chip-row">
+                  {WIZARD_DAYS_OPTIONS.map((days) => (
+                    <button
+                      key={days}
+                      type="button"
+                      className={`wizard-chip${wizardDays === days ? ' wizard-chip-active' : ''}`}
+                      onClick={() => handleWizardPickDays(days)}
+                    >
+                      {days} días
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {wizardStep === 2 && (
+              <div className="wizard-step">
+                <p className="carga-overline wizard-step-overline">Paso 2 de 3</p>
+                <h2 className="wizard-step-title">Elige tu split</h2>
+                <div className="wizard-split-list">
+                  {WIZARD_SPLIT_OPTIONS.map((option) => (
+                    <button
+                      key={option.value}
+                      type="button"
+                      className={`template-card${wizardSplit === option.value ? ' wizard-split-active' : ''}`}
+                      onClick={() => handleWizardPickSplit(option.value)}
+                    >
+                      <h2 className="template-card-name">{option.name}</h2>
+                      <p className="template-card-description">{option.description}</p>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {wizardStep === 3 && (
+              <div className="wizard-step">
+                <p className="carga-overline wizard-step-overline">Paso 3 de 3</p>
+                <h2 className="wizard-step-title">¿Qué equipo tienes?</h2>
+                <div className="wizard-chip-row wizard-chip-row-stacked">
+                  {WIZARD_EQUIPMENT_OPTIONS.map((option) => (
+                    <button
+                      key={option.value}
+                      type="button"
+                      className={`wizard-chip wizard-chip-wide${wizardGenerating ? ' wizard-chip-disabled' : ''}`}
+                      onClick={() => void handleWizardPickEquipment(option.value)}
+                      disabled={wizardGenerating || exercisesLoading}
+                    >
+                      {wizardGenerating ? 'Generando…' : option.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </IonModal>
       </IonContent>
