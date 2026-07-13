@@ -106,6 +106,56 @@ del cierre). Sustituye/extiende `renovacion-plan.md` (v1, ejecutado).
   claude-sonnet-5 con structured outputs; fallback automático al local sin
   red. Documento de diseño primero; implementación cuando el usuario tenga key.
 
+## 4b. ADDENDUM máximo esfuerzo (2026-07-12, segunda pasada)
+
+Autocrítica: las tandas N1–N7 cubren producto/técnica pero infra-sirven la
+dimensión EXPERIENCIAL que el usuario ha pedido tres veces («que no se sienta
+estándar», «app nueva»). Esta pasada añade el Track E (experiencia) y el
+Track T-Android (hallazgos técnicos verificados).
+
+### Hallazgos nuevos verificados
+- **CRÍTICO para el APK — el respaldo no funcionará en Android**:
+  BackupPanel exporta con `Blob + <a download>` (verificado en código), que
+  falla silencioso en el WebView de Capacitor. Fix: rama por plataforma —
+  `@capacitor/filesystem` (escribir a Documentos) + `@capacitor/share` en
+  nativo; anchor solo en web. Entra en T1.
+- **Descanso en segundo plano**: el RestTimer solo vibra con la app abierta.
+  En gimnasio real el móvil está bloqueado → `@capacitor/local-notifications`
+  para avisar al terminar el descanso (nativo, aditivo). T1.
+- **Pantalla encendida durante el entreno**: `@capacitor-community/keep-awake`
+  durante la fase workout. Detalle pequeño, calidad de vida enorme. T1.
+
+### Track E — Experiencia (lo que hace «app nueva»)
+- **E1 · Workout Player** (la apuesta grande): modo enfoque en Entrenar —
+  el ejercicio actual ocupa la pantalla (GIF animado GRANDE en vivo, cifra
+  hero, filas de series), swipe lateral entre ejercicios, dots de progreso.
+  Capa PRESENTACIONAL sobre la misma máquina de estados endurecida (toggle
+  lista/enfoque; la lista actual se conserva). Pase opus posterior.
+- **E2 · Resumen-celebración post-sesión**: el summary pasa de overlay simple
+  a pantalla de cierre: duración, volumen con count-up, PRs listados con
+  pr-pop, narrativa del coach, botón «Compartir» (texto vía @capacitor/share).
+- **E3 · Transiciones compartidas**: thumb de Explorar → héroe del Detalle
+  con View Transitions API (same-document; WebView 111+); spike con fallback
+  honesto si choca con el router de Ionic.
+- **E4 · Records por ejercicio en Detalle**: mejor peso / mejor e1RM / mejor
+  volumen-sesión / máx reps, + mini-gráfico e1RM embebido (hoy solo existe en
+  Progreso). El Detalle se vuelve la ficha definitiva.
+- **E5 · Onboarding primera ejecución**: 3 pantallas CARGA (identidad → coach
+  → empieza), solo la primera vez (flag localStorage).
+- **E6 · Rutinas ricas**: cards con distribución por familia (mini-barra
+  duotono) + «Hace N días» de último uso.
+
+### Orden de ejecución FUSIONADO (recomendación final)
+1. R10 cierre (hallazgos opus en curso). 
+2. **N1 + E2** (historial + resumen-celebración: el loop diario completo).
+3. **N2** edición/borrado de series (+ opus).
+4. **E1** Workout Player (+ opus).
+5. **T1 Android-pack**: respaldo nativo (Filesystem/Share), notificación de
+   descanso, keep-awake, **N3** icono/splash — deja el APK de primera.
+6. **N4 + E3 + E5**: dieta de bundle, transiciones, onboarding.
+7. **N5 + E4 + E6**: búsqueda ES, records en Detalle, rutinas ricas.
+8. **N6** superseries (+ opus). 9. **N7** LLM opt-in (diseño).
+
 ## 5. Reglas de ejecución (invariables)
 Offline-first (N7 solo como opt-in explícito), motion CSS puro, lógica
 endurecida intocable (N2/N6 con auditoría opus), cada tanda = verificación
