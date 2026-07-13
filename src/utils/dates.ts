@@ -59,3 +59,35 @@ export function startOfDayLocal(ts: number): number {
   date.setHours(0, 0, 0, 0);
   return date.getTime();
 }
+
+/**
+ * Fecha relativa en es-ES (Historial, N1): "Hoy", "Ayer", "Hace N días"
+ * (2-6 días) o la fecha corta `formatDayMonthEs` -- con año si no es el
+ * actual -- a partir de una semana. Comparación por día calendario LOCAL,
+ * no por diferencia de milisegundos (evita que "ayer a las 23:59" cuente
+ * como "hace 0 días" o viceversa).
+ */
+export function formatRelativeEs(ts: number): string {
+  const dayDiffMs = startOfDayLocal(Date.now()) - startOfDayLocal(ts);
+  const diffDays = Math.round(dayDiffMs / (24 * 60 * 60 * 1000));
+  if (diffDays === 0) {
+    return 'Hoy';
+  }
+  if (diffDays === 1) {
+    return 'Ayer';
+  }
+  if (diffDays > 1 && diffDays < 7) {
+    return `Hace ${diffDays} días`;
+  }
+  const date = new Date(ts);
+  const currentYear = new Date().getFullYear();
+  return date.getFullYear() === currentYear ? formatDayMonthEs(ts) : `${formatDayMonthEs(ts)} ${date.getFullYear()}`;
+}
+
+/** Duración en minutos, redondeada, formato "48 min" (mínimo 0 min). Usado
+ * por el resumen de Entrenar y las cards de Historial (misma fórmula:
+ * finishedAt - startedAt). */
+export function formatDurationMinEs(ms: number): string {
+  const minutes = Math.max(0, Math.round(ms / 60000));
+  return `${minutes} min`;
+}

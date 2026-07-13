@@ -16,7 +16,7 @@ import {
   useIonViewWillEnter,
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
-import { barbellOutline, chevronForward, compassOutline, settingsOutline } from 'ionicons/icons';
+import { barbellOutline, chevronForward, compassOutline, settingsOutline, timeOutline } from 'ionicons/icons';
 import { routinesRepo, sessionsRepo } from '../../db';
 import { useProgressData } from '../../hooks/useProgressData';
 import { useWeeklyGoal } from '../../hooks/useWeeklyGoal';
@@ -281,6 +281,10 @@ const Hoy: React.FC = () => {
                 <IonButton fill="outline" routerLink="/tabs/entrenar">
                   <IonIcon icon={barbellOutline} slot="start" />
                   Entrenamiento libre
+                </IonButton>
+                <IonButton fill="outline" routerLink="/tabs/historial">
+                  <IonIcon icon={timeOutline} slot="start" />
+                  Historial
                 </IonButton>
                 <IonButton fill="outline" routerLink="/tabs/explorar">
                   <IonIcon icon={compassOutline} slot="start" />

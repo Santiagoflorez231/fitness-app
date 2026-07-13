@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   IonContent,
   IonHeader,
+  IonIcon,
   IonPage,
   IonSelect,
   IonSelectOption,
@@ -10,6 +12,7 @@ import {
   IonToolbar,
   useIonViewWillEnter,
 } from '@ionic/react';
+import { chevronForward } from 'ionicons/icons';
 import { sessionsRepo } from '../../db';
 import { useProgressData } from '../../hooks/useProgressData';
 import { useWeeklyGoal } from '../../hooks/useWeeklyGoal';
@@ -79,6 +82,7 @@ function computeE1rmBySession(sets: SessionSet[]): E1rmPoint[] {
 }
 
 const Progreso: React.FC = () => {
+  const history = useHistory();
   const {
     loading,
     volumeByWeek,
@@ -216,6 +220,18 @@ const Progreso: React.FC = () => {
                   </span>
                 </div>
               </div>
+
+              <button
+                type="button"
+                className="carga-card progreso-historial-link"
+                onClick={() => history.push('/tabs/historial')}
+              >
+                <div className="progreso-historial-link-body">
+                  <span className="carga-overline">Historial</span>
+                  <p className="progreso-historial-link-text">Revisa tus sesiones pasadas, serie a serie.</p>
+                </div>
+                <IonIcon icon={chevronForward} className="progreso-historial-link-icon" aria-hidden="true" />
+              </button>
 
               <StreakGoal
                 weekStreak={weekStreak}

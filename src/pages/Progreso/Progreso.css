@@ -77,6 +77,41 @@
   color: var(--app-text-secondary);
 }
 
+/* --- Link a Historial (N1), bajo los tiles --- */
+.progreso-historial-link {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.progreso-historial-link-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.progreso-historial-link-text {
+  margin: 0;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--app-text-secondary);
+}
+
+.progreso-historial-link-icon {
+  flex-shrink: 0;
+  font-size: 18px;
+  color: var(--app-text-secondary);
+}
+
 /* --- Secciones con gráfico/selector --- */
 .progreso-section {
   display: flex;

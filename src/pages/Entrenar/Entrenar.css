@@ -335,7 +335,9 @@
 }
 
 /* ---------------------------------------------------------------------- */
-/* Resumen al terminar -- overlay propio (no IonAlert)                    */
+/* Resumen-celebración al terminar -- pantalla completa (E2, overlay       */
+/* propio fijo, no IonAlert). Entrada con --app-dur-slow; el único rebote  */
+/* (pr-pop) queda reservado a las cintas PR de la lista de récords.        */
 /* ---------------------------------------------------------------------- */
 
 .entrenar-summary-backdrop {
@@ -343,60 +345,186 @@
   inset: 0;
   z-index: 1000;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  background: rgba(0, 0, 0, 0.5);
-  animation: entrenar-fade-in var(--app-dur-base) var(--app-ease) both;
+  flex-direction: column;
+  background: var(--app-bg);
+  padding: max(28px, env(safe-area-inset-top)) 24px max(20px, env(safe-area-inset-bottom));
+  animation: entrenar-summary-in var(--app-dur-slow) var(--app-ease) both;
 }
 
-@keyframes entrenar-fade-in {
+@keyframes entrenar-summary-in {
   from {
     opacity: 0;
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
-.entrenar-summary-card {
+.entrenar-summary-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
   width: 100%;
-  max-width: 340px;
-  background: var(--app-surface-elevated);
-  border: 1px solid var(--app-border);
-  border-radius: var(--app-radius-l);
-  box-shadow: var(--app-shadow-float);
-  padding: 28px 24px;
+  max-width: 420px;
+  margin: 0 auto;
+  padding-bottom: 12px;
   text-align: center;
-  animation: pr-pop var(--app-dur-slow) var(--app-ease-pop) both;
 }
 
-.entrenar-summary-line {
-  font-family: 'IBM Plex Sans', sans-serif;
-  font-size: 15px;
-  color: var(--app-text-secondary);
-  margin: 8px 0 4px;
+.entrenar-summary-eyebrow {
+  margin-top: 12px;
+}
+
+.entrenar-summary-title {
+  margin: 0;
+  font-size: clamp(30px, 9vw, 40px);
+}
+
+.entrenar-summary-stats {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.entrenar-summary-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 16px;
+}
+
+.entrenar-summary-stat-value {
+  font-size: 26px;
+  color: var(--app-text-primary);
+}
+
+.entrenar-summary-volume-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.entrenar-summary-volume-row {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
 }
 
 .entrenar-summary-volume {
-  font-size: clamp(40px, 14vw, 56px);
+  font-size: clamp(48px, 16vw, 72px);
   color: var(--ion-color-primary);
-  margin: 8px 0;
 }
 
 .entrenar-summary-unit {
-  font-size: 40%;
+  font-family: 'Archivo', sans-serif;
   font-weight: 700;
-  margin-inline-start: 4px;
+  font-size: 22px;
   color: var(--app-text-secondary);
 }
 
-.entrenar-summary-tagline {
+.entrenar-summary-prs {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.entrenar-summary-pr-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.entrenar-summary-pr-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-s);
+  background: var(--app-surface);
+  text-align: left;
+}
+
+/* Variante estática (no absolute) de .entrenar-pr-chip, para la lista del
+   resumen; misma piel visual, sigue usando la animación pr-pop compartida. */
+.entrenar-summary-pr-badge {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 9px;
+  border-radius: var(--app-radius-full);
+  background: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
   font-family: 'Archivo', sans-serif;
-  font-weight: 700;
-  font-size: 17px;
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+
+.entrenar-summary-pr-name {
+  flex: 1;
+  min-width: 0;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
   color: var(--app-text-primary);
-  margin: 4px 0 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.entrenar-summary-pr-value {
+  flex: 0 0 auto;
+  font-size: 14px;
+  color: var(--app-text-secondary);
+}
+
+.entrenar-summary-narrative {
+  margin: 4px 0 0;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--app-text-secondary);
+}
+
+.entrenar-summary-actions {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 420px;
+  margin: 16px auto 0;
+}
+
+.entrenar-summary-btn-outline {
+  width: 100%;
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-full);
+  background: transparent;
+  color: var(--app-text-primary);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 14px;
+  cursor: pointer;
 }
 
 .entrenar-summary-btn {

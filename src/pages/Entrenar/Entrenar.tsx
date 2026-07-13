@@ -9,6 +9,7 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
+  useIonToast,
   useIonViewWillEnter,
   useIonViewWillLeave,
 } from '@ionic/react';
@@ -21,6 +22,7 @@ import { useCoachSettings } from '../../hooks/useCoachSettings';
 import { usePlateSettings } from '../../hooks/usePlateSettings';
 import { estimateSessionMinutes } from '../../data/routineTemplates';
 import CargaSkeleton from '../../components/CargaSkeleton';
+import CountUpNumber from '../../components/CountUpNumber';
 import ExerciseAvatar from '../../components/ExerciseAvatar';
 import SetRow from '../../components/SetRow';
 import RestTimer, { type RestTimerTrigger } from '../../components/RestTimer';
@@ -30,6 +32,8 @@ import ExercisePickerSheet from '../../components/ExercisePickerSheet';
 import { localCoachAdvisor } from '../../coach/localCoach';
 import { templateNarrator } from '../../coach/sessionNarrator';
 import { hapticPr, hapticSetDone } from '../../utils/haptics';
+import { shareSummary } from '../../utils/share';
+import { formatDurationMinEs } from '../../utils/dates';
 import type { Exercise } from '../../types/exercise';
 import type { Routine, SessionSet, WorkoutSession } from '../../types/routine';
 import './Entrenar.css';
@@ -62,6 +66,24 @@ type Phase =
   | { kind: 'choose-routine'; routines: Routine[] }
   | { kind: 'confirm-abandoned'; session: WorkoutSession; sets: SessionSet[] }
   | { kind: 'workout'; session: WorkoutSession; plan: PlanExercise[] };
+
+/** Un PR celebrado en el resumen-celebración (E2): serie que batió el
+ * histórico durante la sesión, resuelta desde `prKeys` al terminar. */
+interface SummaryPr {
+  exerciseName: string;
+  weightKg: number;
+  reps: number;
+}
+
+/** Resumen de sesión terminada (E2, resumen-celebración): construido por
+ * `finishSession` con datos ya en memoria, sin awaits nuevos. */
+interface SessionSummary {
+  completedSets: number;
+  volumeKg: number;
+  narrative: string;
+  durationMs: number;
+  prs: SummaryPr[];
+}
 
 function formatElapsed(ms: number): string {
   const totalSeconds = Math.max(0, Math.floor(ms / 1000));
@@ -328,8 +350,9 @@ const Entrenar: React.FC = () => {
   const [restTrigger, setRestTrigger] = useState<RestTimerTrigger | null>(null);
   const [pendingFinishRemaining, setPendingFinishRemaining] = useState<number | null>(null);
   const [confirmEmptyFinish, setConfirmEmptyFinish] = useState(false);
-  const [summary, setSummary] = useState<{ completedSets: number; volumeKg: number; narrative: string } | null>(null);
+  const [summary, setSummary] = useState<SessionSummary | null>(null);
   const [nowTick, setNowTick] = useState<number>(() => Date.now());
+  const [presentToast] = useIonToast();
 
   // Estado visual/aditivo (no afecta a la persistencia ni a la resolución de
   // series): tarjetas expandidas, filas extra por bloque, PR en vivo y las
@@ -703,28 +726,61 @@ const Entrenar: React.FC = () => {
     // finish está en curso o mientras se muestra el resumen.
     sessionFinishedRef.current = true;
     const finishedAt = Date.now();
-    // Volumen y narrativa del Coach (SessionNarrator, R9) se calculan ANTES
-    // del await porque la narrativa viaja como `notes` de sessionsRepo.finish;
-    // el resto del orden (un único await, luego clearAdhocBlocks/localStorage/
-    // setRestTrigger) no cambia.
+    // Volumen, duración y narrativa del Coach (SessionNarrator, R9) se
+    // calculan ANTES del await porque la narrativa viaja como `notes` de
+    // sessionsRepo.finish; el resto del orden (un único await, luego
+    // clearAdhocBlocks/localStorage/setRestTrigger) no cambia.
+    const durationMs = finishedAt - phase.session.startedAt;
     const volumeKg = sets.reduce((sum, s) => sum + s.weightKg * s.reps, 0);
     const narrative = templateNarrator.summarize({
-      durationMs: finishedAt - phase.session.startedAt,
+      durationMs,
       sets: sets.map((s) => ({ exerciseName: s.exerciseName, weightKg: s.weightKg, reps: s.reps, rpe: s.rpe })),
       prCount: prKeys.size,
       volumeKg,
+    });
+    // E2 (resumen-celebración): lista de PRs para el summary, resuelta desde
+    // `prKeys` (formato `${pe.key}#${setNumber}`) contra `phase.plan`/`sets`
+    // -- datos ya en memoria, sin awaits nuevos.
+    const prs: SummaryPr[] = Array.from(prKeys).flatMap((prKey) => {
+      const [peKey, setNumberRaw] = prKey.split('#');
+      const pe = phase.plan.find((item) => item.key === peKey);
+      if (!pe) {
+        return [];
+      }
+      const setNumber = Number(setNumberRaw);
+      const prSet = setsForPlanExercise(phase.plan, pe, sets).find((s) => s.setNumber === setNumber);
+      return prSet ? [{ exerciseName: prSet.exerciseName, weightKg: prSet.weightKg, reps: prSet.reps }] : [];
     });
     await sessionsRepo.finish(phase.session.id, finishedAt, narrative);
     clearAdhocBlocks(phase.session.id);
     localStorage.removeItem(REST_TIMER_STORAGE_KEY);
     setRestTrigger(null);
-    setSummary({ completedSets: sets.length, volumeKg, narrative });
+    setSummary({ completedSets: sets.length, volumeKg, narrative, durationMs, prs });
     setPendingFinishRemaining(null);
   };
 
   const handleSummaryDismiss = () => {
     setSummary(null);
     void bootstrap();
+  };
+
+  /** Copia narrativa + stats al portapapeles (ver src/utils/share.ts para el
+   * TODO de migración a @capacitor/share nativo). */
+  const handleShareSummary = async () => {
+    if (!summary) {
+      return;
+    }
+    const statsLine = `${formatDurationMinEs(summary.durationMs)} · ${summary.completedSets} ${
+      summary.completedSets === 1 ? 'serie' : 'series'
+    } · ${formatEsNum(summary.volumeKg)} kg`;
+    const text = [summary.narrative, statsLine].join('\n\n');
+    try {
+      await shareSummary(text);
+      await presentToast({ message: 'Copiado.', duration: 1800 });
+    } catch (error) {
+      console.error('[Entrenar] Error al compartir el resumen', error);
+      await presentToast({ message: 'No se pudo copiar.', duration: 2200, color: 'danger' });
+    }
   };
 
   const toggleExpanded = (key: string) => {
@@ -1108,19 +1164,69 @@ const Entrenar: React.FC = () => {
         )}
 
         {summary && (
-          <div className="entrenar-summary-backdrop" role="alertdialog" aria-modal="true">
-            <div className="entrenar-summary-card">
-              <p className="carga-overline">Sesión terminada</p>
-              <p className="entrenar-summary-line">
-                {summary.completedSets} {summary.completedSets === 1 ? 'serie completada' : 'series completadas'}
-              </p>
-              <div className="carga-num entrenar-summary-volume">
-                {formatEsNum(summary.volumeKg)}
-                <span className="entrenar-summary-unit">kg</span>
+          <div
+            className="entrenar-summary-backdrop"
+            role="alertdialog"
+            aria-modal="true"
+            aria-label="Resumen de la sesión"
+          >
+            <div className="entrenar-summary-scroll">
+              <p className="carga-overline entrenar-summary-eyebrow">Sesión terminada</p>
+              <h1 className="entrenar-summary-title">Trabajo hecho.</h1>
+
+              <div className="entrenar-summary-stats">
+                <div className="carga-card entrenar-summary-stat">
+                  <span className="carga-overline">Duración</span>
+                  <CountUpNumber
+                    className="entrenar-summary-stat-value"
+                    value={Math.max(0, Math.round(summary.durationMs / 60000))}
+                    format={(v) => `${Math.round(v)} min`}
+                  />
+                </div>
+                <div className="carga-card entrenar-summary-stat">
+                  <span className="carga-overline">Series</span>
+                  <CountUpNumber className="entrenar-summary-stat-value" value={summary.completedSets} />
+                </div>
               </div>
-              <p className="entrenar-summary-tagline">{summary.narrative}</p>
+
+              <div className="entrenar-summary-volume-block">
+                <span className="carga-overline">Volumen total</span>
+                <div className="entrenar-summary-volume-row">
+                  <CountUpNumber
+                    className="entrenar-summary-volume"
+                    value={summary.volumeKg}
+                    format={(v) => formatEsNum(v)}
+                  />
+                  <span className="entrenar-summary-unit">kg</span>
+                </div>
+              </div>
+
+              {summary.prs.length > 0 && (
+                <div className="entrenar-summary-prs">
+                  <span className="carga-overline">Récords de hoy</span>
+                  <ul className="entrenar-summary-pr-list">
+                    {summary.prs.map((pr, index) => (
+                      <li key={`${pr.exerciseName}-${index}`} className="entrenar-summary-pr-row">
+                        <span className="pr-pop entrenar-summary-pr-badge">PR</span>
+                        <span className="entrenar-summary-pr-name">{pr.exerciseName}</span>
+                        <span className="carga-num entrenar-summary-pr-value">
+                          {formatEsNum(pr.weightKg)} kg × {pr.reps}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              <p className="entrenar-summary-narrative">{summary.narrative}</p>
+            </div>
+
+            <div className="entrenar-summary-actions">
+              <button type="button" className="entrenar-summary-btn-outline" onClick={() => void handleShareSummary()}>
+                Compartir
+              </button>
               <button type="button" className="entrenar-summary-btn" onClick={handleSummaryDismiss}>
-                Aceptar
+                Cerrar
               </button>
             </div>
           </div>

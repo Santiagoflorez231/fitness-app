@@ -1,0 +1,138 @@
+/**
+ * SessionDetailSheet -- sheet CARGA de solo lectura con el detalle de una
+ * sesión terminada (Historial, N1). Acabado propio (sin chrome estándar de
+ * Ionic): IonModal solo como contenedor del sheet.
+ * Referencia obligatoria: docs/design-carga.md
+ */
+
+.session-detail-sheet {
+  --border-radius: var(--app-radius-l);
+  --background: var(--app-bg);
+}
+
+/* Cabecera propia del sheet, misma forma que PlateCalculator/ExerciseHistorySheet
+   (misma clase, definida en cada css -- convención ya establecida). */
+.carga-sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 20px 12px;
+}
+
+.session-detail-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.carga-sheet-close {
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--app-radius-full);
+  border: 1px solid var(--app-border);
+  background: var(--app-surface-elevated);
+  color: var(--app-text-secondary);
+  font-size: 13px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.session-detail-body {
+  padding: 0 20px 28px;
+  overflow-y: auto;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.session-detail-date {
+  margin: 0;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px;
+  color: var(--app-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.session-detail-narrative {
+  margin: -8px 0 0;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--app-text-secondary);
+}
+
+.session-detail-empty {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 14px;
+  color: var(--app-text-secondary);
+  text-align: center;
+  padding: 24px 0;
+}
+
+.session-detail-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.session-detail-group-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.session-detail-group-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.session-detail-set-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.session-detail-set-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-s);
+  background: var(--app-surface);
+}
+
+.session-detail-set-index {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--app-radius-full);
+  background: var(--app-surface-elevated);
+  color: var(--app-text-secondary);
+  font-family: 'Archivo', sans-serif;
+  font-weight: 800;
+  font-size: 11px;
+}
+
+.session-detail-set-value {
+  font-size: 14px;
+  color: var(--app-text-primary);
+}
